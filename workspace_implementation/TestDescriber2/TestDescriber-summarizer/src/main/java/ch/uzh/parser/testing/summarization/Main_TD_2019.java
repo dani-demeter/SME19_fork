@@ -36,10 +36,10 @@ import ch.uzh.utility.TestCoverageComputation;
 
 /**
  * Main parser for Test case Summarization..
- * @author Sebastiano Panichella and Annibale Panichella
+ * @author Sebastiano Panichella and Annibale Panichella and Gabriela Lopez Magaña
  *
  */
-public class Main_Seba_with_Improvements {
+public class Main_TD_2019 {
 
 	/**
 	 * @param args
@@ -49,43 +49,12 @@ public class Main_Seba_with_Improvements {
 	 *
 	 */
 	public static void main(String[] args) throws IOException, InterruptedException, ParseException {
+		
+		PathParameters pathParameters = PathParameters.createPathParameters(); 
 
-		String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/Task1/src/";
-        String pBinFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/Task1/bin/";
-        
-        //String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/commons-cli-1.4-src/src/";
-        //String pBinFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/commons-cli-1.4-src/src/main/java/target/";
-        
-		//String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/apache-ofbiz-16.11.04/src/framework/base/src/main/java/";
-        //String pBinFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/apache-ofbiz-16.11.04/src/build/classes/main/";
-        
-		//List<String> classesFiles = new ArrayList<String>();
-		//classesFiles.add("/main/java/org/apache/commons/cli/Option.java");
-
-		//List<String> testsFiles = new ArrayList<String>();
-		//testsFiles.add("test/java/org/apache/commons/cli/OptionTest.java");
-
-		List<String> classesFiles = new ArrayList<String>();
-		//classesFiles.add("org/magee/math/Rational.java");
-		classesFiles.add("org/magee/math/Rational.java");
-		//classesFiles.add("org/apache/ofbiz/base/util/cache/UtilCache.java");
-		//classesFiles.add("org/apache/ofbiz/base/util/TimeDuration.java");
-
-		
-		List<String> testsFiles = new ArrayList<String>();
-		//testsFiles.add("org/magee/math/Rational_ESTest.java");
-		testsFiles.add("org/magee/math/TestRational.java");
-		//testsFiles.add("org/apache/ofbiz/base/util/cache/test/UtilCacheTests.java");/**/
-		//testsFiles.add("org/apache/ofbiz/base/util/test/TimeDurationTests.java");/**/
-		
-		
-		String testBinFolder = "testBinFolder";
-		List<String> testBinFiles = new ArrayList<String>();
-		
-		
 		System.out.println("Step 1: Parsing JAVA CLASSES/JAVA TESTS");
-		Vector<ClassBean> productionClass = JavaFileParser.parseJavaClasses(classesFiles, sourceFolder);
-		Vector<ClassBean> testClass = JavaFileParser.parseJavaClasses(testsFiles, sourceFolder);
+		Vector<ClassBean> productionClass = JavaFileParser.parseJavaClasses(pathParameters.classesFiles, pathParameters.sourceFolder);
+		Vector<ClassBean> testClass = JavaFileParser.parseJavaClasses(pathParameters.testsFiles, pathParameters.sourceFolder);
 
 		System.out.println("Step 2: Running JaCoCo ");
 		ClassBean classeTest = testClass.get(0);
@@ -93,8 +62,9 @@ public class Main_Seba_with_Improvements {
 		
 		//class responsible for the test coverage computation (using the Jacoco API).
 		TestCoverageComputation testCoverageComputation = new TestCoverageComputation(productionClass, testClass,
-				classesFiles, testsFiles, pBinFolder, testBinFolder, testBinFiles); //TODO GGG will not run
-		
+				pathParameters.classesFiles, pathParameters.testsFiles, pathParameters.pBinFolder,
+				pathParameters.testBinFolder, pathParameters.testBinFiles);
+
 		List<String> testsCoverage = testCoverageComputation.getTestsCoverage();
 
 		if (testsCoverage.size() == 0) {
@@ -107,7 +77,7 @@ public class Main_Seba_with_Improvements {
 		System.out.println("Step 3: Parsing Covered Statements");
 		List<String> textContentExecutedOriginalClass = null;
 		for(int index=0; index<testCases.size(); index++) {
-			textContentExecutedOriginalClass=SrcMLParser.parseSrcML(testCases, index, clazz, sourceFolder, classesFiles, 0, testsCoverage);
+			textContentExecutedOriginalClass=SrcMLParser.parseSrcML(testCases, index, clazz, pathParameters.sourceFolder, pathParameters.classesFiles, 0, testsCoverage);
 		}
 
 		// Derive the import from the class
@@ -152,7 +122,7 @@ public class Main_Seba_with_Improvements {
 		//classeTest.setTextContent(classeTest.getTextContent().replaceAll("  with \"implicit arguments:\"","  with \"implicit arguments:\" \n        // -- "));
 				
 		// we save the new (renamed) test class
-		String pathNewTextClass=sourceFolder+testsFiles.get(0).replace(".java","withDescription.java");
+		String pathNewTextClass=pathParameters.sourceFolder+pathParameters.testsFiles.get(0).replace(".java","withDescription.java");
 		FileUtils.writeFile(pathNewTextClass,  classeTest.getTextContent());
 		System.out.println("GENERATED JUNIT CLASS");
 		System.out.println(classeTest.getTextContent());

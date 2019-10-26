@@ -52,6 +52,7 @@ public class JaCoCoRunner {
 			System.out.println("\n=== Run Jacoco for Coverage ===");
 			JaCoCoWrapper wrapper = new JaCoCoWrapper(temporary_directory.getAbsolutePath());
 
+			//TODO GGG not wokring for other 1:1 structures, refactor, testcases must include whole path
 			List<String> testClasses = new ArrayList<String>();
 			testClasses.add(testCase);
 			wrapper.setTestCase(testClasses);

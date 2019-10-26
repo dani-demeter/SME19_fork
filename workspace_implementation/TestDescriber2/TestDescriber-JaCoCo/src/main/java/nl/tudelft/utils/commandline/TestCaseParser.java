@@ -59,4 +59,45 @@ public class TestCaseParser {
 		return test_methods;
 	}
 
+	public static List<String> findTestMethods(String bin_directory, String test_bin_directory, List<String> listTestBinMethods){
+		
+		String temp = listTestBinMethods.get(0);
+		while (temp.contains(".")){
+			temp = temp.replace(".", "/");
+		}
+
+		String command = "javap "+test_bin_directory+"/"+temp+".class";
+		System.out.println(command);
+		
+		String result=null;
+		try {
+			result = CommandLine.commandLine(command, "parser", "temp");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<String> test_methods = new ArrayList<String>();
+		if (result!=null){
+			String[] list = result.split("[{|;]");
+			for (int i=0; i<list.length; i++){
+				String line = list[i];
+				if (line.contains("public void test") || line.contains("public void")){
+					line = line.substring(15,line.length());
+					line = line.substring(0, line.indexOf("("));
+					test_methods.add(line);
+				}
+			}
+		}
+		
+		System.out.println("#### Test Cases ####");
+		for (String method : test_methods){
+			System.out.println(method);
+		}
+		return test_methods;
+	}	
+
 }

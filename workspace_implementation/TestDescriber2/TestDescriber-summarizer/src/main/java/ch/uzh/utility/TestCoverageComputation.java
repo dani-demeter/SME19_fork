@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import ch.uzh.parser.JavaFileParser;
 import ch.uzh.parser.bean.ClassBean;
 import nl.tudelft.jacoco.JaCoCoRunner;
 import nl.tudelft.jacoco.JacocoResult;
@@ -15,46 +14,62 @@ import nl.tudelft.utils.commandline.TestCaseParser;
 /**
  * Class responsible for the test coverage computation (using the Jacoco API).
  * 
- * @author @sebastiano panichella
+ * @author @sebastiano panichella and Gabriela Lopez
  *
  */
 public class TestCoverageComputation {
 
-	//Production code (i.e., the Java class) to consider for the test coverage computation
+	// Production code (i.e., the Java class) to consider for the test coverage
+	// computation
 	Vector<ClassBean> productionClass = null;
-	//Test class to consider for the test coverage computation
+	// Test class to consider for the test coverage computation
 	Vector<ClassBean> testClass = null;
-	
-	// Map used to store the covered lines
-    Map<String, List<Integer>> coverage = null;
-    
- // number of test methods in 'test_case'
- 	List<String> listTestMethods = null;
-	
- 	// folder binary code 
- 	String pBinFolder = null;
-	
- // outcome of the test coverage computation
- List<String> testsCoverage = null;
- 
- // the list contains the fully classified path of the java class  
- List<String> pathJavaClass = new ArrayList<String>();
 
- // the list contains the fully classified path of the test class  
- List<String> pathTestClass = new ArrayList<String>();
+	// Map used to store the covered lines
+	Map<String, List<Integer>> coverage = null;
+
+	// number of test methods in 'test_case'
+	List<String> listTestMethods = null;
+
+	// folder binary code
+	String pBinFolder = null;
+
+	// folder for binary code of the test cases GGG
+ 	String testBinFolder = null;
+
+	// outcome of the test coverage computation
+	List<String> testsCoverage = null;
+
+	// the list contains the fully classified path of the java class
+	List<String> pathJavaClass = new ArrayList<String>();
+
+	// the list contains the fully classified path of the test class
+	List<String> pathTestClass = new ArrayList<String>();
 	
+	// number of test methods in 'test_case' TODO
+	List<String> listTestBinMethods = null;
+
 	
 	public TestCoverageComputation(Vector<ClassBean> productionClass, Vector<ClassBean> testClass,
-			                       List<String> pathJavaClass, List<String> pathTestClass, String pBinFolder) {
+			                       List<String> pathJavaClass, List<String> pathTestClass, String pBinFolder,
+			                       String testBinFolder, List<String> listTestBinMethods) {
 		super();
 		this.productionClass = productionClass;
 		this.testClass = testClass;
 		this.pBinFolder = pBinFolder;
 		this.pathJavaClass =  pathJavaClass;
 		this.pathTestClass = pathTestClass;
+		this.testBinFolder = testBinFolder;
+		this.listTestBinMethods = listTestBinMethods;
 		
 		// extract the number of test methods in 'test_case'
-		this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, convert2PackageNotation(pathTestClass.get(0)));
+		if (this.testBinFolder.isEmpty()) {
+			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, convert2PackageNotation(pathTestClass.get(0)));
+		} else {
+			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, testBinFolder, listTestBinMethods);
+		}
+
+		
 		System.out.println(listTestMethods);
 		
 		 // initialization of the list that will 
@@ -70,7 +85,14 @@ public class TestCoverageComputation {
 
 
 		for (String tc : listTestMethods){
-			String temp_file = project_dir+"/temp1";
+			String tmpString = "\temp1";
+			//TODO improve?
+			if(System.getProperty("os.name").startsWith("Windows")) {
+				tmpString = "\\temp1";
+			}
+			String temp_file = project_dir+tmpString;
+			System.out.println("tmp_file"+temp_file);
+			
 			JaCoCoRunner runner = new JaCoCoRunner(new File(temp_file), jars);
 			runner.run(convert2PackageNotation(this.pathJavaClass.get(0)), convert2PackageNotation(this.pathTestClass.get(0))+"#"+tc, jars);
 			JacocoResult results = runner.getJacocoResults();
