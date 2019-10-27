@@ -10,6 +10,7 @@
 	<modules>
 		<module>TestDescriber-summarizer</module>
 		<module>TestDescriber-JaCoCo</module>
+		<module>TestDescriber-eclipse</module>
 	</modules>
 
 	<properties>
