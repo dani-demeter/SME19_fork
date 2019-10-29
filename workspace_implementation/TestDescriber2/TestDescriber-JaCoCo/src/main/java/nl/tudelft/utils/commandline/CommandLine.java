@@ -35,9 +35,12 @@ public class CommandLine {
 		// we create a ".bat" file to build the log file of the git system
 		// considered
 		String fileName = directory + "execute.sh";
+		String cmd = " sh " + directory + "execute.sh";
+		// String cmd = " ls ";
 		if (System.getProperty("os.name").startsWith("Windows")) {
-			fileName = directory + "execute.sh";
-		} 
+			fileName = directory + "execute.bat";
+			cmd =  directory + "execute.bat";
+		}
 		
 		File commands = new File(fileName);
 		commands.createNewFile();
@@ -51,12 +54,7 @@ public class CommandLine {
 
 		Runtime rt = Runtime.getRuntime();
 
-		String cmd = " sh " + directory + "execute.sh";
-		// String cmd = " ls ";
-		if (System.getProperty("os.name").startsWith("Windows")) {
-			cmd =  directory + "execute.bat";
-		}
-
+		System.out.println(CommandLine.class.getClass().getCanonicalName() + "- Execute command: " + cmd);
 		Process process = rt.exec(cmd);
 		String line = null;
 

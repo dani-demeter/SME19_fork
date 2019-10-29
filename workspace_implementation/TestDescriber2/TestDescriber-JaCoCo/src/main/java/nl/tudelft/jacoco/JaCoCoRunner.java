@@ -2,6 +2,8 @@ package nl.tudelft.jacoco;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,17 +52,32 @@ public class JaCoCoRunner {
 	public void run(String cut, String testCase, List<File> instrumentedJar) {		
 		try {
 			System.out.println("\n=== Run Jacoco for Coverage ===");
+			System.out.println("temporary_directory: " + temporary_directory.getAbsolutePath()); //GGG del
 			JaCoCoWrapper wrapper = new JaCoCoWrapper(temporary_directory.getAbsolutePath());
 
 			//TODO GGG not wokring for other 1:1 structures, refactor, testcases must include whole path
 			List<String> testClasses = new ArrayList<String>();
+
+			// for Windows, change path character
+			if (System.getProperty("os.name").startsWith("Windows")) {
+				System.out.println("orig testCase: "+testCase);
+				testCase = testCase.replace("/", "\\");
+				//GGG testCase = (String) "org\\magee\\math\\TestRational#test0";//GGG
+				//testCase = (String) "test\\java\\org\\mockito\\internal\\creation\\bytebuddy\\AbstractByteBuddyMockMakerTest#should_create_mock_from_interface";
+				System.out.println("new testCase: "+testCase);
+			}
+			
 			testClasses.add(testCase);
 			wrapper.setTestCase(testClasses);
 
 			wrapper.setJarInstrument(instrumentedJar);
 
 			String cp = new Utilities.CPBuilder().and(extraClassPath).build();
+	        Path currentWorkingDir = Paths.get("").toAbsolutePath();//GGG del
+	        System.out.println("currentWorkingDir: "+currentWorkingDir.normalize().toString());//GGG del
+			System.out.println("cp: "+cp);//GGG del
 			cp = cp.replaceAll("::", ":");
+			System.out.println("new cp: "+cp);//GGG del
 			wrapper.setClassPath(cp);
 			wrapper.setTargetClass(cut);
 
