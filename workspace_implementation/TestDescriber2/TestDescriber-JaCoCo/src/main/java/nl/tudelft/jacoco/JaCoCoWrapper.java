@@ -68,10 +68,16 @@ public class JaCoCoWrapper {
 	 */
 	public void setClassPath(String classpath){
 		required_libraries = new LinkedList<String>();
+		String join_symbol = ":"; 
 
-		String[] libraries = classpath.split(":");
+		if(System.getProperty("os.name").startsWith("Windows")) {
+			join_symbol = "&"; 
+		}
+		
+		String[] libraries = classpath.split(join_symbol);
+		System.out.print("libraries"+libraries);//GGG del
 		for (String s : libraries){
-			s = s.replace(":", "");
+			s = s.replace(join_symbol, "");
 			if (s.length() > 0)
 				required_libraries.addLast(s);
 		}
@@ -158,20 +164,27 @@ public class JaCoCoWrapper {
 				}
 
 				String fileName = instrumented_CUT.getAbsolutePath();
+				System.out.println("fileName" + fileName); //GGG del
+
 				fileName = fileName.replace(jar_to_instrument.get(index).getAbsolutePath(), instrumented_jar.get(index).getAbsolutePath());
+				System.out.println("new filename: "+fileName); //GGG del
 
 				// jar of the SUT
 				InputStream input = new FileInputStream(instrumented_CUT.getAbsolutePath());
+				System.out.println("input: "+input); //GGG del
 
 				OutputStream output = new FileOutputStream(fileName);
+				System.out.println("output: "+output); //GGG del
 				tot_instrumented_class += instr.instrumentAll(input, output, "");
 
 				//}
 			} else{
 				// jar of the SUT
 				InputStream input = new FileInputStream(jar_to_instrument.get(index));
+				System.out.println("input else: "+input); //GGG del
 				// jar with instrumented classes
 				OutputStream output = new FileOutputStream(instrumented_jar.get(index));
+				System.out.println("output else: "+output); //GGG del
 				tot_instrumented_class += instr.instrumentAll(input, output, "");
 			}
 		}

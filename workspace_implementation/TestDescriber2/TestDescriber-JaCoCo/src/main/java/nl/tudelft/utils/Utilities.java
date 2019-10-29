@@ -141,10 +141,15 @@ public class Utilities {
     public static URL[] createURLs(String cp) throws MalformedURLException{
 
 		LinkedList<String> required_libraries = new LinkedList<String>();
+		String join_symbol = ":"; 
 
-		String[] libraries = cp.split(":");
+		if(System.getProperty("os.name").startsWith("Windows")) {
+			join_symbol = "&"; 
+		}
+		
+		String[] libraries = cp.split(join_symbol);
 		for (String s : libraries){
-			s = s.replace(":", "");
+			s = s.replace(join_symbol, "");
 			if (s.length() > 0)
 				required_libraries.addLast(s);
 		}
@@ -153,8 +158,11 @@ public class Utilities {
 
 		for (int index = 0; index < required_libraries.size(); index++){
 			if (required_libraries.get(index).endsWith(".jar")) {
+				System.out.println("createURLs with jars");//GGG del
 				url[index] = new URL("jar:file:" + required_libraries.get(index)+"!/");
+				//GGG TODO what about this ":"???
 			} else {
+				System.out.println("createURLs no jars");//GGG del
 				url[index] = new File(required_libraries.get(index)).toURI().toURL();
 			}
 		}

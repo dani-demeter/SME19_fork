@@ -27,6 +27,9 @@ public class TestCaseParser {
 			temp = temp.replace(".", "/");
 		}
 		String command = "javap "+bin_directory+"/"+temp+".class";
+		if (System.getProperty("os.name").startsWith("Windows")) {
+			command = "javap "+bin_directory+temp+".class";
+		}
 
 		String result=null;
 		try {
@@ -67,6 +70,9 @@ public class TestCaseParser {
 		}
 
 		String command = "javap "+test_bin_directory+"/"+temp+".class";
+		if (System.getProperty("os.name").startsWith("Windows")) {
+			command = "javap "+bin_directory+temp+".class";
+		}
 		System.out.println(command);
 		
 		String result=null;

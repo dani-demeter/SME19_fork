@@ -69,7 +69,6 @@ public class TestCoverageComputation {
 			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, testBinFolder, listTestBinMethods);
 		}
 
-		
 		System.out.println(listTestMethods);
 		
 		 // initialization of the list that will 
@@ -91,10 +90,14 @@ public class TestCoverageComputation {
 				tmpString = "\\temp1";
 			}
 			String temp_file = project_dir+tmpString;
-			System.out.println("tmp_file"+temp_file);
+			System.out.println("project_dir: "+project_dir);
+			System.out.println("tmp_file: "+temp_file);
 			
 			JaCoCoRunner runner = new JaCoCoRunner(new File(temp_file), jars);
+			System.out.println("1st part run: "+convert2PackageNotation(this.pathJavaClass.get(0))); //GGG del
+			System.out.println("2nd part run: "+convert2PackageNotation(this.pathTestClass.get(0))+"#"+tc); //GGG del
 			runner.run(convert2PackageNotation(this.pathJavaClass.get(0)), convert2PackageNotation(this.pathTestClass.get(0))+"#"+tc, jars);
+
 			JacocoResult results = runner.getJacocoResults();
 			System.out.println(results.getBranchesCovered());
 			coverage.put(tc, new ArrayList<Integer>(results.getCoveredLines()));
