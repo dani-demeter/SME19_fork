@@ -40,6 +40,12 @@ public class TestExecutionTask  implements Callable<List<Result>>{
 	public List<Result> call() throws ClassNotFoundException, IOException {
 			URLClassLoader cl = URLClassLoader.newInstance(urls, this.getClass().getClassLoader());	
 
+			//GGG START
+			for (URL u : urls){
+				System.out.println("urls: "+u.toString());
+			}
+			//GGG END
+			
 			System.out.println("Running the tests: "+testClasses);
 			for (String test : testClasses){
 				
@@ -49,8 +55,13 @@ public class TestExecutionTask  implements Callable<List<Result>>{
 				}
 				
 				String[] classAndMethod = test.split("#");
+				String testCaseClassName = classAndMethod[0];
+				if(System.getProperty("os.name").startsWith("Windows")) {
+					testCaseClassName = testCaseClassName.replace("\\", ".");
+				}
+				
 				// load the test case
-				final Class<?> testClass = cl.loadClass(classAndMethod[0]);
+				final Class<?> testClass = cl.loadClass(testCaseClassName);
 				Request request = Request.method(testClass, classAndMethod[1]);
 				
 				// Here we execute our test target class through its Runnable interface:

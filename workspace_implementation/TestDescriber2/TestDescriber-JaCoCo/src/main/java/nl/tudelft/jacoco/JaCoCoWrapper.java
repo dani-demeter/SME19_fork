@@ -116,15 +116,20 @@ public class JaCoCoWrapper {
 
 	private String generateClassPath() throws MalformedURLException{
 		String cp ="";
-
+		String join_symbol = ":"; 
+		
+		if (System.getProperty("os.name").startsWith("Windows")) {
+			join_symbol = "&";
+		}
+		
 		// first we add the instrumented jar
 		for (int index = 0; index < instrumented_jar.size(); index++){
-			cp = cp + instrumented_jar.get(index).getAbsolutePath()+":";
+			cp = cp + instrumented_jar.get(index).getAbsolutePath()+join_symbol;
 		}
 
 		// then we add all the other required library
 		for (int index = 0; index < required_libraries.size(); index++){
-			cp = cp + required_libraries.get(index)+":";
+			cp = cp + required_libraries.get(index)+join_symbol;
 		}
 
 		return cp;
@@ -248,7 +253,13 @@ public class JaCoCoWrapper {
 		for (File file : this.instrumented_jar){
 			if (file.exists()){
 				if (file.isDirectory())
-					FileUtils.deleteDirectory(file);
+					try {
+						//TODO GGG alternative?
+						FileUtils.deleteDirectory(file);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				else 
 					file.deleteOnExit();
 			}
