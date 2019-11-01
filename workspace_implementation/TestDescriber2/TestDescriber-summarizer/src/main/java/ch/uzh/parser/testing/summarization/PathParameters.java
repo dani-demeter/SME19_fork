@@ -23,8 +23,8 @@ public class PathParameters {
 	protected static PathParameters createPathParameters(){
 		
 		 //START CONFIGURATION FOR TASK 1
-		String sourceFolder = "C:/Users/glopez/eclipse-workspace/SME_project/Task1/src/";
-		String pBinFolder = "C:/Users/glopez/eclipse-workspace/SME_project/Task1/bin/";
+		String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
+		String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
 		
 		List<String> classesFiles = new ArrayList<String>();
 		classesFiles.add("org/magee/math/Rational.java"); 
