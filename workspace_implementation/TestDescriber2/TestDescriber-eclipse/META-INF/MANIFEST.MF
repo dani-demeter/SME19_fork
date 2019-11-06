@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ch.uzh.TestDescriber.TestDescriber
+Bundle-SymbolicName: ch.uzh.TestDescriber.TestDescriber;singleton:=true
+Bundle-Version: 0.0.1.SNAPSHOT
+Bundle-Vendor: ch.uzh
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Automatic-Module-Name: ch.uzh.TestDescriber.TestDescriber
+Import-Package: javax.inject
