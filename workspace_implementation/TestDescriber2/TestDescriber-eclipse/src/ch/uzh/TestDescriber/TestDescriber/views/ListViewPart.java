@@ -238,11 +238,17 @@ public class ListViewPart extends ViewPart {
 		action2.setToolTipText("Action 2 tooltip");
 		action2.setImageDescriptor(workbench.getSharedImages().
 				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+		
 		doubleClickAction = new Action() {
 			public void run() {
 				IStructuredSelection selection = viewer.getStructuredSelection();
 				Object obj = selection.getFirstElement();
-				showMessage("Double-click detected on "+obj.toString());
+				ITreeContentProvider provider = (ITreeContentProvider)viewer.getContentProvider();
+				
+				// If selection is a file, show tests view
+				if (!provider.hasChildren(obj)) {
+					showMessage("Double-click detected on "+ obj.toString());
+				}
 			}
 		};
 	}
