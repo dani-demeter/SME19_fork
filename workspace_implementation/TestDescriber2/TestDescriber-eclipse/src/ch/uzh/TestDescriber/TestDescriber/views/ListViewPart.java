@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
@@ -15,6 +16,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -110,20 +113,24 @@ public class ListViewPart extends ViewPart {
 		}
 		
 	    private void createRecursiveTree(String path, TreeParent parent) {
-
-	        File root = new File( path );
-	        File[] list = root.listFiles();
-
-	        for ( File f : list ) {
-	            if ( f.isDirectory() ) {
-	            	TreeParent treeFolder = new TreeParent(f.getName());
-	            	parent.addChild(treeFolder);
-	            	createRecursiveTree(f.getAbsolutePath(), treeFolder);
-	            }
-	            else {
-	            	TreeObject treeFile = new TreeObject(f.getName());
-	            	parent.addChild(treeFile);
-	            }
+	    	// Get given folder pointer and ensure it is valid
+	        File root = new File(path);
+	        if (root.exists() && root.isDirectory()) {
+	        	
+	        	// For each file/folder in given folder
+		        for (File f:root.listFiles()) {
+		        	
+		            if (f.isDirectory()) {
+		            	// Add folder entry to tree and recursively explore folder
+		            	TreeParent treeFolder = new TreeParent(f.getName());
+		            	parent.addChild(treeFolder);
+		            	createRecursiveTree(f.getAbsolutePath(), treeFolder);
+		            } else {
+		            	// Add file entry to tree
+		            	TreeObject treeFile = new TreeObject(f.getName());
+		            	parent.addChild(treeFile);
+		            }
+		        }
 	        }
 	    }
 
@@ -152,9 +159,9 @@ public class ListViewPart extends ViewPart {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		drillDownAdapter = new DrillDownAdapter(viewer);
 		
-	viewer.setContentProvider(new ViewContentProvider());
-	viewer.setInput(getViewSite());
-	viewer.setLabelProvider(new ViewLabelProvider());
+		viewer.setContentProvider(new ViewContentProvider());
+		viewer.setInput(getViewSite());
+		viewer.setLabelProvider(new ViewLabelProvider());
 
 		// Create the help context id for the viewer's control
 		workbench.getHelpSystem().setHelp(viewer.getControl(), "ch.uzh.TestDescriber.TestDescriber.viewer");
@@ -209,13 +216,18 @@ public class ListViewPart extends ViewPart {
 	private void makeActions() {
 		action1 = new Action() {
 			public void run() {
-				showMessage("Action 1 executed");
+				viewer.setContentProvider(new ViewContentProvider());
 			}
 		};
-		action1.setText("Action 1");
-		action1.setToolTipText("Action 1 tooltip");
-		action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-			getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+		action1.setText("Refresh");
+		action1.setToolTipText("Refresh");
+		try {
+			URL url = new URL("platform:/plugin/org.eclipse.ui/icons/full/elcl16/refresh_nav.png");
+			ImageDescriptor image = ImageDescriptor.createFromURL(url);
+			action1.setImageDescriptor(image);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 		
 		action2 = new Action() {
 			public void run() {
