@@ -36,7 +36,7 @@ public class ListViewPart extends ViewPart {
 	private Action action2;
 	private Action action3;
 	private Action doubleClickAction;
-	private String tests_folder;
+	private String testsFolderPath;
 	 
 	class TreeObject implements IAdaptable {
 		private String name;
@@ -138,8 +138,8 @@ public class ListViewPart extends ViewPart {
 
 		private void initialize() {
 	        invisibleRoot = new TreeParent("");
-			tests_folder = "C:\\Users\\Jacob\\Workspace\\gson\\gson\\src\\test\\java";
-			createRecursiveTree(tests_folder, invisibleRoot);
+	        testsFolderPath = "C:\\Users\\Jacob\\Workspace\\gson\\gson\\src\\test\\java";
+			createRecursiveTree(testsFolderPath, invisibleRoot);
 		}
 	}
 
@@ -281,8 +281,15 @@ public class ListViewPart extends ViewPart {
 						path = parent.toString() + "\\" + path;
 						parent = (TreeParent)provider.getParent(parent);
 					} while (!parent.toString().equals(""));
-					path = tests_folder + "\\" + path;
+					path = testsFolderPath + "\\" + path;
 					showMessage(path);
+					
+					// Call TestsView with path
+					try {
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("ch.uzh.TestDescriber.TestDescriber.views.TestsView");
+					} catch (PartInitException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		};
