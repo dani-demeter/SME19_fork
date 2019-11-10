@@ -34,7 +34,9 @@ public class ListViewPart extends ViewPart {
 	private DrillDownAdapter drillDownAdapter;
 	private Action action1;
 	private Action action2;
+	private Action action3;
 	private Action doubleClickAction;
+	private String tests_folder;
 	 
 	class TreeObject implements IAdaptable {
 		private String name;
@@ -136,8 +138,8 @@ public class ListViewPart extends ViewPart {
 
 		private void initialize() {
 	        invisibleRoot = new TreeParent("");
-			String root = "C:\\Users\\Jacob\\Workspace\\gson\\gson\\src\\test\\java";
-			createRecursiveTree(root, invisibleRoot);
+			tests_folder = "C:\\Users\\Jacob\\Workspace\\gson\\gson\\src\\test\\java";
+			createRecursiveTree(tests_folder, invisibleRoot);
 		}
 	}
 
@@ -195,11 +197,14 @@ public class ListViewPart extends ViewPart {
 		manager.add(action1);
 		manager.add(new Separator());
 		manager.add(action2);
+		manager.add(new Separator());
+		manager.add(action3);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
 		manager.add(action1);
 		manager.add(action2);
+		manager.add(action3);
 		manager.add(new Separator());
 		drillDownAdapter.addNavigationActions(manager);
 		// Other plug-ins can contribute there actions here
@@ -209,6 +214,7 @@ public class ListViewPart extends ViewPart {
 	private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(action1);
 		manager.add(action2);
+		manager.add(action3);
 		manager.add(new Separator());
 		drillDownAdapter.addNavigationActions(manager);
 	}
@@ -220,7 +226,7 @@ public class ListViewPart extends ViewPart {
 			}
 		};
 		action1.setText("Refresh");
-		action1.setToolTipText("Refresh");
+		action1.setToolTipText("Refresh folder");
 		try {
 			URL url = new URL("platform:/plugin/org.eclipse.ui/icons/full/elcl16/refresh_nav.png");
 			ImageDescriptor image = ImageDescriptor.createFromURL(url);
@@ -231,13 +237,33 @@ public class ListViewPart extends ViewPart {
 		
 		action2 = new Action() {
 			public void run() {
-				showMessage("Action 2 executed");
+				showMessage("Filter to be implemented");
 			}
 		};
-		action2.setText("Action 2");
-		action2.setToolTipText("Action 2 tooltip");
-		action2.setImageDescriptor(workbench.getSharedImages().
-				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+		action2.setText("Filter");
+		action2.setToolTipText("Filter files and folders");
+		try {
+			URL url = new URL("platform:/plugin/org.eclipse.ui.views.log/icons/elcl16/find_obj.png");
+			ImageDescriptor image = ImageDescriptor.createFromURL(url);
+			action2.setImageDescriptor(image);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
+		action3 = new Action() {
+			public void run() {
+				showMessage("Set folder path to be implemented");
+			}
+		};
+		action3.setText("Set Folder");
+		action3.setToolTipText("Set folder path");
+		try {
+			URL url = new URL("platform:/plugin/org.eclipse.buildship.ui/icons/full/obj16/project.png");
+			ImageDescriptor image = ImageDescriptor.createFromURL(url);
+			action3.setImageDescriptor(image);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 		
 		doubleClickAction = new Action() {
 			public void run() {
@@ -247,7 +273,16 @@ public class ListViewPart extends ViewPart {
 				
 				// If selection is a file, show tests view
 				if (!provider.hasChildren(obj)) {
-					showMessage("Double-click detected on "+ obj.toString());
+					
+					// Get file path
+					String path = obj.toString();
+					TreeParent parent = (TreeParent)provider.getParent(obj);
+					do {
+						path = parent.toString() + "\\" + path;
+						parent = (TreeParent)provider.getParent(parent);
+					} while (!parent.toString().equals(""));
+					path = tests_folder + "\\" + path;
+					showMessage(path);
 				}
 			}
 		};

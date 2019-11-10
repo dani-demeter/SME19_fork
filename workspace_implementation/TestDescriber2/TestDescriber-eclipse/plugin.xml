@@ -47,7 +47,15 @@
             icon="icons/td.png"
             id="ch.uzh.TestDescriber.TestDescriber.views.ListViewPart"
             inject="true"
-            name="TestDescriber">
+            name="TestDescriber Explorer">
+      </view>
+      <view
+            category="ch.uzh.TestDescriber.TestDescriber"
+            class="ch.uzh.TestDescriber.TestDescriber.views.TestsView"
+            icon="icons/td.png"
+            id="ch.uzh.TestDescriber.TestDescriber.views.TestsView"
+            inject="true"
+            name="TestDescriber Test">
       </view>
    </extension>
    <extension
@@ -56,6 +64,15 @@
             targetID="org.eclipse.jdt.ui.JavaPerspective">
          <view
                id="ch.uzh.TestDescriber.TestDescriber.views.ListViewPart"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="ch.uzh.TestDescriber.TestDescriber.views.TestsView"
                ratio="0.5"
                relationship="right"
                relative="org.eclipse.ui.views.ProblemView">

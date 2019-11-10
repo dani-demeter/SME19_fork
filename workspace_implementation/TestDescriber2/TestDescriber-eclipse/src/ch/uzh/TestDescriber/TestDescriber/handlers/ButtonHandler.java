@@ -15,7 +15,7 @@ public class ButtonHandler extends AbstractHandler {
 		MessageDialog.openInformation(
 				window.getShell(),
 				"TestDescriber",
-				"TestDescriber plugin installed and activated.\n\nAdd TestDescriber view using 'Window' -> 'Show View' -> 'Other' -> 'TestDescriber' -> 'TestDescriber'");
+				"TestDescriber plugin installed and activated.\n\nAdd TestDescriber view using 'Window' -> 'Show View' -> 'Other' -> 'TestDescriber' -> 'TestDescriber Explorer'");
 		return null;
 	}
 }
