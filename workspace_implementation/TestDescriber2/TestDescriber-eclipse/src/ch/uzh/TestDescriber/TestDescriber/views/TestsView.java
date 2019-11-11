@@ -1,6 +1,7 @@
 package ch.uzh.TestDescriber.TestDescriber.views;
 
 
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.*;
@@ -10,16 +11,22 @@ import ch.uzh.TestDescriber.TestDescriber.views.ListViewPart.ViewContentProvider
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swt.SWT;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,7 +43,9 @@ public class TestsView extends ViewPart {
 	private Action action1;
 	private Action doubleClickAction;
 	private String testPath;
-	private Label label;
+	RowLayout rowLayout;
+	Composite viewParent;
+	List<Widget> widgets;
 	 
 
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
@@ -65,13 +74,18 @@ public class TestsView extends ViewPart {
 //		// Create the help context id for the viewer's control
 //		workbench.getHelpSystem().setHelp(viewer.getControl(), "ch.uzh.TestDescriber.TestDescriber.viewer");
 //		getSite().setSelectionProvider(viewer);
+		widgets = new ArrayList<Widget>();
+		
+		viewParent = parent;
+		
+        RowLayout rowLayout = new RowLayout();
+        viewParent.setLayout(rowLayout);
+        
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
 		
-		// Create title label
-		label = new Label(parent, SWT.WRAP);
 	}
 	
 	public void setTestPath(String path) {
@@ -80,13 +94,36 @@ public class TestsView extends ViewPart {
 	}
 	
 	private void initialize() {
+		// Delete old widgets
+		for (Widget widget : widgets) {
+			widget.dispose();
+		}
+		widgets = new ArrayList<Widget>();
+		
+		// Create new layout
+        RowLayout rowLayout = new RowLayout();
+        viewParent.setLayout(rowLayout);
+		
+        // Open given file path
         File testFile = new File(testPath);
         if (testFile.exists() && testFile.isFile()) {
-        	label.setText(testFile.getName());
+            Label label = new Label(viewParent, SWT.WRAP);
+            label.setText(testFile.getName());
+        	widgets.add(label);
+        	
+            Button button = new Button(viewParent, SWT.WRAP);
+            button.setText("View test file");
+        	widgets.add(button);
+
+//            button.setLayoutData(new RowData(100, 40));
         } else {
+        	Label label = new Label(viewParent, SWT.WRAP);
         	label.setText("Could not read given test.");
-        	// TODO: reset the rest of the view here
         }
+        
+        // Refresh view with new layout
+        viewParent.pack();
+        viewParent.layout(true);
 	}
 
 	private void hookContextMenu() {
