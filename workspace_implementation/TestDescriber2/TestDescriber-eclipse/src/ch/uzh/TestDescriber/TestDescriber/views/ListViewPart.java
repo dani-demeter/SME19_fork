@@ -282,11 +282,11 @@ public class ListViewPart extends ViewPart {
 						parent = (TreeParent)provider.getParent(parent);
 					} while (!parent.toString().equals(""));
 					path = testsFolderPath + "\\" + path;
-					showMessage(path);
 					
 					// Call TestsView with path
 					try {
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("ch.uzh.TestDescriber.TestDescriber.views.TestsView");
+						TestsView testsView = (TestsView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("ch.uzh.TestDescriber.TestDescriber.views.TestsView");
+						testsView.setTestPath(path);
 					} catch (PartInitException e) {
 						e.printStackTrace();
 					}
@@ -305,7 +305,7 @@ public class ListViewPart extends ViewPart {
 	private void showMessage(String message) {
 		MessageDialog.openInformation(
 			viewer.getControl().getShell(),
-			"TestDescriber",
+			"TestDescriber Explorer",
 			message);
 	}
 

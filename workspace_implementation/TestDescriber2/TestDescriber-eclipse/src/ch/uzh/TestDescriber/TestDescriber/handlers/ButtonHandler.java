@@ -5,6 +5,8 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class ButtonHandler extends AbstractHandler {
@@ -15,7 +17,15 @@ public class ButtonHandler extends AbstractHandler {
 		MessageDialog.openInformation(
 				window.getShell(),
 				"TestDescriber",
-				"TestDescriber plugin installed and activated.\n\nAdd TestDescriber view using 'Window' -> 'Show View' -> 'Other' -> 'TestDescriber' -> 'TestDescriber Explorer'");
+				"TestDescriber plugin installed and activated.");
+		
+		// Open TestDescriber explorer view
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("ch.uzh.TestDescriber.TestDescriber.views.ListViewPart");
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 }

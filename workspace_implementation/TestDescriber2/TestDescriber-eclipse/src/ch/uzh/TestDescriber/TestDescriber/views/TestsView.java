@@ -2,8 +2,10 @@ package ch.uzh.TestDescriber.TestDescriber.views;
 
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.*;
 
+import ch.uzh.TestDescriber.TestDescriber.views.ListViewPart.TreeParent;
 import ch.uzh.TestDescriber.TestDescriber.views.ListViewPart.ViewContentProvider;
 
 import org.eclipse.jface.viewers.*;
@@ -15,6 +17,7 @@ import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -29,9 +32,11 @@ public class TestsView extends ViewPart {
 
 	@Inject IWorkbench workbench;
 	
-	private TableViewer viewer;
+//	private TableViewer viewer;
 	private Action action1;
 	private Action doubleClickAction;
+	private String testPath;
+	private Label label;
 	 
 
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
@@ -51,19 +56,37 @@ public class TestsView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		
-		viewer.setContentProvider(ArrayContentProvider.getInstance());
-		viewer.setInput(new String[] { "One", "Two", "Three" });
-		viewer.setLabelProvider(new ViewLabelProvider());
-
-		// Create the help context id for the viewer's control
-		workbench.getHelpSystem().setHelp(viewer.getControl(), "ch.uzh.TestDescriber.TestDescriber.viewer");
-		getSite().setSelectionProvider(viewer);
+//		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+//		
+//		viewer.setContentProvider(ArrayContentProvider.getInstance());
+//		viewer.setInput(new String[] { "One", "Two", "Three" });
+//		viewer.setLabelProvider(new ViewLabelProvider());
+//
+//		// Create the help context id for the viewer's control
+//		workbench.getHelpSystem().setHelp(viewer.getControl(), "ch.uzh.TestDescriber.TestDescriber.viewer");
+//		getSite().setSelectionProvider(viewer);
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
+		
+		// Create title label
+		label = new Label(parent, SWT.WRAP);
+	}
+	
+	public void setTestPath(String path) {
+		testPath = path;
+		initialize();
+	}
+	
+	private void initialize() {
+        File testFile = new File(testPath);
+        if (testFile.exists() && testFile.isFile()) {
+        	label.setText(testFile.getName());
+        } else {
+        	label.setText("Could not read given test.");
+        	// TODO: reset the rest of the view here
+        }
 	}
 
 	private void hookContextMenu() {
@@ -74,9 +97,9 @@ public class TestsView extends ViewPart {
 				TestsView.this.fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, viewer);
+//		Menu menu = menuMgr.createContextMenu(viewer.getControl());
+//		viewer.getControl().setMenu(menu);
+//		getSite().registerContextMenu(menuMgr, viewer);
 	}
 
 	private void contributeToActionBars() {
@@ -102,9 +125,7 @@ public class TestsView extends ViewPart {
 	private void makeActions() {
 		action1 = new Action() {
 			public void run() {
-				viewer.setContentProvider(ArrayContentProvider.getInstance());
-				viewer.setInput(new String[] { "One", "Two", "Three" });
-				viewer.setLabelProvider(new ViewLabelProvider());
+				initialize();
 			}
 		};
 		action1.setText("Refresh");
@@ -119,30 +140,30 @@ public class TestsView extends ViewPart {
 		
 		doubleClickAction = new Action() {
 			public void run() {
-				IStructuredSelection selection = viewer.getStructuredSelection();
-				Object obj = selection.getFirstElement();
-				showMessage("Double-click detected on "+ obj.toString());
+//				IStructuredSelection selection = viewer.getStructuredSelection();
+//				Object obj = selection.getFirstElement();
+//				showMessage("Double-click detected on "+ obj.toString());
 			}
 		};
 	}
 
 	private void hookDoubleClickAction() {
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				doubleClickAction.run();
-			}
-		});
+//		viewer.addDoubleClickListener(new IDoubleClickListener() {
+//			public void doubleClick(DoubleClickEvent event) {
+//				doubleClickAction.run();
+//			}
+//		});
 	}
 	
 	private void showMessage(String message) {
-		MessageDialog.openInformation(
-			viewer.getControl().getShell(),
-			"Tests View",
-			message);
+//		MessageDialog.openInformation(
+//			viewer.getControl().getShell(),
+//			"TestDescriber Test",
+//			message);
 	}
 
 	@Override
 	public void setFocus() {
-		viewer.getControl().setFocus();
+//		viewer.getControl().setFocus();
 	}
 }
