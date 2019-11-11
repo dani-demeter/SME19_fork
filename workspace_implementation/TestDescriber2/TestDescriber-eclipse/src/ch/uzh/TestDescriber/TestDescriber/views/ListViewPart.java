@@ -138,7 +138,8 @@ public class ListViewPart extends ViewPart {
 
 		private void initialize() {
 	        invisibleRoot = new TreeParent("");
-	        testsFolderPath = "C:\\Users\\Jacob\\Workspace\\gson\\gson\\src\\test\\java";
+//	        testsFolderPath = "C:\\Users\\Jacob\\Workspace\\gson\\gson\\src\\test\\java";
+	        testsFolderPath = "C:\\Users\\Jacob\\Workspace\\SME19_TestDescriberProject\\workspace_implementation\\Task1\\src\\org\\magee\\math";
 			createRecursiveTree(testsFolderPath, invisibleRoot);
 		}
 	}
@@ -277,10 +278,10 @@ public class ListViewPart extends ViewPart {
 					// Get file path
 					String path = obj.toString();
 					TreeParent parent = (TreeParent)provider.getParent(obj);
-					do {
+					while (!parent.toString().equals("")) {
 						path = parent.toString() + "\\" + path;
 						parent = (TreeParent)provider.getParent(parent);
-					} while (!parent.toString().equals(""));
+					}
 					path = testsFolderPath + "\\" + path;
 					
 					// Call TestsView with path
