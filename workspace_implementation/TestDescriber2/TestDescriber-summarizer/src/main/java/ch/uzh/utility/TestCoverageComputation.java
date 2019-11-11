@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import ch.uzh.parser.bean.ClassBean;
+import ch.uzh.parser.testing.summarization.PathParameters;
 import nl.tudelft.jacoco.JaCoCoRunner;
 import nl.tudelft.jacoco.JacocoResult;
 import nl.tudelft.utils.commandline.TestCaseParser;
@@ -51,20 +52,19 @@ public class TestCoverageComputation {
 
 	
 	public TestCoverageComputation(Vector<ClassBean> productionClass, Vector<ClassBean> testClass,
-			                       List<String> pathJavaClass, List<String> pathTestClass, String pBinFolder,
-			                       String testBinFolder, List<String> listTestBinMethods) {
+			PathParameters pathParameters) {
 		super();
 		this.productionClass = productionClass;
 		this.testClass = testClass;
-		this.pBinFolder = pBinFolder;
-		this.pathJavaClass =  pathJavaClass;
-		this.pathTestClass = pathTestClass;
-		this.testBinFolder = testBinFolder;
-		this.listTestBinMethods = listTestBinMethods;
+		this.pBinFolder = pathParameters.pBinFolder; //TODO Rename to match names overall 
+		this.pathJavaClass = pathParameters.classesFiles;
+		this.pathTestClass = pathParameters.testsFiles;
+		this.testBinFolder = pathParameters.testBinFolder;
+		this.listTestBinMethods = pathParameters.testBinFiles;
 		
 		// extract the number of test methods in 'test_case'
-		if (this.testBinFolder.isEmpty()) {
-			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, convert2PackageNotation(pathTestClass.get(0)));
+		if (!this.testBinFolder.isEmpty()) {
+			this.listTestMethods  = TestCaseParser.findTestMethods(testBinFolder, convert2PackageNotation(pathTestClass.get(0)));
 		} else {
 			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, testBinFolder, listTestBinMethods);
 		}

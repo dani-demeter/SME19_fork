@@ -7,22 +7,26 @@ public class PathParameters {
 
 	public String sourceFolder = "";
 	public String pBinFolder = "";
+	public String testSrcFolder = ""; //GGG not used yet
 	public String testBinFolder = "";
 	public List<String> classesFiles = new ArrayList<String>();
 	public List<String> testsFiles = new ArrayList<String>();
 	public List<String> testBinFiles = new ArrayList<String>();
 	
 	//constuctor
-	public PathParameters(String srcFolder, String srcBinFolder, List<String> clsFiles, List<String> tstFiles) {
+	public PathParameters(String srcFolder, String srcBinFolder, String tstSrcFolder, String tstBinFolder, List<String> clsFiles, List<String> tstFiles) {
 		sourceFolder = srcFolder;
 		pBinFolder = srcBinFolder;
+		testSrcFolder = tstSrcFolder;
+		testBinFolder = tstBinFolder;
 		classesFiles.addAll(clsFiles);
 		testsFiles.addAll(tstFiles);
 	}
 	
 	protected static PathParameters createPathParameters(){
 		
-		 //START CONFIGURATION FOR TASK 1
+		//START CONFIGURATION FOR TASK 1
+		/*
 		String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
 		String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
 		
@@ -34,9 +38,31 @@ public class PathParameters {
 
 		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
 		String testBinFolder = "";
+		*/
 		//END CONFIGURATION FOR TASK 1
 		
-		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, classesFiles, testsFiles);
+		
+		// START CONFIGURATION FOR GSON
+		// Test Case:  /gson/src/test/java/com/google/gson/CommentsTest.java
+		// Class to test: com.google.gson.reflect.TypeToken
+		String sourceFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/main/java/com/google/gson/reflect/";
+		String pBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/classes/com/google/gson/reflect/";
+		String testSrcFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/test/java/com/google/gson/"; ///CommentsTest.java";
+		String testBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/test-classes/com/google/gson/";
+		
+		List<String> classesFiles = new ArrayList<String>();
+		classesFiles.add("TypeToken.java");
+		 
+		List<String> testsFiles = new ArrayList<String>();
+		testsFiles.add("CommentsTest.java");
+		
+		List<String> testBinFiles = new ArrayList<String>();
+		testBinFiles.add("CommentsTest");
+		
+		// END CONFIGURATION FOR GSON 
+		
+		
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);
 
 		return pathParameters;
 	}

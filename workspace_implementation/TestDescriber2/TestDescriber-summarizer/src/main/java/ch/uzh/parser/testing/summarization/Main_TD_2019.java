@@ -54,7 +54,7 @@ public class Main_TD_2019 {
 
 		System.out.println("Step 1: Parsing JAVA CLASSES/JAVA TESTS");
 		Vector<ClassBean> productionClass = JavaFileParser.parseJavaClasses(pathParameters.classesFiles, pathParameters.sourceFolder);
-		Vector<ClassBean> testClass = JavaFileParser.parseJavaClasses(pathParameters.testsFiles, pathParameters.sourceFolder);
+		Vector<ClassBean> testClass = JavaFileParser.parseJavaClasses(pathParameters.testsFiles, pathParameters.testSrcFolder);
 
 		System.out.println("Step 2: Running JaCoCo ");
 		ClassBean classeTest = testClass.get(0);
@@ -62,8 +62,7 @@ public class Main_TD_2019 {
 		
 		//class responsible for the test coverage computation (using the Jacoco API).
 		TestCoverageComputation testCoverageComputation = new TestCoverageComputation(productionClass, testClass,
-				pathParameters.classesFiles, pathParameters.testsFiles, pathParameters.pBinFolder,
-				pathParameters.testBinFolder, pathParameters.testBinFiles);
+				pathParameters);
 
 		List<String> testsCoverage = testCoverageComputation.getTestsCoverage();
 

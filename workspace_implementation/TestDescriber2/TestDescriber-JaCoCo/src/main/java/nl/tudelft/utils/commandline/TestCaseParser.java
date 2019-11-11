@@ -16,19 +16,19 @@ public class TestCaseParser {
 	 * Method to extract test methods from a compiled JUnit test case. In particular, it uses the 'javap' 
 	 * command to derive the API from the compiled class. Then, it looks for test methods, whose
 	 * signature start with 'public void test'.
-	 * @param bin_directory directory containing the test case to parse
+	 * @param test_bin_directory directory containing the test case to parse
 	 * @param test_case compiled JUnit test case (*.class) to parse
 	 * @return list of test methods name inside the first input parameter
 	 */
-	public static List<String> findTestMethods(String bin_directory, String test_case){
+	public static List<String> findTestMethods(String test_bin_directory, String test_case){
 		
 		String temp = test_case;
 		while (temp.contains(".")){
 			temp = temp.replace(".", "/");
 		}
-		String command = "javap "+bin_directory+"/"+temp+".class";
+		String command = "javap "+test_bin_directory+"/"+temp+".class";
 		if (System.getProperty("os.name").startsWith("Windows")) {
-			command = "javap "+bin_directory+temp+".class";
+			command = "javap "+test_bin_directory+temp+".class";
 		}
 
 		String result=null;
@@ -71,7 +71,7 @@ public class TestCaseParser {
 
 		String command = "javap "+test_bin_directory+"/"+temp+".class";
 		if (System.getProperty("os.name").startsWith("Windows")) {
-			command = "javap "+bin_directory+temp+".class";
+			command = "javap "+test_bin_directory+temp+".class";
 		}
 		System.out.println(command);
 		

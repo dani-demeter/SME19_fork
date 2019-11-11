@@ -11,6 +11,7 @@ import java.util.concurrent.Callable;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Request;
 import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 
 import nl.tudelft.utils.Utilities;
 
@@ -70,6 +71,12 @@ public class TestExecutionTask  implements Callable<List<Result>>{
 
 				results.add(result);
 
+				
+				System.out.println("Failure: "+result.getFailures());
+				for (Failure fail : result.getFailures()){
+					System.out.println("Failing Tests: "+fail.getTestHeader()+"\n"+fail.getException()+"\n"+fail.getDescription()+"\n"+fail.getMessage());
+				}
+				
 				//Main.debug("Failure: "+result.getFailures());
 				//for (Failure fail : result.getFailures()){
 				//	Main.debug("Failing Tests: "+fail.getTestHeader()+"\n"+fail.getException()+"\n"+fail.getDescription()+"\n"+fail.getMessage());
