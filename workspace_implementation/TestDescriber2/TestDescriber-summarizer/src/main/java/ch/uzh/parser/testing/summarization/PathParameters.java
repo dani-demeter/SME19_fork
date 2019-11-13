@@ -25,24 +25,8 @@ public class PathParameters {
 	
 	protected static PathParameters createPathParameters(){
 		
-		//START CONFIGURATION FOR TASK 1
-		/*
-		String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
-		String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
-		
-		List<String> classesFiles = new ArrayList<String>();
-		classesFiles.add("org/magee/math/Rational.java"); 
-
-		List<String> testsFiles = new ArrayList<String>();
-		testsFiles.add("org/magee/math/TestRational.java");
-
-		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
-		String testBinFolder = "";
-		*/
-		//END CONFIGURATION FOR TASK 1
-		
-		
 		// START CONFIGURATION FOR GSON
+
 		String testSrcFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/test/java/com/google/gson/"; ///CommentsTest.java";
 		String testBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/test-classes/com/google/gson/";
 		
@@ -63,9 +47,26 @@ public class PathParameters {
 		List<String> testBinFiles = new ArrayList<String>();
 		testBinFiles.add("ParameterizedTypeTest");
 		//testBinFiles.add("CommentsTest");
-		
+
 		// END CONFIGURATION FOR GSON CommentsTest
 		
+		
+		//START CONFIGURATION FOR TASK 1
+		/*
+		String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
+		String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
+		String testSrcFolder = sourceFolder;
+		String testBinFolder = pBinFolder;
+		
+		List<String> classesFiles = new ArrayList<String>();
+		classesFiles.add("org/magee/math/Rational.java"); 
+
+		List<String> testsFiles = new ArrayList<String>();
+		testsFiles.add("org/magee/math/TestRational.java");
+
+		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
+		*/
+		//END CONFIGURATION FOR TASK 1		
 		
 		
 		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);
