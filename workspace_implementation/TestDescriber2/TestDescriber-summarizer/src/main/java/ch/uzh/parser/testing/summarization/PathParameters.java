@@ -43,23 +43,29 @@ public class PathParameters {
 		
 		
 		// START CONFIGURATION FOR GSON
+		String testSrcFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/test/java/com/google/gson/"; ///CommentsTest.java";
+		String testBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/test-classes/com/google/gson/";
+		
+		// START CONFIGURATION FOR GSON CommentsTest
 		// Test Case:  /gson/src/test/java/com/google/gson/CommentsTest.java
 		// Class to test: com.google.gson.reflect.TypeToken
 		String sourceFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/main/java/com/google/gson/reflect/";
 		String pBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/classes/com/google/gson/reflect/";
-		String testSrcFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/test/java/com/google/gson/"; ///CommentsTest.java";
-		String testBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/test-classes/com/google/gson/";
 		
 		List<String> classesFiles = new ArrayList<String>();
 		classesFiles.add("TypeToken.java");
 		 
 		List<String> testsFiles = new ArrayList<String>();
-		testsFiles.add("CommentsTest.java");
+		testsFiles.add("ParameterizedTypeTest.java");
+		//testsFiles.add("CommentsTest.java");
+		
 		
 		List<String> testBinFiles = new ArrayList<String>();
-		testBinFiles.add("CommentsTest");
+		testBinFiles.add("ParameterizedTypeTest");
+		//testBinFiles.add("CommentsTest");
 		
-		// END CONFIGURATION FOR GSON 
+		// END CONFIGURATION FOR GSON CommentsTest
+		
 		
 		
 		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);

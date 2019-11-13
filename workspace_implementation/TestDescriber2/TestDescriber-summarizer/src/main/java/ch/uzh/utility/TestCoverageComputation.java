@@ -80,7 +80,8 @@ public class TestCoverageComputation {
 		//get directory from system property
 		String project_dir = System.getProperty("user.dir");
 		List<File> jars = new ArrayList<File>();
-		jars.add(new File(pBinFolder));
+		jars.add(new File(pBinFolder)); //GGG or testbin
+		jars.add(new File(testBinFolder)); //GGG added for multiple folders with .class
 
 
 		for (String tc : listTestMethods){
