@@ -169,7 +169,7 @@ public class Utilities {
 
 		//GGG was commented out
 		for (URL u : url){
-			System.out.println("url "+u.getFile());
+			System.out.println("createURLs "+u.getFile());
 			//Main.debug("url "+u.getFile());
 		}
 		return url;

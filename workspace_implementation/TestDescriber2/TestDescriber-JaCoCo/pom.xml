@@ -19,7 +19,7 @@
             <artifactId>ant</artifactId>
             <version>1.9.2</version>
         </dependency>
-        <!-- Updated jacoco pom-->
+        <!-- Updated jacoco pom -->
         <dependency>
             <groupId>org.jacoco</groupId>
             <artifactId>org.jacoco.core</artifactId>
