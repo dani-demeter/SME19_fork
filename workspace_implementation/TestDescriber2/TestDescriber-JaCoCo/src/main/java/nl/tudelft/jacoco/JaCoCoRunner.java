@@ -76,7 +76,12 @@ public class JaCoCoRunner {
 	        Path currentWorkingDir = Paths.get("").toAbsolutePath();//GGG del
 	        System.out.println("currentWorkingDir: "+currentWorkingDir.normalize().toString());//GGG del
 			System.out.println("cp: "+cp);//GGG del
-			cp = cp.replaceAll("::", ":");
+			if (System.getProperty("os.name").startsWith("Windows")) {
+				cp = cp.replaceAll(":C", "&C");
+			} else {
+				cp = cp.replaceAll("::", ":");
+			}
+				
 			System.out.println("new cp: "+cp);//GGG del
 			wrapper.setClassPath(cp);
 			wrapper.setTargetClass(cut);
