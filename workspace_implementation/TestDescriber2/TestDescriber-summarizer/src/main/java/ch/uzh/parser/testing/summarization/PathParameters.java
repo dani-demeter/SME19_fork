@@ -74,6 +74,58 @@ public class PathParameters {
 
 		return pathParameters;
 	}
+
+	protected static PathParameters createPathParameters_task1_Mac(){
+		//START CONFIGURATION FOR TASK 1
+		String sourceFolder = "/Users/panichella/git/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
+		String pBinFolder = "/Users/panichella/git/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
+		String testSrcFolder = sourceFolder;
+		String testBinFolder = pBinFolder;
+		
+		List<String> classesFiles = new ArrayList<String>();
+		classesFiles.add("org/magee/math/Rational.java"); 
+
+		List<String> testsFiles = new ArrayList<String>();
+		testsFiles.add("org/magee/math/TestRational.java");
+
+		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
+		//END CONFIGURATION FOR TASK 1		
+		
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);
+
+		return pathParameters;
+	}
+
+	protected static PathParameters createPathParameters_gson_Mac(){
+		
+		// START CONFIGURATION FOR GSON
+		// START CONFIGURATION FOR GSON CommentsTest
+		// Test Case:  /gson/src/test/java/com/google/gson/CommentsTest.java
+		// Class to test: com.google.gson.reflect.TypeToken
+		String testSrcFolder = "/Users/panichella/Downloads/gson-master/gson/src/test/java/com/google/gson/"; 		
+		String testBinFolder = "/Users/panichella/Downloads/gson-master/gson/target/test-classes/com/google/gson/";
+		
+		String sourceFolder = "/Users/panichella/Downloads/gson-master/gson/src/main/java/com/google/gson/reflect/";
+		String pBinFolder = "/Users/panichella/Downloads/gson-master/gson/target/classes/com/google/gson/reflect/";
+				
+		List<String> classesFiles = new ArrayList<String>();
+		classesFiles.add("TypeToken.java");
+		 
+		List<String> testsFiles = new ArrayList<String>();
+		testsFiles.add("ParameterizedTypeTest.java");
+		//testsFiles.add("CommentsTest.java");
+		
+		
+		List<String> testBinFiles = new ArrayList<String>();
+		testBinFiles.add("ParameterizedTypeTest");
+		//testBinFiles.add("CommentsTest");
+
+		// END CONFIGURATION FOR GSON CommentsTest
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);
+
+		return pathParameters;
+	}
+	
 	
 	
 	/*
