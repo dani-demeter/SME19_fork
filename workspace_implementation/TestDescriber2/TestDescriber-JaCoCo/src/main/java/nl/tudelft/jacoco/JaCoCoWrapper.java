@@ -156,7 +156,9 @@ public class JaCoCoWrapper {
 
 				// copy all classes in the new directory temp_folder
 				List<File> files = (List<File>) FileUtils.listFiles(jar_to_instrument.get(index), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+				System.out.println("files to copy: "+files);
 				String CUT = targetClass.substring(targetClass.lastIndexOf("/")+1, targetClass.length())+".class";
+				System.out.println("CUT: "+CUT);
 				File instrumented_CUT=null;
 				for(File file : files){
 					if (file.getName().equals(CUT)){
@@ -165,22 +167,22 @@ public class JaCoCoWrapper {
 						FileUtils.copyFile(file, new File(instrumented_path));
 						System.out.println("Instrumenting the class: "+file.getAbsolutePath());
 						instrumented_CUT = file;
+
+						String fileName = instrumented_CUT.getAbsolutePath();
+						System.out.println("fileName" + fileName); //GGG del
+
+						fileName = fileName.replace(jar_to_instrument.get(index).getAbsolutePath(), instrumented_jar.get(index).getAbsolutePath());
+						System.out.println("new filename: "+fileName); //GGG del
+
+						// jar of the SUT
+						InputStream input = new FileInputStream(instrumented_CUT.getAbsolutePath());
+						System.out.println("input: "+input); //GGG del
+
+						OutputStream output = new FileOutputStream(fileName);
+						System.out.println("output: "+output); //GGG del
+						tot_instrumented_class += instr.instrumentAll(input, output, "");
 					}
 				}
-
-				String fileName = instrumented_CUT.getAbsolutePath();
-				System.out.println("fileName" + fileName); //GGG del
-
-				fileName = fileName.replace(jar_to_instrument.get(index).getAbsolutePath(), instrumented_jar.get(index).getAbsolutePath());
-				System.out.println("new filename: "+fileName); //GGG del
-
-				// jar of the SUT
-				InputStream input = new FileInputStream(instrumented_CUT.getAbsolutePath());
-				System.out.println("input: "+input); //GGG del
-
-				OutputStream output = new FileOutputStream(fileName);
-				System.out.println("output: "+output); //GGG del
-				tot_instrumented_class += instr.instrumentAll(input, output, "");
 
 				//}
 			} else{
@@ -202,6 +204,8 @@ public class JaCoCoWrapper {
 
 		String cp = generateClassPath();
 
+		//cp = "C:\\Data\\workspaces\\local_SME19_TestDescriberProject\\SME19_TestDescriberProject\\workspace_implementation\\TestDescriber2\\TestDescriber-summarizer\\temp1\\gson_instrumented&C:\\Data\\uzh_2019_2\\Software_Maintenance_and_Evolution\\project\\gson-master\\gson\\target\\test-classes\\com\\google\\gson&";
+		
 		System.out.println("Running tests with the following classpath: \n"+cp);
 
 		// to run the test we use the class ExecutorService to perform the execution of the test in a
