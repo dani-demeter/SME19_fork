@@ -24,6 +24,27 @@ public class PathParameters {
 	}
 	
 	protected static PathParameters createPathParameters(){
+		//START CONFIGURATION FOR TASK 1
+		String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
+		String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
+		String testSrcFolder = sourceFolder;
+		String testBinFolder = pBinFolder;
+		
+		List<String> classesFiles = new ArrayList<String>();
+		classesFiles.add("org/magee/math/Rational.java"); 
+
+		List<String> testsFiles = new ArrayList<String>();
+		testsFiles.add("org/magee/math/TestRational.java");
+
+		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
+		//END CONFIGURATION FOR TASK 1		
+		
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);
+
+		return pathParameters;
+	}
+	
+	protected static PathParameters createPathParameters_gson(){
 		
 		// START CONFIGURATION FOR GSON
 
@@ -49,30 +70,11 @@ public class PathParameters {
 		//testBinFiles.add("CommentsTest");
 
 		// END CONFIGURATION FOR GSON CommentsTest
-		
-		
-		//START CONFIGURATION FOR TASK 1
-		/*
-		String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
-		String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
-		String testSrcFolder = sourceFolder;
-		String testBinFolder = pBinFolder;
-		
-		List<String> classesFiles = new ArrayList<String>();
-		classesFiles.add("org/magee/math/Rational.java"); 
-
-		List<String> testsFiles = new ArrayList<String>();
-		testsFiles.add("org/magee/math/TestRational.java");
-
-		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
-		*/
-		//END CONFIGURATION FOR TASK 1		
-		
-		
 		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);
 
 		return pathParameters;
 	}
+	
 	
 	/*
 	 * 		String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/Task1/src/";
