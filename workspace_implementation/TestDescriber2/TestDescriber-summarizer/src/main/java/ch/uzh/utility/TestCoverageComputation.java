@@ -37,6 +37,9 @@ public class TestCoverageComputation {
 
 	// folder for binary code of the test cases GGG
  	String testBinFolder = null;
+ 	
+ 	// folder containing the project jar file 
+ 	String jarProjectFolder = null;
 
 	// outcome of the test coverage computation
 	List<String> testsCoverage = null;
@@ -56,17 +59,18 @@ public class TestCoverageComputation {
 		super();
 		this.productionClass = productionClass;
 		this.testClass = testClass;
-		this.pBinFolder = pathParameters.pBinFolder; //TODO Rename to match names overall 
+		this.pBinFolder = pathParameters.pBinFolder; //TODO GGG Rename to match names overall 
 		this.pathJavaClass = pathParameters.classesFiles;
 		this.pathTestClass = pathParameters.testsFiles;
 		this.testBinFolder = pathParameters.testBinFolder;
 		this.listTestBinMethods = pathParameters.testBinFiles;
+		this.jarProjectFolder = pathParameters.jarProjectFolder;
 		
 		// extract the number of test methods in 'test_case'
 		if (!this.testBinFolder.isEmpty()) {
 			this.listTestMethods  = TestCaseParser.findTestMethods(testBinFolder, convert2PackageNotation(pathTestClass.get(0)));
 		} else {
-			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, testBinFolder, listTestBinMethods);
+			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, testBinFolder, listTestBinMethods); //GGG delete this line, this will not be used pBinFolder
 		}
 
 		System.out.println(listTestMethods);
@@ -80,13 +84,17 @@ public class TestCoverageComputation {
 		//get directory from system property
 		String project_dir = System.getProperty("user.dir");
 		List<File> jars = new ArrayList<File>();
-		jars.add(new File(pBinFolder)); //GGG or testbin
-		jars.add(new File(testBinFolder)); //GGG added for multiple folders with .class
+		//jars.add(new File(pBinFolder)); //GGG here is meant the testbin folder
+		if (jarProjectFolder != null) {
+			jars.add(new File(jarProjectFolder)); //GGG added for multiple folders with .class
+		} else {
+			jars.add(new File(testBinFolder)); //GGG ???
+		}
 
 
 		for (String tc : listTestMethods){
 			String tmpString = "\temp1";
-			//TODO improve?
+			//TODO GGG improve?
 			if(System.getProperty("os.name").startsWith("Windows")) {
 				tmpString = "\\temp1";
 			}

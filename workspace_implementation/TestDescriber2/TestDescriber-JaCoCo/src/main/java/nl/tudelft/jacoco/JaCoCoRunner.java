@@ -72,7 +72,7 @@ public class JaCoCoRunner {
 
 			wrapper.setJarInstrument(instrumentedJar);
 
-			String cp = new Utilities.CPBuilder().and(extraClassPath).build();
+			String cp = new Utilities.CPBuilder().and(extraClassPath).build(); //GGG ! change cp to jar global
 	        Path currentWorkingDir = Paths.get("").toAbsolutePath();//GGG del
 	        System.out.println("currentWorkingDir: "+currentWorkingDir.normalize().toString());//GGG del
 			System.out.println("cp: "+cp);//GGG del

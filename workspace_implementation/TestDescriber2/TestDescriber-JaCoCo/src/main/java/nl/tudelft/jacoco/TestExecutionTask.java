@@ -1,11 +1,13 @@
 package nl.tudelft.jacoco;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.Callable;
 
 import org.junit.runner.JUnitCore;
@@ -32,6 +34,14 @@ public class TestExecutionTask  implements Callable<List<Result>>{
 			// Load the jar
 			urls = Utilities.createURLs(cp);
 			testClasses = pTestClasses;
+			
+			//GGG remove start
+			System.out.println("TestExecutionTask testClasses:");
+			for (String cls : pTestClasses) {
+				System.out.println("- "+cls);
+			}
+			//GGG remove end
+			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,8 +49,33 @@ public class TestExecutionTask  implements Callable<List<Result>>{
 	}
 
 	public List<Result> call() throws ClassNotFoundException, IOException {
+			URL[] newurls =new URL[1]; 
+			newurls[0] = urls[1];
 			URLClassLoader cl = URLClassLoader.newInstance(urls, this.getClass().getClassLoader());	
 
+			//TODO GGG EXPERIMENT ON LOADERS
+			//String resource = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/test-classes/com/google/gson/ParameterizedTypeTest.class";
+			//String resource = "/TestDescriber-summarizer/src/main/java/ch/uzh/parser/testing/summarization/Main_TD_2019.java";
+			//String resource = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/TestDescriber2/TestDescriber-summarizer/src/main/java/ch/uzh/parser/testing/summarization/Main_TD_2019.java";
+			//String resource ="C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/TestDescriber2/TestDescriber-JaCoCo/src/main/java/nl/tudelft/jacoco/TestExecutionTask.java";
+			String resource = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/TestDescriber2/TestDescriber-summarizer/target/classes/";
+
+			URL resource2 = cl.getResource(resource);
+			URL resource3= this.getClass().getResource("/");
+			String rc =resource3.toString();
+			URL rcc = cl.getResource(rc);
+
+			
+			URL uu = this.getClass().getResource(rc);
+			URL uuu = Thread.currentThread().getContextClassLoader().getResource(rc);
+			URL uuuu = ClassLoader.getSystemClassLoader().getResource(rc);
+			URL uuuuu = this.getClass().getClassLoader().getResource(rc);
+			URL kd = this.getClass().getClassLoader().getResource("ch.uzh.parser.testing.summarization.Main_TD_2019");
+			URL kdd = this.getClass().getClassLoader().getResource("org.eclipse.jdt.launching.internal.javaagent.Premain");
+			
+			//GGG EXPERIMENT END
+			
+			
 			//GGG START
 			for (URL u : urls){
 				System.out.println("urls: "+u.toString());
@@ -60,6 +95,35 @@ public class TestExecutionTask  implements Callable<List<Result>>{
 				if(System.getProperty("os.name").startsWith("Windows")) {
 					testCaseClassName = testCaseClassName.replace("\\", ".");
 				}
+				
+				System.out.println("TestExecutionTask testCaseClassName: " + testCaseClassName);
+
+				
+				//TODO GGG DELETE class Loader test
+				Field f;
+		        try {
+		            f = ClassLoader.class.getDeclaredField("classes");
+		            f.setAccessible(true);
+		            //ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		            //Vector<Class> classes =  (Vector<Class>) f.get(classLoader);
+		            
+		            //Vector<Class> classes =  (Vector<Class>) f.get(this.getClass().getClassLoader());
+		            Vector<Class> classes =  (Vector<Class>) f.get((ClassLoader)cl);
+		            
+		            
+		            for(Class cls : classes){
+		                java.net.URL location = cls.getResource('/' + cls.getName().replace('.',
+		                '/') + ".class");
+		                if(location.toString().contains("local_SME19_TestDescriberProject")) {
+		                	System.out.println("<p>"+location +"<p/>");
+		                }
+		            }
+		        } catch (Exception e) {
+
+		            e.printStackTrace();
+		        }		
+				//GGG end class Loader test
+				
 				
 				// load the test case
 				final Class<?> testClass = cl.loadClass(testCaseClassName);

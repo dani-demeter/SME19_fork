@@ -9,22 +9,25 @@ public class PathParameters {
 	public String pBinFolder = "";
 	public String testSrcFolder = ""; //GGG not used yet
 	public String testBinFolder = "";
+	public String jarProjectFolder = "";
 	public List<String> classesFiles = new ArrayList<String>();
 	public List<String> testsFiles = new ArrayList<String>();
 	public List<String> testBinFiles = new ArrayList<String>();
 	
 	//constuctor
-	public PathParameters(String srcFolder, String srcBinFolder, String tstSrcFolder, String tstBinFolder, List<String> clsFiles, List<String> tstFiles) {
+	public PathParameters(String srcFolder, String srcBinFolder, String tstSrcFolder, String tstBinFolder, List<String> clsFiles, List<String> tstFiles, String jarPrjFolder) {
 		sourceFolder = srcFolder;
 		pBinFolder = srcBinFolder;
 		testSrcFolder = tstSrcFolder;
 		testBinFolder = tstBinFolder;
 		classesFiles.addAll(clsFiles);
 		testsFiles.addAll(tstFiles);
+		jarProjectFolder = jarPrjFolder;
 	}
 	
 	protected static PathParameters createPathParameters(){
 		//START CONFIGURATION FOR TASK 1
+		String jarProjectFolder = null;
 		String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
 		String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
 		String testSrcFolder = sourceFolder;
@@ -39,29 +42,40 @@ public class PathParameters {
 		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
 		//END CONFIGURATION FOR TASK 1		
 		
-		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
 
 		return pathParameters;
 	}
 	
+	/**
+	 * Returns object with the parameters for the running of a Test Case summarization
+	 *
+	 * @param  url  an absolute URL giving the base location of the image
+	 * @param  name the location of the image, relative to the url argument
+	 * @return      the image at the specified URL
+	 * @see         Image
+	 */
 	protected static PathParameters createPathParameters_gson(){
 		
 		// START CONFIGURATION FOR GSON
-
-		String testSrcFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/test/java/com/google/gson/"; ///CommentsTest.java";
-		String testBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/test-classes/com/google/gson/";
-		
 		// START CONFIGURATION FOR GSON CommentsTest
 		// Test Case:  /gson/src/test/java/com/google/gson/CommentsTest.java
 		// Class to test: com.google.gson.reflect.TypeToken
-		String sourceFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/main/java/com/google/gson/reflect/";
-		String pBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/classes/com/google/gson/reflect/";
+
+		String jarProjectFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/gson-2.8.7-SNAPSHOT.jar";
 		
+		String pBinFolder  = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/classes/";
+		String sourceFolder= "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/main/java/";
+		// CUT class under test
 		List<String> classesFiles = new ArrayList<String>();
-		classesFiles.add("TypeToken.java");
+		classesFiles.add("com/google/gson/reflect/TypeToken.java");
 		 
+		
+		String testBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/test-classes/"; ///CommentsTest.java";
+		String testSrcFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/test/java/";
+		// Java file containing the Unit Tests to be applied to the CUT
 		List<String> testsFiles = new ArrayList<String>();
-		testsFiles.add("ParameterizedTypeTest.java");
+		testsFiles.add("com/google/gson/ParameterizedTypeTest.java");
 		//testsFiles.add("CommentsTest.java");
 		
 		
@@ -70,13 +84,14 @@ public class PathParameters {
 		//testBinFiles.add("CommentsTest");
 
 		// END CONFIGURATION FOR GSON CommentsTest
-		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
 
 		return pathParameters;
 	}
 
 	protected static PathParameters createPathParameters_task1_Mac(){
 		//START CONFIGURATION FOR TASK 1
+		String jarProjectFolder = null;
 		String sourceFolder = "/Users/panichella/git/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
 		String pBinFolder = "/Users/panichella/git/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
 		String testSrcFolder = sourceFolder;
@@ -91,7 +106,7 @@ public class PathParameters {
 		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
 		//END CONFIGURATION FOR TASK 1		
 		
-		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
 
 		return pathParameters;
 	}
@@ -102,6 +117,8 @@ public class PathParameters {
 		// START CONFIGURATION FOR GSON CommentsTest
 		// Test Case:  /gson/src/test/java/com/google/gson/CommentsTest.java
 		// Class to test: com.google.gson.reflect.TypeToken
+		String jarProjectFolder = null;
+
 		String testSrcFolder = "/Users/panichella/Downloads/gson-master/gson/src/test/java/com/google/gson/"; 		
 		String testBinFolder = "/Users/panichella/Downloads/gson-master/gson/target/test-classes/com/google/gson/";
 		
@@ -121,7 +138,7 @@ public class PathParameters {
 		//testBinFiles.add("CommentsTest");
 
 		// END CONFIGURATION FOR GSON CommentsTest
-		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles);
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
 
 		return pathParameters;
 	}

@@ -168,6 +168,7 @@ public class JaCoCoWrapper {
 						System.out.println("Instrumenting the class: "+file.getAbsolutePath());
 						instrumented_CUT = file;
 
+						//TODO GGG this following stuff was outside the for loop, why?
 						String fileName = instrumented_CUT.getAbsolutePath();
 						System.out.println("fileName" + fileName); //GGG del
 
@@ -204,8 +205,6 @@ public class JaCoCoWrapper {
 
 		String cp = generateClassPath();
 
-		//cp = "C:\\Data\\workspaces\\local_SME19_TestDescriberProject\\SME19_TestDescriberProject\\workspace_implementation\\TestDescriber2\\TestDescriber-summarizer\\temp1\\gson_instrumented&C:\\Data\\uzh_2019_2\\Software_Maintenance_and_Evolution\\project\\gson-master\\gson\\target\\test-classes\\com\\google\\gson&";
-		
 		System.out.println("Running tests with the following classpath: \n"+cp);
 
 		// to run the test we use the class ExecutorService to perform the execution of the test in a
