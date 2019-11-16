@@ -216,11 +216,14 @@ public class JaCoCoWrapper {
 		List<Result> l = task.get(TEST_TIMEOUT, TimeUnit.MILLISECONDS); // run task
 		for (Result r : l){
 			if (r.getFailures().size()>0)
-				System.out.println("The test methog "+testCases+" failed");
+				System.out.println("The test method "+testCases+" failed: ");
 			for (Failure f : r.getFailures()){
 				if (f.getTrace().contains("java.lang.NoClassDefFoundError")){
 					service.shutdown();
 					throw new NoClassDefFoundError("The test case is executed with an incomplete class path: \n"+f.getTrace());
+				} else {
+					System.out.println(f.getTrace());
+					System.out.println("--- End failure info ---");
 				}
 			}
 		}
@@ -249,6 +252,7 @@ public class JaCoCoWrapper {
 				if (cc.getName().equals(targetClass)){
 					System.out.println("Extracted coverage data for the class " + targetClass);
 					results = new JacocoResult(cc);
+					results.printResults();
 				}
 			}
 		}

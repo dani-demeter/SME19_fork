@@ -70,9 +70,10 @@ public class JaCoCoRunner {
 			testClasses.add(testCase);
 			wrapper.setTestCase(testClasses);
 
+			System.out.println("JaCoCoRunner.run wrapper.setJarInstrument: "+instrumentedJar);
 			wrapper.setJarInstrument(instrumentedJar);
 
-			String cp = new Utilities.CPBuilder().and(extraClassPath).build(); //GGG ! change cp to jar global
+			String cp = new Utilities.CPBuilder().and(extraClassPath).build(); //TODO GGG here all the other folders should be included
 	        Path currentWorkingDir = Paths.get("").toAbsolutePath();//GGG del
 	        System.out.println("currentWorkingDir: "+currentWorkingDir.normalize().toString());//GGG del
 			System.out.println("cp: "+cp);//GGG del
@@ -83,14 +84,15 @@ public class JaCoCoRunner {
 			}
 				
 			System.out.println("new cp: "+cp);//GGG del
+			System.out.println("JaCoCoRunner.run wrapper.setClassPath (required_libraries): "+cp);
 			wrapper.setClassPath(cp);
 			wrapper.setTargetClass(cut);
 
 			wrapper.runJaCoCo();
-			JacocoResult result = wrapper.getResults();
-			result.printResults();
+			JacocoResult results = wrapper.getResults();
+			results.printResults();
 			
-			this.jacoco_result = result;
+			this.jacoco_result = results;
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

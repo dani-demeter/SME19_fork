@@ -27,7 +27,7 @@ public class PathParameters {
 	
 	protected static PathParameters createPathParameters(){
 		//START CONFIGURATION FOR TASK 1
-		String jarProjectFolder = null;
+		String jarProjectFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
 		String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
 		String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
 		String testSrcFolder = sourceFolder;
@@ -75,12 +75,12 @@ public class PathParameters {
 		String testSrcFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/test/java/";
 		// Java file containing the Unit Tests to be applied to the CUT
 		List<String> testsFiles = new ArrayList<String>();
-		testsFiles.add("com/google/gson/ParameterizedTypeTest.java");
+		testsFiles.add("com/google/gson/reflect/TypeTokenTest.java");
 		//testsFiles.add("CommentsTest.java");
 		
 		
 		List<String> testBinFiles = new ArrayList<String>();
-		testBinFiles.add("ParameterizedTypeTest");
+		testBinFiles.add("TypeTokenTest");
 		//testBinFiles.add("CommentsTest");
 
 		// END CONFIGURATION FOR GSON CommentsTest

@@ -160,7 +160,7 @@ public class Utilities {
 			if (required_libraries.get(index).endsWith(".jar")) {
 				System.out.println("createURLs with jars");//GGG del
 				url[index] = new URL("jar:file:" + required_libraries.get(index)+"!/");
-				//GGG TODO what about this ":"???
+				//TODO GGG what about this ":"???
 			} else {
 				System.out.println("createURLs no jars");//GGG del
 				url[index] = new File(required_libraries.get(index)).toURI().toURL();
