@@ -30,6 +30,9 @@ public class PathParameters {
 		String jarProjectFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
 		String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
 		String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
+		//String jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
+		//String sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
+		//String pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
 		String testSrcFolder = sourceFolder;
 		String testBinFolder = pBinFolder;
 		
