@@ -223,7 +223,7 @@ public class Main {
 	 * @throws InterruptedException
 	 * @throws IOException
 	 */
-	public static String generateTestCaseDescription(MethodBean testCase,ClassBean originalClass, ClassBean executedClass,List<String> linesExecutedOfOriginalClass, double attributesTested) throws IOException, InterruptedException
+	public static String generateTestCaseDescription(MethodBean testCase, ClassBean originalClass, ClassBean executedClass,List<String> linesExecutedOfOriginalClass, double attributesTested) throws IOException, InterruptedException
 	{
 		//initialization
 		String description2="*";
