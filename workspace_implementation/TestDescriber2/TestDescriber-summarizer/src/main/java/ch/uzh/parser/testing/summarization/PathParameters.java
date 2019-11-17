@@ -40,7 +40,8 @@ public class PathParameters {
 		classesFiles.add("org/magee/math/Rational.java"); 
 
 		List<String> testsFiles = new ArrayList<String>();
-		testsFiles.add("org/magee/math/TestRational.java");
+		//testsFiles.add("org/magee/math/TestRational.java");
+		testsFiles.add("org/magee/math/TestRationalExtended.java");
 
 		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
 		//END CONFIGURATION FOR TASK 1		
@@ -92,6 +93,42 @@ public class PathParameters {
 		return pathParameters;
 	}
 
+	protected static PathParameters createPathParameters_ofbiz(){
+		
+		String jarProjectFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/gson-2.8.7-SNAPSHOT.jar";
+		
+		String pBinFolder  = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/classes/";
+		String sourceFolder= "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/main/java/";
+
+		//String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/apache-ofbiz-16.11.04/src/framework/base/src/main/java/";
+        //String pBinFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/apache-ofbiz-16.11.04/src/build/classes/main/";
+
+		
+		// CUT class under test
+		List<String> classesFiles = new ArrayList<String>();
+		classesFiles.add("com/google/gson/reflect/TypeToken.java");
+		//classesFiles.add("org/apache/ofbiz/base/util/cache/UtilCache.java");
+		//classesFiles.add("org/apache/ofbiz/base/util/TimeDuration.java");
+		 
+		
+		String testBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/test-classes/"; ///CommentsTest.java";
+		String testSrcFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/test/java/";
+		// Java file containing the Unit Tests to be applied to the CUT
+		List<String> testsFiles = new ArrayList<String>();
+		testsFiles.add("com/google/gson/reflect/TypeTokenTest.java");
+		//testsFiles.add("org/apache/ofbiz/base/util/cache/test/UtilCacheTests.java");
+		//testsFiles.add("org/apache/ofbiz/base/util/test/TimeDurationTests.java");
+		
+		
+		List<String> testBinFiles = new ArrayList<String>();
+		testBinFiles.add("TypeTokenTest");
+		
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
+
+		return pathParameters;
+	}
+	
+	
 	protected static PathParameters createPathParameters_task1_Mac(){
 		//START CONFIGURATION FOR TASK 1
 		String jarProjectFolder = null;
