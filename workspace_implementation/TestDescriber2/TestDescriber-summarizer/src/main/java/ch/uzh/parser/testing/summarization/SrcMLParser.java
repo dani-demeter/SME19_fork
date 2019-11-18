@@ -219,6 +219,7 @@ public class SrcMLParser {
 		while(counterCurrentLineInOriginalClass<=vectTextContentOriginalClass.length)
 		{
 			line=vectTextContentOriginalClass[counterCurrentLineInOriginalClass-1];
+			//System.out.println("current line    -> "+line);
 			// skip javadoc comments at beginning of method
 			// TODO refactor into method
 			if(line.contains("/*")) {
@@ -447,7 +448,7 @@ public class SrcMLParser {
 		//NOW WE KNOW THE LINES EXECUTED (COVERED) OF THE ORIGINAL CLASS by the Test case 
 		//initialization..
 		textContentExecutedVersionOfOriginalClass="";
-		System.out.println("\r\n LINES EXECUTED OF THE ORIGINAL CLASS IN  Test case "+testCase.getName()+":");
+		System.out.println("LINES EXECUTED OF THE ORIGINAL CLASS IN  Test case "+testCase.getName()+"(Amount: "+textContentExecutedOriginalClass.size()+") :");
 		for(int p=0;p<textContentExecutedOriginalClass.size();p++)
 		{
 			textContentExecutedVersionOfOriginalClass=textContentExecutedVersionOfOriginalClass+textContentExecutedOriginalClass.get(p)+"\r";

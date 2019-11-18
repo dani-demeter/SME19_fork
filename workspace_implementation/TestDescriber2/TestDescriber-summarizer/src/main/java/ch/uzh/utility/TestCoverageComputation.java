@@ -50,8 +50,9 @@ public class TestCoverageComputation {
 	// the list contains the fully classified path of the test class
 	List<String> pathTestClass = new ArrayList<String>();
 	
-	// number of test methods in 'test_case' TODO
-	List<String> listTestBinMethods = null;
+	// prefixes of test methods in 'test_case' file 
+	List<String> prefixTestMethods =  new ArrayList<String>();
+	List<String> nameTestMethods =  new ArrayList<String>();
 
 	
 	public TestCoverageComputation(Vector<ClassBean> productionClass, Vector<ClassBean> testClass,
@@ -63,14 +64,15 @@ public class TestCoverageComputation {
 		this.pathJavaClass = pathParameters.classesFiles;
 		this.pathTestClass = pathParameters.testsFiles;
 		this.testBinFolder = pathParameters.testBinFolder;
-		this.listTestBinMethods = pathParameters.testBinFiles;
+		this.prefixTestMethods = pathParameters.prefixTestMethods;
 		this.jarProjectFolder = pathParameters.jarProjectFolder;
+		this.nameTestMethods = pathParameters.nameTestMethods;
 		
 		// extract the number of test methods in 'test_case'
-		if (!this.testBinFolder.isEmpty()) {
+		if (this.prefixTestMethods.isEmpty()) {
 			this.listTestMethods  = TestCaseParser.findTestMethods(testBinFolder, convert2PackageNotation(pathTestClass.get(0)));
 		} else {
-			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, testBinFolder, listTestBinMethods); //GGG delete this line, this will not be used pBinFolder
+			this.listTestMethods  = TestCaseParser.findTestMethods(testBinFolder, convert2PackageNotation(pathTestClass.get(0)), prefixTestMethods, nameTestMethods); //GGG delete this line, this will not be used pBinFolder
 		}
 
 		System.out.println(listTestMethods);
@@ -93,7 +95,6 @@ public class TestCoverageComputation {
 
 		for (String tc : listTestMethods){
 			String tmpString = "\temp1";
-			//TODO GGG improve?
 			if(System.getProperty("os.name").startsWith("Windows")) {
 				tmpString = "\\temp1";
 			}

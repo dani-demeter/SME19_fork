@@ -1,6 +1,7 @@
 package ch.uzh.parser.testing.summarization;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +46,7 @@ public class Main_TD_2019 extends SrcSummarization {
 		ClassBean clazz = productionClass.get(0);
 		
 		//class responsible for the test coverage computation (using the Jacoco API).
-		TestCoverageComputation testCoverageComputation = new TestCoverageComputation(productionClass, testClass,
-				pathParameters);
+		TestCoverageComputation testCoverageComputation = new TestCoverageComputation(productionClass, testClass, pathParameters);
 
 		List<String> testsCoverage = testCoverageComputation.getTestsCoverage();
 
@@ -55,11 +55,34 @@ public class Main_TD_2019 extends SrcSummarization {
 			return;
 		}
 
-		List<MethodBean> testCases = (Vector<MethodBean>) classeTest.getMethods();
+		List<MethodBean> testCases = new Vector<MethodBean>(); // = (Vector<MethodBean>) classeTest.getMethods(); //FIXME GGG ?? why not only the Test Methods?
+		List<String> listTestMethods = new ArrayList<String>();
+		
+		//GGG here we only select test methods START
+		if(pathParameters.prefixTestMethods.isEmpty()) {
+			listTestMethods  = TestCaseParser.findTestMethods(pathParameters.testBinFolder, convert2PackageNotation(pathParameters.testsFiles.get(0)));
+		} else {
+			listTestMethods  = TestCaseParser.findTestMethods(pathParameters.testBinFolder, convert2PackageNotation(pathParameters.testsFiles.get(0)), pathParameters.prefixTestMethods, pathParameters.nameTestMethods);
+		}
+		System.out.println("Size of listTestMethods: "+listTestMethods.size());
+		System.out.println(listTestMethods);
+		System.out.println("Size of classeTest.getMethods()"+classeTest.getMethods().size());
+		//GGG here we only select test methods END
+		
+		for(MethodBean m : classeTest.getMethods()) {
+			System.out.println(m.getName());
+			for (String tcName : listTestMethods) {
+				if(tcName.trim().equals(m.getName().toString().trim())) {
+					testCases.add(m);
+				}
+			}
+		}
+		
 
 		System.out.println("Step 3: Parsing Covered Statements");
 		List<String> textContentExecutedOriginalClass = null;
 		for(int index=0; index<testCases.size(); index++) {
+			System.out.println("\r\n parseSrcML for: "+testCases.get(index).getName());
 			textContentExecutedOriginalClass=SrcMLParser.parseSrcML(testCases, index, clazz, pathParameters.sourceFolder, pathParameters.classesFiles, 0, testsCoverage);
 		}
 
@@ -73,5 +96,12 @@ public class Main_TD_2019 extends SrcSummarization {
 		generateClassUnderTestSummary(pathParameters, classeTest, clazz);
 	}
 
+	
+	protected static String convert2PackageNotation(String url){
+		String path = url.replace(File.separator, ".");
+		if (path.endsWith(".java"))
+			path = path.substring(0, path.length()-5);
+		return path;
+	}
 }
 

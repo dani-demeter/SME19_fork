@@ -50,7 +50,9 @@ public class TestCaseParser {
 				if (line.contains("public void test")){
 					line = line.substring(line.indexOf("test"),line.length());
 					line = line.substring(0, line.indexOf("("));
-					test_methods.add(line);
+					if(!test_methods.contains(line)) {
+						test_methods.add(line);
+					}
 				}
 			}
 		}
@@ -62,9 +64,9 @@ public class TestCaseParser {
 		return test_methods;
 	}
 
-	public static List<String> findTestMethods(String bin_directory, String test_bin_directory, List<String> listTestBinMethods){
+	public static List<String> findTestMethods(String test_bin_directory, String test_case, List<String> prefixTestMethods, List<String> nameTestMethods){
 		
-		String temp = listTestBinMethods.get(0);
+		String temp = test_case;
 		while (temp.contains(".")){
 			temp = temp.replace(".", "/");
 		}
@@ -91,10 +93,16 @@ public class TestCaseParser {
 			String[] list = result.split("[{|;]");
 			for (int i=0; i<list.length; i++){
 				String line = list[i];
-				if (line.contains("public void test") || line.contains("public void")){
-					line = line.substring(15,line.length());
-					line = line.substring(0, line.indexOf("("));
-					test_methods.add(line);
+				int idxPrf = 0;
+				for(String prf : prefixTestMethods) {
+					if (line.contains(prf)){
+						line = line.substring(line.indexOf(nameTestMethods.get(idxPrf)),line.length());
+						line = line.substring(0, line.indexOf("("));
+						if(!test_methods.contains(line)) {
+							test_methods.add(line);
+						}
+					}
+					idxPrf ++;
 				}
 			}
 		}

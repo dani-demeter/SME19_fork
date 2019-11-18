@@ -13,7 +13,25 @@ public class PathParameters {
 	public List<String> classesFiles = new ArrayList<String>();
 	public List<String> testsFiles = new ArrayList<String>();
 	public List<String> testBinFiles = new ArrayList<String>();
+	public List<String> prefixTestMethods = new ArrayList<String>();
+	public List<String> nameTestMethods = new ArrayList<String>();
 	
+	public List<String> getNameTestMethods() {
+		return nameTestMethods;
+	}
+
+	public void setNameTestMethods(List<String> nameTestMethods) {
+		this.nameTestMethods = nameTestMethods;
+	}
+
+	public List<String> getPrefixTestMethods() {
+		return prefixTestMethods;
+	}
+
+	public void setPrefixTestMethods(List<String> prefixTestMethods) {
+		this.prefixTestMethods = prefixTestMethods;
+	}
+
 	//constuctor
 	public PathParameters(String srcFolder, String srcBinFolder, String tstSrcFolder, String tstBinFolder, List<String> clsFiles, List<String> tstFiles, String jarPrjFolder) {
 		sourceFolder = srcFolder;
@@ -27,12 +45,12 @@ public class PathParameters {
 	
 	protected static PathParameters createPathParameters(){
 		//START CONFIGURATION FOR TASK 1
-		String jarProjectFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
-		String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
-		String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
-		//String jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
-		//String sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
-		//String pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
+		//String jarProjectFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
+		//String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
+		//String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
+		String jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
+		String sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
+		String pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
 		String testSrcFolder = sourceFolder;
 		String testBinFolder = pBinFolder;
 		
@@ -93,37 +111,45 @@ public class PathParameters {
 		return pathParameters;
 	}
 
+	//createPathParameters_ofbiz
 	protected static PathParameters createPathParameters_ofbiz(){
 		
-		String jarProjectFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/gson-2.8.7-SNAPSHOT.jar";
+		String jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
 		
-		String pBinFolder  = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/classes/";
-		String sourceFolder= "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/main/java/";
+		String sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/framework/base/src/main/java/";
+        String pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
 
 		//String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/apache-ofbiz-16.11.04/src/framework/base/src/main/java/";
         //String pBinFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/apache-ofbiz-16.11.04/src/build/classes/main/";
 
-		
 		// CUT class under test
 		List<String> classesFiles = new ArrayList<String>();
-		classesFiles.add("com/google/gson/reflect/TypeToken.java");
 		//classesFiles.add("org/apache/ofbiz/base/util/cache/UtilCache.java");
-		//classesFiles.add("org/apache/ofbiz/base/util/TimeDuration.java");
+		classesFiles.add("org/apache/ofbiz/base/util/TimeDuration.java");
 		 
 		
-		String testBinFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/target/test-classes/"; ///CommentsTest.java";
-		String testSrcFolder = "C:/Data/uzh_2019_2/Software_Maintenance_and_Evolution/project/gson-master/gson/src/test/java/";
+		String testSrcFolder = sourceFolder;
+		String testBinFolder = pBinFolder; 
 		// Java file containing the Unit Tests to be applied to the CUT
 		List<String> testsFiles = new ArrayList<String>();
-		testsFiles.add("com/google/gson/reflect/TypeTokenTest.java");
 		//testsFiles.add("org/apache/ofbiz/base/util/cache/test/UtilCacheTests.java");
-		//testsFiles.add("org/apache/ofbiz/base/util/test/TimeDurationTests.java");
+		testsFiles.add("org/apache/ofbiz/base/util/test/TimeDurationTests.java");
 		
 		
 		List<String> testBinFiles = new ArrayList<String>();
 		testBinFiles.add("TypeTokenTest");
 		
 		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
+
+		List<String> prfxTM = new ArrayList<String>();
+		prfxTM.add("public void test");
+		prfxTM.add("public static void assert");
+		pathParameters.setPrefixTestMethods(prfxTM);
+
+		List<String> nameTM = new ArrayList<String>();
+		nameTM.add("test");
+		nameTM.add("assert");
+		pathParameters.setNameTestMethods(nameTM);
 
 		return pathParameters;
 	}
