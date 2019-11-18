@@ -11,6 +11,7 @@ import ch.uzh.TestDescriber.TestDescriber.views.ListViewPart.ViewContentProvider
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.jface.action.*;
@@ -21,12 +22,18 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -106,9 +113,128 @@ public class TestsView extends ViewPart {
 		
         // Open given file path
         File testFile = new File(testPath);
+        String labelText = "";
         if (testFile.exists() && testFile.isFile()) {
+    		try {
+    			List<String> allLines = Files.readAllLines(Paths.get(testFile.getAbsolutePath()));
+    			int index = 0;
+    			for (String line:allLines) {
+    				if (line.contains("@Test" )) {
+    					int indexSearch = index - 1;
+    					boolean isClass = false;
+    					while (indexSearch > index - 3) {
+    						if (allLines.get(indexSearch).contains("public class")) {
+    							isClass = true;
+    							break;
+    						}
+        					indexSearch--;
+    					}
+    					
+    					
+    					if (isClass) {
+    						// Handle preceding class comment
+    						String classComment = "";
+        					indexSearch = index - 1;
+        					int indexEnd = 0;
+        					int indexStart = 0;
+        					while (indexSearch > index - 10) {
+        						if (allLines.get(indexSearch).contains("*/")) {
+        							indexEnd = indexSearch;
+        						} else if (allLines.get(indexSearch).contains("/*")) {
+        							indexStart = indexSearch;
+        							break;
+        						}
+            					indexSearch--;
+        					}
+        					if(indexStart != 0 && indexEnd != 0) {
+	        					for (int i = indexStart; i < indexEnd; i++) {
+	        						String comment = allLines.get(i).replace("\t", "").replace("/*", "").replace("*/", "").replace("*", "").replace("  ", "");
+	        						if (!comment.isBlank()) {
+	        							classComment += comment + "\n";
+	        							labelText += comment + "\n";
+	        						}
+	        					}
+	        					labelText += "\n";
+        					}
+    						
+    					} else {
+        					// Handle function name
+        					String functionName = "";
+        					indexSearch = index - 1;
+        					while (indexSearch < index + 2) {
+        						if (allLines.get(indexSearch).contains("public")) {
+        							String pattern = "public [^\\s]+ ([^\\s]+) *\\(";
+        							Pattern r = Pattern.compile(pattern);
+        							Matcher m = r.matcher(allLines.get(indexSearch));
+        							if (m.find()) {
+        								functionName = m.group(1);
+        							}
+        							labelText += "----- " + functionName + " -----\n";
+        							break;
+        						}
+            					indexSearch++;
+        					}
+    						
+    						// Handle preceding function comment
+    						String functionComment = "";
+        					indexSearch = index - 1;
+        					int indexEnd = 0;
+        					int indexStart = 0;
+        					while (indexSearch > index - 10) {
+        						if (allLines.get(indexSearch).contains("*/")) {
+        							indexEnd = indexSearch;
+        						} else if (allLines.get(indexSearch).contains("/*")) {
+        							indexStart = indexSearch;
+        							break;
+        						}
+            					indexSearch--;
+        					}
+        					if(indexStart != 0 && indexEnd != 0) {
+	        					for (int i = indexStart; i < indexEnd; i++) {
+	        						String comment = allLines.get(i).replace("\t", "").replace("/*", "").replace("*/", "").replace("*", "").replace("  ", "").replace("OVERVIEW: ", "");
+	        						if (!comment.isBlank()) {
+	        							functionComment += comment + "\n";
+	        							labelText += comment + "\n";
+	        						}
+	        					}
+	        					labelText += "\n";
+        					}
+
+        					// Handle following function comment
+        					indexStart = 0;
+        					indexSearch = index;
+        					indexEnd = 0;
+        					while (indexSearch < index + 10) {
+        						if (indexStart != 0 && !allLines.get(indexSearch).contains("//")) {
+        							indexEnd = indexSearch;
+        							break;
+        						} else if (indexStart == 0 && allLines.get(indexSearch).contains("//")) {
+        							indexStart = indexSearch;
+        						}
+            					indexSearch++;
+        					}
+        					if(indexStart != 0 && indexEnd != 0) {
+	        					for (int i = indexStart; i < indexEnd; i++) {
+	        						String comment = allLines.get(i).replace("\t", "").replace("//", "").replace("  ", "");
+	        						if (!comment.isBlank()) {
+	        							functionComment += comment + "\n";
+	        							labelText += comment + "\n";
+	        						}
+	        					}
+	        					labelText += "\n";
+        					}
+    					}
+    				}
+    				index++;
+    			}
+    		} catch (IOException e) {
+            	Label label = new Label(viewParent, SWT.WRAP);
+            	label.setText("Could not read given file.");
+            	widgets.add(label);
+    			e.printStackTrace();
+    		}
             Label label = new Label(viewParent, SWT.WRAP);
-            label.setText(testFile.getName());
+            label.setText(labelText);
         	widgets.add(label);
         	
             Button button = new Button(viewParent, SWT.WRAP);
@@ -118,7 +244,8 @@ public class TestsView extends ViewPart {
 //            button.setLayoutData(new RowData(100, 40));
         } else {
         	Label label = new Label(viewParent, SWT.WRAP);
-        	label.setText("Could not read given test.");
+        	label.setText("Could not find given file.");
+        	widgets.add(label);
         }
         
         // Refresh view with new layout
