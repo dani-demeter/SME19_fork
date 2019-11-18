@@ -149,7 +149,7 @@ public class TestsView extends ViewPart {
         					if(indexStart != 0 && indexEnd != 0) {
 	        					for (int i = indexStart; i < indexEnd; i++) {
 	        						String comment = allLines.get(i).replace("\t", "").replace("/*", "").replace("*/", "").replace("*", "").replace("  ", "");
-	        						if (!comment.isBlank()) {
+	        						if (!comment.isEmpty()) {
 	        							classComment += comment + "\n";
 	        							labelText += comment + "\n";
 	        						}
@@ -192,7 +192,7 @@ public class TestsView extends ViewPart {
         					if(indexStart != 0 && indexEnd != 0) {
 	        					for (int i = indexStart; i < indexEnd; i++) {
 	        						String comment = allLines.get(i).replace("\t", "").replace("/*", "").replace("*/", "").replace("*", "").replace("  ", "").replace("OVERVIEW: ", "");
-	        						if (!comment.isBlank()) {
+	        						if (!comment.isEmpty()) {
 	        							functionComment += comment + "\n";
 	        							labelText += comment + "\n";
 	        						}
@@ -216,7 +216,7 @@ public class TestsView extends ViewPart {
         					if(indexStart != 0 && indexEnd != 0) {
 	        					for (int i = indexStart; i < indexEnd; i++) {
 	        						String comment = allLines.get(i).replace("\t", "").replace("//", "").replace("  ", "");
-	        						if (!comment.isBlank()) {
+	        						if (!comment.isEmpty()) {
 	        							functionComment += comment + "\n";
 	        							labelText += comment + "\n";
 	        						}
