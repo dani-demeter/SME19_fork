@@ -253,8 +253,11 @@ public class ListViewPart extends ViewPart {
 		
 		action3 = new Action() {
 			public void run() {
-				testsFolderPath = getInput("Set folder path", testsFolderPath);
-				viewer.setContentProvider(new ViewContentProvider());
+				String testsFolderPathInput = getInput("Set folder path", testsFolderPath);
+				if (testsFolderPathInput != null) {
+					testsFolderPath = testsFolderPathInput;
+					viewer.setContentProvider(new ViewContentProvider());
+				}
 			}
 		};
 		action3.setText("Set Folder");
