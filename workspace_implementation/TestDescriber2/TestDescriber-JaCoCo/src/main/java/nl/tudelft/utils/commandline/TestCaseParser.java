@@ -107,10 +107,10 @@ public class TestCaseParser {
 			}
 		}
 		
-		System.out.println("#### Test Cases ####");
-		for (String method : test_methods){
-			System.out.println(method);
-		}
+		//System.out.println("#### Test Cases ####");
+		//for (String method : test_methods){
+		//	System.out.println(method);
+		//}
 		return test_methods;
 	}	
 
