@@ -8,6 +8,8 @@ import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
@@ -36,7 +38,7 @@ public class ListViewPart extends ViewPart {
 	private Action action2;
 	private Action action3;
 	private Action doubleClickAction;
-	private String testsFolderPath;
+	private String testsFolderPath = "C:\\Users\\Jacob\\Workspace\\SME19_TestDescriberProject\\workspace_implementation\\Task1\\src\\org\\magee\\math";
 	 
 	class TreeObject implements IAdaptable {
 		private String name;
@@ -138,8 +140,6 @@ public class ListViewPart extends ViewPart {
 
 		private void initialize() {
 	        invisibleRoot = new TreeParent("");
-//	        testsFolderPath = "C:\\Users\\Jacob\\Workspace\\gson\\gson\\src\\test\\java";
-	        testsFolderPath = "C:\\Users\\Jacob\\Workspace\\SME19_TestDescriberProject\\workspace_implementation\\Task1\\src\\org\\magee\\math";
 			createRecursiveTree(testsFolderPath, invisibleRoot);
 		}
 	}
@@ -253,7 +253,8 @@ public class ListViewPart extends ViewPart {
 		
 		action3 = new Action() {
 			public void run() {
-				showMessage("Set folder path to be implemented");
+				testsFolderPath = getInput("Set folder path", testsFolderPath);
+				viewer.setContentProvider(new ViewContentProvider());
 			}
 		};
 		action3.setText("Set Folder");
@@ -308,6 +309,21 @@ public class ListViewPart extends ViewPart {
 			viewer.getControl().getShell(),
 			"TestDescriber Explorer",
 			message);
+	}
+	private String getInput(String message, String defaultInput) {
+		InputDialog inputDialog = new InputDialog(viewer.getControl().getShell(), "TestDescriber Explorer", message, defaultInput, null);
+	    String param = null;
+	    int dialogCode = inputDialog.open();
+	    if (dialogCode == 0) {
+	        param = inputDialog.getValue();
+	        if (param != null) {
+	            param = param.trim();
+	            if (param.length() == 0) {
+	                return null;
+	            }
+	        }
+	    }
+	    return param;
 	}
 
 	@Override
