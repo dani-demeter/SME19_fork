@@ -15,7 +15,8 @@ https://github.com/GLopezMUZH/SME19_TestDescriberProject.git
 
 
 
-## Real life OSS project
+## Real life OSS projects
+### Gson
 
 Download gson in your workspace
 https://github.com/google/gson
@@ -23,6 +24,12 @@ https://github.com/google/gson
 and import the project in Eclipse
 
 ![Image gson import](https://github.com/GLopezMUZH/SME19_TestDescriberProject/blob/master/documentation/imgs/gsonimport.png)
+
+### OfBiz
+Download OfBiz source.
+Generate the ".project" file to allow Eclipse to automatically configure the project for you. For that simply run "gradlew eclipse" on the command line.
+Import the project with "Existing Project into Workspace" 
+https://cwiki.apache.org/confluence/display/OFBIZ/Eclipse+Tips
 
 
 ## Configure source Test Case and Target classes
