@@ -29,6 +29,7 @@ and import the project in Eclipse
 Download OfBiz source.
 Generate the ".project" file to allow Eclipse to automatically configure the project for you. For that simply run "gradlew eclipse" on the command line.
 Import the project with "Existing Project into Workspace" 
+https://cwiki.apache.org/confluence/display/OFBIZ/Eclipse+Tips
 
 
 ## Configure source Test Case and Target classes
