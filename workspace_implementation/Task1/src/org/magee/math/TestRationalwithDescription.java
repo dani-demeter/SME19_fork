@@ -124,10 +124,6 @@ public class TestRationalwithDescription {
         assertEquals((byte) 1, byte0);
     }
 
-    /**
-	 * OVERVIEW: The test case "test7" covers around 6.0% (low percentage) of
-	 * statements in "Rational"
-	 **/
     @Test
     public void test7() throws Throwable {
         // This statement instantiates a class "Rational"  with "explicit arguments:"
@@ -142,10 +138,6 @@ public class TestRationalwithDescription {
         assertEquals(1L, rational1.longValue());
     }
 
-    /**
-	 * OVERVIEW: The test case "test8" covers around 5.0% (low percentage) of
-	 * statements in "Rational"
-	 **/
     @Test
     public void test8() throws Throwable {
         // This statement instantiates a class "Rational"  with "explicit arguments:"
@@ -161,10 +153,6 @@ public class TestRationalwithDescription {
         assertEquals(4, rational0.shortValue());
     }
 
-    /**
-	 * OVERVIEW: The test case "test9" covers around 1.0% (low percentage) of
-	 * statements in "Rational"
-	 **/
     @Test
     public void test9() throws Throwable {
         // This statement instantiates a class "Rational"  with "explicit arguments:"
@@ -179,10 +167,6 @@ public class TestRationalwithDescription {
         assertEquals("348 / -177", string0);
     }
 
-    /**
-	 * OVERVIEW: The test case "test10" covers around 6.0% (low percentage) of
-	 * statements in "Rational"
-	 **/
     @Test
     public void test10() throws Throwable {
         // This statement instantiates a class "Rational"  with "explicit arguments:"
@@ -201,10 +185,6 @@ public class TestRationalwithDescription {
         assertEquals(3.5075412136092597E-4, rational1.doubleValue(), 0.01D);
     }
 
-    /**
-	 * OVERVIEW: The test case "test11" covers around 6.0% (low percentage) of
-	 * statements in "Rational"
-	 **/
     @Test
     public void test11() throws Throwable {
         // This statement instantiates a class "Rational"  with "explicit arguments:"

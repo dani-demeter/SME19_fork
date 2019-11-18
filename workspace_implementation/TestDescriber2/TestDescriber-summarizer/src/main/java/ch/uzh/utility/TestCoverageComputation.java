@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import ch.uzh.parser.bean.ClassBean;
+import ch.uzh.parser.testing.summarization.PathParameters;
 import nl.tudelft.jacoco.JaCoCoRunner;
 import nl.tudelft.jacoco.JacocoResult;
 import nl.tudelft.utils.commandline.TestCaseParser;
@@ -36,6 +37,9 @@ public class TestCoverageComputation {
 
 	// folder for binary code of the test cases GGG
  	String testBinFolder = null;
+ 	
+ 	// folder containing the project jar file 
+ 	String jarProjectFolder = null;
 
 	// outcome of the test coverage computation
 	List<String> testsCoverage = null;
@@ -51,22 +55,22 @@ public class TestCoverageComputation {
 
 	
 	public TestCoverageComputation(Vector<ClassBean> productionClass, Vector<ClassBean> testClass,
-			                       List<String> pathJavaClass, List<String> pathTestClass, String pBinFolder,
-			                       String testBinFolder, List<String> listTestBinMethods) {
+			PathParameters pathParameters) {
 		super();
 		this.productionClass = productionClass;
 		this.testClass = testClass;
-		this.pBinFolder = pBinFolder;
-		this.pathJavaClass =  pathJavaClass;
-		this.pathTestClass = pathTestClass;
-		this.testBinFolder = testBinFolder;
-		this.listTestBinMethods = listTestBinMethods;
+		this.pBinFolder = pathParameters.pBinFolder; //TODO GGG Rename to match names overall 
+		this.pathJavaClass = pathParameters.classesFiles;
+		this.pathTestClass = pathParameters.testsFiles;
+		this.testBinFolder = pathParameters.testBinFolder;
+		this.listTestBinMethods = pathParameters.testBinFiles;
+		this.jarProjectFolder = pathParameters.jarProjectFolder;
 		
 		// extract the number of test methods in 'test_case'
-		if (this.testBinFolder.isEmpty()) {
-			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, convert2PackageNotation(pathTestClass.get(0)));
+		if (!this.testBinFolder.isEmpty()) {
+			this.listTestMethods  = TestCaseParser.findTestMethods(testBinFolder, convert2PackageNotation(pathTestClass.get(0)));
 		} else {
-			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, testBinFolder, listTestBinMethods);
+			this.listTestMethods  = TestCaseParser.findTestMethods(pBinFolder, testBinFolder, listTestBinMethods); //GGG delete this line, this will not be used pBinFolder
 		}
 
 		System.out.println(listTestMethods);
@@ -79,13 +83,17 @@ public class TestCoverageComputation {
 		Map<String, List<Integer>> coverage = new HashMap<String, List<Integer>>();
 		//get directory from system property
 		String project_dir = System.getProperty("user.dir");
-		List<File> jars = new ArrayList<File>();
-		jars.add(new File(pBinFolder));
+		List<File> libraryFolders = new ArrayList<File>();
+		List<File> instrumentedJars = new ArrayList<File>();
+		//jars.add(new File(pBinFolder)); //GGG here is meant the testbin folder
+		instrumentedJars.add(new File(jarProjectFolder)); //GGG added for multiple folders with .class
+		libraryFolders.add(new File(testBinFolder)); //GGG ???
+		libraryFolders.add(new File(pBinFolder)); //GGG ???
 
 
 		for (String tc : listTestMethods){
 			String tmpString = "\temp1";
-			//TODO improve?
+			//TODO GGG improve?
 			if(System.getProperty("os.name").startsWith("Windows")) {
 				tmpString = "\\temp1";
 			}
@@ -93,10 +101,10 @@ public class TestCoverageComputation {
 			System.out.println("project_dir: "+project_dir);
 			System.out.println("tmp_file: "+temp_file);
 			
-			JaCoCoRunner runner = new JaCoCoRunner(new File(temp_file), jars);
+			JaCoCoRunner runner = new JaCoCoRunner(new File(temp_file), libraryFolders);
 			System.out.println("1st part run: "+convert2PackageNotation(this.pathJavaClass.get(0))); //GGG del
 			System.out.println("2nd part run: "+convert2PackageNotation(this.pathTestClass.get(0))+"#"+tc); //GGG del
-			runner.run(convert2PackageNotation(this.pathJavaClass.get(0)), convert2PackageNotation(this.pathTestClass.get(0))+"#"+tc, jars);
+			runner.run(convert2PackageNotation(this.pathJavaClass.get(0)), convert2PackageNotation(this.pathTestClass.get(0))+"#"+tc, instrumentedJars);
 
 			JacocoResult results = runner.getJacocoResults();
 			System.out.println(results.getBranchesCovered());

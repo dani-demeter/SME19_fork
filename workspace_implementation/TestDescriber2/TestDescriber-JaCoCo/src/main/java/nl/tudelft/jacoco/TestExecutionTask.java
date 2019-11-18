@@ -1,16 +1,19 @@
 package nl.tudelft.jacoco;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.Callable;
 
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Request;
 import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 
 import nl.tudelft.utils.Utilities;
 
@@ -31,6 +34,14 @@ public class TestExecutionTask  implements Callable<List<Result>>{
 			// Load the jar
 			urls = Utilities.createURLs(cp);
 			testClasses = pTestClasses;
+			
+			//GGG remove start
+			System.out.println("TestExecutionTask testClasses:");
+			for (String cls : pTestClasses) {
+				System.out.println("- "+cls);
+			}
+			//GGG remove end
+			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,6 +49,8 @@ public class TestExecutionTask  implements Callable<List<Result>>{
 	}
 
 	public List<Result> call() throws ClassNotFoundException, IOException {
+			URL[] newurls =new URL[1]; 
+			newurls[0] = urls[1];
 			URLClassLoader cl = URLClassLoader.newInstance(urls, this.getClass().getClassLoader());	
 
 			//GGG START
@@ -60,6 +73,8 @@ public class TestExecutionTask  implements Callable<List<Result>>{
 					testCaseClassName = testCaseClassName.replace("\\", ".");
 				}
 				
+				System.out.println("TestExecutionTask testCaseClassName: " + testCaseClassName);
+				
 				// load the test case
 				final Class<?> testClass = cl.loadClass(testCaseClassName);
 				Request request = Request.method(testClass, classAndMethod[1]);
@@ -69,7 +84,12 @@ public class TestExecutionTask  implements Callable<List<Result>>{
 				Result result = junit.run(request);
 
 				results.add(result);
-
+				
+				System.out.println("Failure: "+result.getFailures());
+				for (Failure fail : result.getFailures()){
+					System.out.println("Failing Tests: "+fail.getTestHeader()+"\n"+fail.getException()+"\n"+fail.getDescription()+"\n"+fail.getMessage());
+				}
+				
 				//Main.debug("Failure: "+result.getFailures());
 				//for (Failure fail : result.getFailures()){
 				//	Main.debug("Failing Tests: "+fail.getTestHeader()+"\n"+fail.getException()+"\n"+fail.getDescription()+"\n"+fail.getMessage());

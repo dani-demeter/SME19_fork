@@ -156,7 +156,9 @@ public class JaCoCoWrapper {
 
 				// copy all classes in the new directory temp_folder
 				List<File> files = (List<File>) FileUtils.listFiles(jar_to_instrument.get(index), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+				System.out.println("files to copy: "+files);
 				String CUT = targetClass.substring(targetClass.lastIndexOf("/")+1, targetClass.length())+".class";
+				System.out.println("CUT: "+CUT);
 				File instrumented_CUT=null;
 				for(File file : files){
 					if (file.getName().equals(CUT)){
@@ -165,22 +167,23 @@ public class JaCoCoWrapper {
 						FileUtils.copyFile(file, new File(instrumented_path));
 						System.out.println("Instrumenting the class: "+file.getAbsolutePath());
 						instrumented_CUT = file;
+
+						//TODO GGG this following stuff was outside the for loop, why?
+						String fileName = instrumented_CUT.getAbsolutePath();
+						System.out.println("fileName" + fileName); //GGG del
+
+						fileName = fileName.replace(jar_to_instrument.get(index).getAbsolutePath(), instrumented_jar.get(index).getAbsolutePath());
+						System.out.println("new filename: "+fileName); //GGG del
+
+						// jar of the SUT
+						InputStream input = new FileInputStream(instrumented_CUT.getAbsolutePath());
+						System.out.println("input: "+input); //GGG del
+
+						OutputStream output = new FileOutputStream(fileName);
+						System.out.println("output: "+output); //GGG del
+						tot_instrumented_class += instr.instrumentAll(input, output, "");
 					}
 				}
-
-				String fileName = instrumented_CUT.getAbsolutePath();
-				System.out.println("fileName" + fileName); //GGG del
-
-				fileName = fileName.replace(jar_to_instrument.get(index).getAbsolutePath(), instrumented_jar.get(index).getAbsolutePath());
-				System.out.println("new filename: "+fileName); //GGG del
-
-				// jar of the SUT
-				InputStream input = new FileInputStream(instrumented_CUT.getAbsolutePath());
-				System.out.println("input: "+input); //GGG del
-
-				OutputStream output = new FileOutputStream(fileName);
-				System.out.println("output: "+output); //GGG del
-				tot_instrumented_class += instr.instrumentAll(input, output, "");
 
 				//}
 			} else{
@@ -213,11 +216,14 @@ public class JaCoCoWrapper {
 		List<Result> l = task.get(TEST_TIMEOUT, TimeUnit.MILLISECONDS); // run task
 		for (Result r : l){
 			if (r.getFailures().size()>0)
-				System.out.println("The test methog "+testCases+" failed");
+				System.out.println("The test method "+testCases+" failed: ");
 			for (Failure f : r.getFailures()){
 				if (f.getTrace().contains("java.lang.NoClassDefFoundError")){
 					service.shutdown();
 					throw new NoClassDefFoundError("The test case is executed with an incomplete class path: \n"+f.getTrace());
+				} else {
+					System.out.println(f.getTrace());
+					System.out.println("--- End failure info ---");
 				}
 			}
 		}
@@ -246,6 +252,7 @@ public class JaCoCoWrapper {
 				if (cc.getName().equals(targetClass)){
 					System.out.println("Extracted coverage data for the class " + targetClass);
 					results = new JacocoResult(cc);
+					results.printResults();
 				}
 			}
 		}
