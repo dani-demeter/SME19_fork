@@ -75,7 +75,7 @@ public class TestCoverageComputation {
 			this.listTestMethods  = TestCaseParser.findTestMethods(testBinFolder, convert2PackageNotation(pathTestClass.get(0)), prefixTestMethods, nameTestMethods); //GGG delete this line, this will not be used pBinFolder
 		}
 
-		System.out.println(listTestMethods);
+		System.out.println("TestCoverageComputation listTestMethods: "+this.listTestMethods);
 		
 		 // initialization of the list that will 
 		//  contain the outcome of the test coverage computation
@@ -112,6 +112,7 @@ public class TestCoverageComputation {
 			coverage.put(tc, new ArrayList<Integer>(results.getCoveredLines()));
 
 			String covered = results.getCoverageInfoAsString();
+			//TODO GGG here only if something was covered is added, in the parser it expects a value for each
 			if (covered != null)
 				testsCoverage.add(covered);
 		}

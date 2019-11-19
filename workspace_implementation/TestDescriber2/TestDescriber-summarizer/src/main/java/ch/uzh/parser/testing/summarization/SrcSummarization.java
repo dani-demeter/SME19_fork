@@ -48,7 +48,18 @@ public class SrcSummarization {
 				ClassOrInterfaceDeclaration clazz = (ClassOrInterfaceDeclaration) node;
 				for (int index = 0; index<clazz.getChildrenNodes().size(); index++){
 					Node methodNode = clazz.getChildrenNodes().get(index);
-					MethodDeclaration method = (MethodDeclaration) methodNode;
+
+					MethodDeclaration method;
+					try {
+						method = (MethodDeclaration) methodNode;
+						System.out.println("replaceText Method cast worked:"+ method.getName());
+					} catch (Exception e) {
+						//ignore and continue
+						System.out.println("replaceText Method cast error: "+ methodNode);
+						continue;
+						//e.printStackTrace();
+					}
+					//FIX method will be empty if try catch fails, but it will not come because continue... unschön
 					if (method.getName().equals(testCase.getName())){
 						MethodDeclaration newMethod = convertString2MethodDeclaration(methodWithComments);
 						method.setBody(newMethod.getBody());
@@ -345,6 +356,8 @@ public class SrcSummarization {
 	public static void generateTestMethodsSummary(ClassBean classeTest, List<MethodBean> testCases, List<String> textContentExecutedOriginalClass)
 			throws IOException, InterruptedException {
 				System.out.println("Step 4.1: Generating a summary for each test method");
+				System.out.println("Test methods:"+testCases);
+				
 				for(int index=0; index<testCases.size(); index++) {
 					// for each test method
 					MethodBean testCase = testCases.get(index);
@@ -390,6 +403,7 @@ public class SrcSummarization {
 				
 		// we save the new (renamed) test class
 		String pathNewTextClass=pathParameters.sourceFolder+pathParameters.testsFiles.get(0).replace(".java","withDescription.java");
+		System.out.println("pathNewTextClass for withDescription file: "+ pathNewTextClass);
 		FileUtils.writeFile(pathNewTextClass,  classeTest.getTextContent());
 		System.out.println("GENERATED JUNIT CLASS");
 		System.out.println(classeTest.getTextContent());

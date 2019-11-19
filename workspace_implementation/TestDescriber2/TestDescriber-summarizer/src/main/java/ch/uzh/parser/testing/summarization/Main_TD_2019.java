@@ -55,6 +55,9 @@ public class Main_TD_2019 extends SrcSummarization {
 			return;
 		}
 
+		System.out.println("testsCoverage: "+testsCoverage);
+		
+		
 		List<MethodBean> testCases = new Vector<MethodBean>(); // = (Vector<MethodBean>) classeTest.getMethods(); //FIXME GGG ?? why not only the Test Methods?
 		List<String> listTestMethods = new ArrayList<String>();
 		

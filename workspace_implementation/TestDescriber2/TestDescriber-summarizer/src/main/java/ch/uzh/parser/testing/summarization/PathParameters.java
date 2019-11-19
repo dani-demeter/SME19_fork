@@ -143,12 +143,10 @@ public class PathParameters {
 
 		List<String> prfxTM = new ArrayList<String>();
 		prfxTM.add("public void test");
-		prfxTM.add("public static void assert");
 		pathParameters.setPrefixTestMethods(prfxTM);
 
 		List<String> nameTM = new ArrayList<String>();
 		nameTM.add("test");
-		nameTM.add("assert");
 		pathParameters.setNameTestMethods(nameTM);
 
 		return pathParameters;
