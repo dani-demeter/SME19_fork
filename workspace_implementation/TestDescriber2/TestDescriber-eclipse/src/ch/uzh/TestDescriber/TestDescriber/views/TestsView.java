@@ -10,7 +10,10 @@ import ch.uzh.TestDescriber.TestDescriber.views.ListViewPart.TreeParent;
 import ch.uzh.TestDescriber.TestDescriber.views.ListViewPart.ViewContentProvider;
 
 import org.eclipse.jface.viewers.*;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
@@ -85,8 +88,8 @@ public class TestsView extends ViewPart {
 		
 		viewParent = parent;
 		
-        RowLayout rowLayout = new RowLayout();
-        viewParent.setLayout(rowLayout);
+//        RowLayout rowLayout = new RowLayout();
+//        viewParent.setLayout(rowLayout);
         
 		makeActions();
 		hookContextMenu();
@@ -100,6 +103,111 @@ public class TestsView extends ViewPart {
 		initialize();
 	}
 	
+	private String getTestFunctionName(String line) {
+		String pattern = "public [^\\s]+ ([^\\s]+) *\\(";
+		Pattern r = Pattern.compile(pattern);
+		Matcher m = r.matcher(line);
+		if (m.find()) {
+			return m.group(1);
+		}
+		return null;
+	}
+	
+	private String getTestClassName(String line) {
+		String pattern = "public class ([^\\s]+) *\\{";
+		Pattern r = Pattern.compile(pattern);
+		Matcher m = r.matcher(line);
+		if (m.find()) {
+			return m.group(1);
+		}
+		return null;
+	}
+	
+	private String getTestFunctionComment(List<String> allLines, int index, int backward, int forward) {
+		String comment = "";
+		
+		// Get preceding comment start and end
+		int maxBackward = index - backward >= 0 ? index - backward : 0;
+		int startBackward = -1;
+		int endBackward = -1;
+		for (int i = index - 1; i >= maxBackward; i--) {
+			String line = allLines.get(i);
+			if (line.contains("*/")) {
+				endBackward = i;
+			} else if (line.contains("/*")) {
+				startBackward = i;
+				break;
+			} else if (line.contains("public class")) {
+				break;
+			}
+		}
+		
+		// Get preceding comment content
+		if(startBackward != -1 && endBackward != -1) {
+			for (int i = startBackward; i < endBackward; i++) {
+				String line = allLines.get(i).replace("\t", "").replace("/*", "").replace("*/", "").replace("*", "").replace("  ", "").replace("OVERVIEW: ", "");
+				if (!line.isEmpty()) {
+					comment += line + "\n";
+				}
+			}
+		}
+		
+		// Get following comment
+		int maxForward = index + forward < allLines.size() ? index + forward : allLines.size();
+		boolean foundComment = false;
+		for (int i = index + 1; i < maxForward; i++) {
+			String line = allLines.get(i);
+			if (line.contains("//")) {
+				comment += line.replace("\t", "").replace("//", "").replace("  ", "") + "\n";
+				foundComment = true;
+			} else if (foundComment == true) {
+				break;
+			}
+		}
+		
+		// Return comment if found
+		if (!comment.isEmpty()) {
+			return comment;
+		}
+		return null;
+	}
+	
+	private String getTestClassComment(List<String> allLines, int index, int backward) {
+		String comment = "";
+		
+		// Get preceding comment start and end
+		int maxBackward = index - backward >= 0 ? index - backward : 0;
+		int startBackward = -1;
+		int endBackward = -1;
+		for (int i = index - 1; i >= maxBackward; i--) {
+			String line = allLines.get(i);
+			if (line.contains("*/")) {
+				endBackward = i;
+			} else if (line.contains("/*")) {
+				startBackward = i;
+				break;
+			} else if (line.contains("public class")) {
+				break;
+			}
+		}
+		
+		// Get preceding comment content
+		if(startBackward != -1 && endBackward != -1) {
+			for (int i = startBackward; i < endBackward; i++) {
+				String line = allLines.get(i).replace("\t", "").replace("/*", "").replace("*/", "").replace("*", "").replace("  ", "");
+				if (!line.isEmpty()) {
+					comment += line + "\n";
+				}
+			}
+		}
+		
+		// Return comment if found
+		if (!comment.isEmpty()) {
+			return comment;
+		}
+		return null;
+	}
+	
 	private void initialize() {
 		// Delete old widgets
 		for (Widget widget : widgets) {
@@ -108,149 +216,108 @@ public class TestsView extends ViewPart {
 		widgets = new ArrayList<Widget>();
 		
 		// Create new layout
-        RowLayout rowLayout = new RowLayout();
-        viewParent.setLayout(rowLayout);
+		viewParent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		viewParent.setLayout(new GridLayout(1, false));
+	    ScrolledComposite sc = new ScrolledComposite(viewParent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+	    sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+	    sc.setBackground(viewParent.getBackground());
+	    Composite composite = new Composite(sc, SWT.NONE);
+	    composite.setLayout(new GridLayout(1, false));
+	    composite.setBackground(sc.getBackground());
+        widgets.add(sc);
+        widgets.add(composite);
 		
         // Open given file path
         File testFile = new File(testPath);
-        String labelText = "";
         if (testFile.exists() && testFile.isFile()) {
     		try {
+    			// Get all lines in file
     			List<String> allLines = Files.readAllLines(Paths.get(testFile.getAbsolutePath()));
     			int index = 0;
     			for (String line:allLines) {
+    				// Handle function comment
     				if (line.contains("@Test" )) {
-    					int indexSearch = index - 1;
-    					boolean isClass = false;
-    					while (indexSearch > index - 3) {
-    						if (allLines.get(indexSearch).contains("public class")) {
-    							isClass = true;
-    							break;
-    						}
-        					indexSearch--;
+        					// Get test function name
+        					String testFunctionName = getTestFunctionName(allLines.get(index + 1));
+        					if (testFunctionName == null) {
+        						index++;
+        						continue;
+        					}
+        					
+        					// Create function name label
+        		            Label headingLabel = new Label(composite, SWT.WRAP);
+        		            headingLabel.setBackground(composite.getBackground());
+        		            headingLabel.setText(testFunctionName);
+        		            FontData[] fD = headingLabel.getFont().getFontData();
+        		            fD[0].setHeight(14);
+        		            headingLabel.setFont( new Font(null, fD[0]));
+        		        	widgets.add(headingLabel);
+    						
+							// Get test function comment
+							String testFunctionComment = getTestFunctionComment(allLines, index, 10, 10);
+        					if (testFunctionComment != null) {
+        						// Create function comment label
+            		            Label commentLabel = new Label(composite, SWT.WRAP);
+            		            commentLabel.setBackground(composite.getBackground());
+            		            commentLabel.setText(testFunctionComment + "\n");
+            		        	widgets.add(commentLabel);
+        					}
+        					
+    				} else if (line.contains("public class")) {
+    					// Get test class name
+    					String testClassName = getTestClassName(allLines.get(index));
+    					if (testClassName == null) {
+    						index++;
+    						continue;
     					}
     					
+    					// Create class name label
+    		            Label headingLabel = new Label(composite, SWT.WRAP);
+    		            headingLabel.setBackground(composite.getBackground());
+    		            headingLabel.setText(testClassName);
+    		            FontData[] fD = headingLabel.getFont().getFontData();
+    		            fD[0].setHeight(18);
+    		            headingLabel.setFont( new Font(null, fD[0]));
+    		        	widgets.add(headingLabel);
     					
-    					if (isClass) {
-    						// Handle preceding class comment
-    						String classComment = "";
-        					indexSearch = index - 1;
-        					int indexEnd = 0;
-        					int indexStart = 0;
-        					while (indexSearch > index - 10) {
-        						if (allLines.get(indexSearch).contains("*/")) {
-        							indexEnd = indexSearch;
-        						} else if (allLines.get(indexSearch).contains("/*")) {
-        							indexStart = indexSearch;
-        							break;
-        						}
-            					indexSearch--;
-        					}
-        					if(indexStart != 0 && indexEnd != 0) {
-	        					for (int i = indexStart; i < indexEnd; i++) {
-	        						String comment = allLines.get(i).replace("\t", "").replace("/*", "").replace("*/", "").replace("*", "").replace("  ", "");
-	        						if (!comment.isEmpty()) {
-	        							classComment += comment + "\n";
-	        							labelText += comment + "\n";
-	        						}
-	        					}
-	        					labelText += "\n";
-        					}
-    						
-    					} else {
-        					// Handle function name
-        					String functionName = "";
-        					indexSearch = index - 1;
-        					while (indexSearch < index + 2) {
-        						if (allLines.get(indexSearch).contains("public")) {
-        							String pattern = "public [^\\s]+ ([^\\s]+) *\\(";
-        							Pattern r = Pattern.compile(pattern);
-        							Matcher m = r.matcher(allLines.get(indexSearch));
-        							if (m.find()) {
-        								functionName = m.group(1);
-        							}
-        							labelText += "----- " + functionName + " -----\n";
-        							break;
-        						}
-            					indexSearch++;
-        					}
-    						
-    						// Handle preceding function comment
-    						String functionComment = "";
-        					indexSearch = index - 1;
-        					int indexEnd = 0;
-        					int indexStart = 0;
-        					while (indexSearch > index - 10) {
-        						if (allLines.get(indexSearch).contains("*/")) {
-        							indexEnd = indexSearch;
-        						} else if (allLines.get(indexSearch).contains("/*")) {
-        							indexStart = indexSearch;
-        							break;
-        						}
-            					indexSearch--;
-        					}
-        					if(indexStart != 0 && indexEnd != 0) {
-	        					for (int i = indexStart; i < indexEnd; i++) {
-	        						String comment = allLines.get(i).replace("\t", "").replace("/*", "").replace("*/", "").replace("*", "").replace("  ", "").replace("OVERVIEW: ", "");
-	        						if (!comment.isEmpty()) {
-	        							functionComment += comment + "\n";
-	        							labelText += comment + "\n";
-	        						}
-	        					}
-	        					labelText += "\n";
-        					}
-
-        					// Handle following function comment
-        					indexStart = 0;
-        					indexSearch = index;
-        					indexEnd = 0;
-        					while (indexSearch < index + 10) {
-        						if (indexStart != 0 && !allLines.get(indexSearch).contains("//")) {
-        							indexEnd = indexSearch;
-        							break;
-        						} else if (indexStart == 0 && allLines.get(indexSearch).contains("//")) {
-        							indexStart = indexSearch;
-        						}
-            					indexSearch++;
-        					}
-        					if(indexStart != 0 && indexEnd != 0) {
-	        					for (int i = indexStart; i < indexEnd; i++) {
-	        						String comment = allLines.get(i).replace("\t", "").replace("//", "").replace("  ", "");
-	        						if (!comment.isEmpty()) {
-	        							functionComment += comment + "\n";
-	        							labelText += comment + "\n";
-	        						}
-	        					}
-	        					labelText += "\n";
-        					}
+    					// Get test class comment
+						String testClassComment = getTestClassComment(allLines, index, 10);
+    					if (testClassComment != null) {
+    						// Create class comment label
+        		            Label commentLabel = new Label(composite, SWT.WRAP);
+        		            commentLabel.setBackground(composite.getBackground());
+        		            commentLabel.setText(testClassComment + "\n");
+        		        	widgets.add(commentLabel);
     					}
     				}
     				index++;
     			}
     		} catch (IOException e) {
-            	Label label = new Label(viewParent, SWT.WRAP);
+            	Label label = new Label(composite, SWT.WRAP);
+            	label.setBackground(composite.getBackground());
             	label.setText("Could not read given file.");
             	widgets.add(label);
     			e.printStackTrace();
     		}
-            Label label = new Label(viewParent, SWT.WRAP);
-            label.setText(labelText);
-        	widgets.add(label);
         	
-            Button button = new Button(viewParent, SWT.WRAP);
-            button.setText("View test file");
-        	widgets.add(button);
+//            Button button = new Button(viewParent, SWT.WRAP);
+//            button.setText("View test file");
+//        	widgets.add(button);
 
 //            button.setLayoutData(new RowData(100, 40));
         } else {
-        	Label label = new Label(viewParent, SWT.WRAP);
+        	Label label = new Label(composite, SWT.WRAP);
+        	label.setBackground(composite.getBackground());
         	label.setText("Could not find given file.");
         	widgets.add(label);
         }
         
         // Refresh view with new layout
+	    sc.setContent(composite);
+	    composite.setSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
         viewParent.pack();
         viewParent.layout(true);
+	    viewParent.setSize(viewParent.getParent().getSize());
 	}
 
 	private void hookContextMenu() {
