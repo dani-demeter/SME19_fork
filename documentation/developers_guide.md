@@ -23,6 +23,9 @@ Generate the ".project" file to allow Eclipse to automatically configure the pro
 Import the project with "Existing Project into Workspace" 
 https://cwiki.apache.org/confluence/display/OFBIZ/Eclipse+Tips
 
+! needs path configuration
+
+
 
 ### Gson
 Download gson in your workspace
