@@ -49,7 +49,6 @@ public class TestsView extends ViewPart {
 
 	@Inject IWorkbench workbench;
 	
-//	private TableViewer viewer;
 	private Action action1;
 	private Action doubleClickAction;
 	private String testPath;
@@ -75,25 +74,12 @@ public class TestsView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-//		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-//		
-//		viewer.setContentProvider(ArrayContentProvider.getInstance());
-//		viewer.setInput(new String[] { "One", "Two", "Three" });
-//		viewer.setLabelProvider(new ViewLabelProvider());
-//
-//		// Create the help context id for the viewer's control
-//		workbench.getHelpSystem().setHelp(viewer.getControl(), "ch.uzh.TestDescriber.TestDescriber.viewer");
-//		getSite().setSelectionProvider(viewer);
 		widgets = new ArrayList<Widget>();
 		
 		viewParent = parent;
-		
-//        RowLayout rowLayout = new RowLayout();
-//        viewParent.setLayout(rowLayout);
         
 		makeActions();
 		hookContextMenu();
-		hookDoubleClickAction();
 		contributeToActionBars();
 		
 	}
@@ -319,9 +305,6 @@ public class TestsView extends ViewPart {
 				TestsView.this.fillContextMenu(manager);
 			}
 		});
-//		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-//		viewer.getControl().setMenu(menu);
-//		getSite().registerContextMenu(menuMgr, viewer);
 	}
 
 	private void contributeToActionBars() {
@@ -368,24 +351,16 @@ public class TestsView extends ViewPart {
 			}
 		};
 	}
-
-	private void hookDoubleClickAction() {
-//		viewer.addDoubleClickListener(new IDoubleClickListener() {
-//			public void doubleClick(DoubleClickEvent event) {
-//				doubleClickAction.run();
-//			}
-//		});
-	}
 	
 	private void showMessage(String message) {
-//		MessageDialog.openInformation(
-//			viewer.getControl().getShell(),
-//			"TestDescriber Test",
-//			message);
+		MessageDialog.openInformation(
+			viewParent.getShell(),
+			"TestDescriber Test",
+			message);
 	}
 
 	@Override
 	public void setFocus() {
-//		viewer.getControl().setFocus();
+		viewParent.setFocus();
 	}
 }
