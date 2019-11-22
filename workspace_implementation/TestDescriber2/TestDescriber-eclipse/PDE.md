@@ -20,4 +20,4 @@ In the top right of the PDE you should notice an export button.
 Clicking this provides the option of compiling the project as a jar bundle for Eclipse.
 
 # 3. Install plugin
-Place the jar bundle in "$eclipse/dropins" to install it.
+Place the jar bundle in "$eclipse/dropins" to install it, and restart Eclipse.
