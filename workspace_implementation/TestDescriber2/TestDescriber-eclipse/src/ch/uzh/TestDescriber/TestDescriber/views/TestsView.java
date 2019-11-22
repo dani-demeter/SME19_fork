@@ -114,7 +114,7 @@ public class TestsView extends ViewPart {
 	}
 	
 	private String getTestClassName(String line) {
-		String pattern = "public class ([^\\s]+) *\\{";
+		String pattern = "public [abstract ]*class ([^\\s]+) *\\{*";
 		Pattern r = Pattern.compile(pattern);
 		Matcher m = r.matcher(line);
 		if (m.find()) {
@@ -234,16 +234,14 @@ public class TestsView extends ViewPart {
     			// Get all lines in file
     			List<String> allLines = Files.readAllLines(Paths.get(testFile.getAbsolutePath()));
     			int index = 0;
+				
     			for (String line:allLines) {
+    				// Get function/class name
+    				String testFunctionName = getTestFunctionName(allLines.get(index));
+					String testClassName = getTestClassName(allLines.get(index));
+    				
     				// Handle function comment
-    				if (line.contains("@Test" )) {
-        					// Get test function name
-        					String testFunctionName = getTestFunctionName(allLines.get(index + 1));
-        					if (testFunctionName == null) {
-        						index++;
-        						continue;
-        					}
-        					
+    				if (testFunctionName != null) {
         					// Create function name label
         		            Label headingLabel = new Label(composite, SWT.WRAP);
         		            headingLabel.setBackground(composite.getBackground());
@@ -263,14 +261,7 @@ public class TestsView extends ViewPart {
             		        	widgets.add(commentLabel);
         					}
         					
-    				} else if (line.contains("public class")) {
-    					// Get test class name
-    					String testClassName = getTestClassName(allLines.get(index));
-    					if (testClassName == null) {
-    						index++;
-    						continue;
-    					}
-    					
+    				} else if (testClassName != null) {
     					// Create class name label
     		            Label headingLabel = new Label(composite, SWT.WRAP);
     		            headingLabel.setBackground(composite.getBackground());
