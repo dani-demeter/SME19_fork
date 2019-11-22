@@ -254,6 +254,9 @@ public class JaCoCoWrapper {
 					results = new JacocoResult(cc);
 					results.printResults();
 				}
+				if (cc.getLineCounter().getCoveredCount()>0) {
+					System.out.println("Class " + cc.getName() + ", line coverage: "+cc.getLineCounter().getCoveredCount()+"/"+cc.getLineCounter().getTotalCount());
+				}
 			}
 		}
 		// delete instrumented files
