@@ -42,7 +42,7 @@ public class PathParameters {
 		jarProjectFolder = jarPrjFolder;
 	}
 	
-	protected static PathParameters createPathParameters(){
+	protected static PathParameters createPathParameters_task1(){
 		//START CONFIGURATION FOR TASK 1
 		//String jarProjectFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
 		//String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
@@ -68,7 +68,7 @@ public class PathParameters {
 	}
 	
 	//createPathParameters_ofbiz
-	protected static PathParameters createPathParameters_ofbiz(){
+	protected static PathParameters createPathParameters(){
 		
 		String jarProjectFolder;
 		String sourceFolder;
@@ -113,17 +113,17 @@ public class PathParameters {
 		// StringUtilTests END // WORKS with TD!!!!!!!!!!!!!!!!!!!
 		
 		
-		// IndentingWriterTests START // half works
+		// UtilIOTests START // half works
 		jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
 		sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/framework/base/src/main/java/";
         pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
 		testSrcFolder = sourceFolder;
 		testBinFolder = pBinFolder; 
 
-		classesFiles.add("org/apache/ofbiz/base/util/IndentingWriter.java");
+		classesFiles.add("org/apache/ofbiz/base/util/UtilIO.java");
 
-		testsFiles.add("org/apache/ofbiz/base/util/test/IndentingWriterTests.java");
-		// IndentingWriterTests END // half works
+		testsFiles.add("org/apache/ofbiz/base/util/test/UtilIOTests.java");
+		// UtilIOTests END // half works
 		
 		
 		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
@@ -250,28 +250,4 @@ public class PathParameters {
 		//testsFiles.add("org/apache/ofbiz/base/util/test/TimeDurationTests.java");
 		
 	 */
-	
-	protected static PathParameters createPathParameters_silvia_task1(){
-		//START CONFIGURATION FOR TASK 1
-		String jarProjectFolder = "D:/Uni/repositories/SME19_TestDescriber/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
-		String sourceFolder = "D:/Uni/repositories/SME19_TestDescriber/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
-		String pBinFolder = "D:/Uni/repositories/SME19_TestDescriber/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
-		String testSrcFolder = sourceFolder;
-		String testBinFolder = pBinFolder;
-		
-		List<String> classesFiles = new ArrayList<String>();
-		classesFiles.add("org/magee/math/Rational.java"); 
-
-		List<String> testsFiles = new ArrayList<String>();
-		//testsFiles.add("org/magee/math/TestRational.java");
-		testsFiles.add("org/magee/math/TestRationalExtended.java");
-
-		//END CONFIGURATION FOR TASK 1		
-		
-		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
-
-		return pathParameters;
-	}
-	
-	
 }

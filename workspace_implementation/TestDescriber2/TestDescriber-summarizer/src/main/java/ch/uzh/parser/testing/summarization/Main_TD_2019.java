@@ -37,7 +37,9 @@ public class Main_TD_2019 extends SrcSummarization {
 	public static void main(String[] args) throws IOException, InterruptedException, ParseException, Exception {
 		
 		PathParameters pathParameters = PathParameters.createPathParameters(); 
-
+		//PathParameters pathParameters = PathParametersSilvia.createPathParameters_task1();
+		//PathParameters pathParameters = PathParametersSilvia.createPathParametersSilvia_ofbiz();
+		
 		System.out.println("Step 1: Parsing JAVA CLASSES/JAVA TESTS");
 		Vector<ClassBean> productionClass = JavaFileParser.parseJavaClasses(pathParameters.classesFiles, pathParameters.sourceFolder);
 		Vector<ClassBean> testClass = JavaFileParser.parseJavaClasses(pathParameters.testsFiles, pathParameters.testSrcFolder);
