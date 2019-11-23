@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="C:/Users/Jacob/.p2/pool/plugins/org.eclipse.ui.workbench_3.116.0.v20190826-1428.jar" sourcepath="C:/Users/Jacob/.p2/pool/plugins/org.eclipse.ui.workbench_3.116.0.v20190826-1428.jar">
 		<accessrules>
 			<accessrule kind="discouraged" pattern="org/eclipse/e4/ui/workbench/addons/perspectiveswitcher/*"/>
@@ -93,7 +88,7 @@
 			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Jacob/.m2/repository/org/eclipse/birt/runtime/org.eclipse.core.resources/3.9.1.v20140825-1431/org.eclipse.core.resources-3.9.1.v20140825-1431.jar" sourcepath="C:/Users/Jacob/.m2/repository/org/eclipse/birt/runtime/org.eclipse.core.resources/3.9.1.v20140825-1431/org.eclipse.core.resources-3.9.1.v20140825-1431-sources.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/Jacob/.m2/repository/org/eclipse/birt/runtime/org.eclipse.core.resources/3.9.1.v20140825-1431/org.eclipse.core.resources-3.9.1.v20140825-1431.jar" sourcepath="C:/Users/Jacob/.m2/repository/org/eclipse/birt/runtime/org.eclipse.core.resources/3.9.1.v20140825-1431/org.eclipse.core.resources-3.9.1.v20140825-1431-sources.jar">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="maven.groupId" value="org.eclipse.birt.runtime"/>
@@ -102,7 +97,7 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Jacob/.p2/pool/plugins/org.eclipse.ui.ide_3.16.0.v20190916-1323.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Jacob/.p2/pool/plugins/org.eclipse.core.filesystem_1.7.500.v20190620-1312.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Jacob/.p2/pool/plugins/org.eclipse.core.filesystem_1.7.500.v20190620-1312.jar" sourcepath="C:/Users/Jacob/.p2/pool/plugins/org.eclipse.core.filesystem_1.7.500.v20190620-1312.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jacob/.p2/pool/plugins/org.eclipse.core.filesystem.win32.x86_64_1.4.200.v20190812-0909.jar" sourcepath="C:/Users/Jacob/.p2/pool/plugins/org.eclipse.core.filesystem.win32.x86_64_1.4.200.v20190812-0909.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
