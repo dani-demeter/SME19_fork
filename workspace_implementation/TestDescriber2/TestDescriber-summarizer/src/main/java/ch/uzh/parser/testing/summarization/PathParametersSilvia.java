@@ -4,45 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PathParametersSilvia {
-
-	/*
-	public String sourceFolder = "";
-	public String pBinFolder = "";
-	public String testSrcFolder = ""; //GGG not used yet
-	public String testBinFolder = "";
-	public String jarProjectFolder = "";
-	public List<String> classesFiles = new ArrayList<String>();
-	public List<String> testsFiles = new ArrayList<String>();
-	public List<String> prefixTestMethods = new ArrayList<String>(); //optional
-	public List<String> nameTestMethods = new ArrayList<String>(); // required when prefixTestMethods is set
-	
-	public List<String> getNameTestMethods() {
-		return nameTestMethods;
-	}
-
-	public void setNameTestMethods(List<String> nameTestMethods) {
-		this.nameTestMethods = nameTestMethods;
-	}
-
-	public List<String> getPrefixTestMethods() {
-		return prefixTestMethods;
-	}
-
-	public void setPrefixTestMethods(List<String> prefixTestMethods) {
-		this.prefixTestMethods = prefixTestMethods;
-	}
-
-	//constuctor
-	public PathParametersSilvia(String srcFolder, String srcBinFolder, String tstSrcFolder, String tstBinFolder, List<String> clsFiles, List<String> tstFiles, String jarPrjFolder) {
-		sourceFolder = srcFolder;
-		pBinFolder = srcBinFolder;
-		testSrcFolder = tstSrcFolder;
-		testBinFolder = tstBinFolder;
-		classesFiles.addAll(clsFiles);
-		testsFiles.addAll(tstFiles);
-		jarProjectFolder = jarPrjFolder;
-	}
-	*/
 	
 	protected static PathParameters createPathParameters_task1(){
 		//START CONFIGURATION FOR TASK 1
@@ -82,17 +43,17 @@ public class PathParametersSilvia {
 		List<String> nameTM = new ArrayList<String>();
 		
 		// TimeDurationTests START// WORKS with TD!!!!!!!!!!!!!!!!!!!
-		/*
-		jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
-		sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/framework/base/src/main/java/";
-        pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
+		
+		jarProjectFolder = "D:/Uni/repositories/SME19_TestDescriber/apache-ofbiz-16.11.06/build/classes/java/main/";
+		sourceFolder = "D:/Uni/repositories/SME19_TestDescriber/apache-ofbiz-16.11.06/framework/base/src/main/java/";
+        pBinFolder = "D:/Uni/repositories/SME19_TestDescriber/apache-ofbiz-16.11.06/build/classes/java/main/";
 		testSrcFolder = sourceFolder;
 		testBinFolder = pBinFolder; 
 		classesFiles.add("org/apache/ofbiz/base/util/TimeDuration.java");
 		testsFiles.add("org/apache/ofbiz/base/util/test/TimeDurationTests.java");
 		prfxTM.add("public void test");
 		nameTM.add("test");
-		*/
+		
 		// TimeDurationTests END// WORKS with TD!!!!!!!!!!!!!!!!!!!
 		
 		// StringUtilTests START // WORKS with TD!!!!!!!!!!!!!!!!!!!
@@ -113,7 +74,7 @@ public class PathParametersSilvia {
 		
 		
 		// UtilIOTests START // half works
-		jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
+		/*jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
 		sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/framework/base/src/main/java/";
         pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
 		testSrcFolder = sourceFolder;
@@ -122,7 +83,7 @@ public class PathParametersSilvia {
 		classesFiles.add("org/apache/ofbiz/base/util/UtilIO.java");
 
 		testsFiles.add("org/apache/ofbiz/base/util/test/UtilIOTests.java");
-		// UtilIOTests END // half works
+		// UtilIOTests END // half works*/
 		
 		
 		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
