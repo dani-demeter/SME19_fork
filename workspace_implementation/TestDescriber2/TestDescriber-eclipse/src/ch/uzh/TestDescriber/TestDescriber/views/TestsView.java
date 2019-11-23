@@ -3,7 +3,9 @@ package ch.uzh.TestDescriber.TestDescriber.views;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.part.*;
 import org.osgi.framework.Bundle;
 
@@ -18,9 +20,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -30,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.ui.ide.IDE;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,11 +46,18 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.ResourcesPlugin;
 
 public class TestsView extends ViewPart {
 
@@ -56,7 +69,6 @@ public class TestsView extends ViewPart {
 	@Inject IWorkbench workbench;
 	
 	private Action action1;
-	private Action doubleClickAction;
 	private String testPath;
 	RowLayout rowLayout;
 	Composite viewParent;
@@ -223,14 +235,37 @@ public class TestsView extends ViewPart {
         File testFile = new File(testPath);
         if (testFile.exists() && testFile.isFile()) {
     		try {
+    			// Show open file button
+				Button button = new Button(composite, SWT.WRAP);
+				button.setText("Open file in editor");
+				button.addListener(SWT.Selection, new Listener() {
+					@Override
+					public void handleEvent(Event event) {
+						switch (event.type) {
+						case SWT.Selection:
+							IFileStore fileStore = EFS.getLocalFileSystem().getStore(testFile.toURI());
+							if (!fileStore.fetchInfo().isDirectory() && fileStore.fetchInfo().exists()) {
+							    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+							    try {
+							        IDE.openEditorOnFileStore(page, fileStore);
+							    } catch (PartInitException e) {
+									e.printStackTrace();
+							    }
+							}
+							break;
+						}
+					}
+				});
+				widgets.add(button);
+    			
     			// Get all lines in file
     			List<String> allLines = Files.readAllLines(Paths.get(testFile.getAbsolutePath()));
     			int index = 0;
 				
     			for (String line:allLines) {
     				// Get function/class name
-    				String testFunctionName = getTestFunctionName(allLines.get(index));
-					String testClassName = getTestClassName(allLines.get(index));
+    				String testFunctionName = getTestFunctionName(line);
+					String testClassName = getTestClassName(line);
     				
     				// Handle function comment
     				if (testFunctionName != null) {
@@ -269,6 +304,7 @@ public class TestsView extends ViewPart {
             		            statusLabel.setForeground(composite.getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
             		            statusLabel.setText("Passed" + "\n");
             		        	widgets.add(statusLabel);
+            		        	
     						} else if (testFunctionComment.contains("This test has failed.")) {
     							// Create row
     						    Composite statusComposite = new Composite(composite, SWT.WRAP);
@@ -303,6 +339,7 @@ public class TestsView extends ViewPart {
         		        	widgets.add(commentLabel);
     					}
         					
+    				// Handle class comment
     				} else if (testClassName != null) {
     					// Create class name label
     		            Label headingLabel = new Label(composite, SWT.WRAP);
@@ -332,12 +369,6 @@ public class TestsView extends ViewPart {
             	widgets.add(label);
     			e.printStackTrace();
     		}
-        	
-//            Button button = new Button(viewParent, SWT.WRAP);
-//            button.setText("View test file");
-//        	widgets.add(button);
-
-//            button.setLayoutData(new RowData(100, 40));
         } else {
         	Label label = new Label(composite, SWT.WRAP);
         	label.setBackground(composite.getBackground());
@@ -398,14 +429,6 @@ public class TestsView extends ViewPart {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
-		doubleClickAction = new Action() {
-			public void run() {
-//				IStructuredSelection selection = viewer.getStructuredSelection();
-//				Object obj = selection.getFirstElement();
-//				showMessage("Double-click detected on "+ obj.toString());
-			}
-		};
 	}
 	
 	private void showMessage(String message) {
