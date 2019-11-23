@@ -3,8 +3,11 @@ package ch.uzh.TestDescriber.TestDescriber.views;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.part.*;
+import org.osgi.framework.Bundle;
 
 import ch.uzh.TestDescriber.TestDescriber.views.ListViewPart.TreeParent;
 import ch.uzh.TestDescriber.TestDescriber.views.ListViewPart.ViewContentProvider;
@@ -17,6 +20,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -26,19 +35,29 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.ui.ide.IDE;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.ResourcesPlugin;
 
 public class TestsView extends ViewPart {
 
@@ -49,9 +68,7 @@ public class TestsView extends ViewPart {
 
 	@Inject IWorkbench workbench;
 	
-//	private TableViewer viewer;
 	private Action action1;
-	private Action doubleClickAction;
 	private String testPath;
 	RowLayout rowLayout;
 	Composite viewParent;
@@ -75,25 +92,12 @@ public class TestsView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-//		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-//		
-//		viewer.setContentProvider(ArrayContentProvider.getInstance());
-//		viewer.setInput(new String[] { "One", "Two", "Three" });
-//		viewer.setLabelProvider(new ViewLabelProvider());
-//
-//		// Create the help context id for the viewer's control
-//		workbench.getHelpSystem().setHelp(viewer.getControl(), "ch.uzh.TestDescriber.TestDescriber.viewer");
-//		getSite().setSelectionProvider(viewer);
 		widgets = new ArrayList<Widget>();
 		
 		viewParent = parent;
-		
-//        RowLayout rowLayout = new RowLayout();
-//        viewParent.setLayout(rowLayout);
         
 		makeActions();
 		hookContextMenu();
-		hookDoubleClickAction();
 		contributeToActionBars();
 		
 	}
@@ -114,7 +118,7 @@ public class TestsView extends ViewPart {
 	}
 	
 	private String getTestClassName(String line) {
-		String pattern = "public class ([^\\s]+) *\\{";
+		String pattern = "public [abstract ]*class ([^\\s]+) *\\{*";
 		Pattern r = Pattern.compile(pattern);
 		Matcher m = r.matcher(line);
 		if (m.find()) {
@@ -231,46 +235,112 @@ public class TestsView extends ViewPart {
         File testFile = new File(testPath);
         if (testFile.exists() && testFile.isFile()) {
     		try {
+    			// Show open file button
+				Button button = new Button(composite, SWT.WRAP);
+				button.setText("Open file in editor");
+				button.addListener(SWT.Selection, new Listener() {
+					@Override
+					public void handleEvent(Event event) {
+						switch (event.type) {
+						case SWT.Selection:
+							IFileStore fileStore = EFS.getLocalFileSystem().getStore(testFile.toURI());
+							if (!fileStore.fetchInfo().isDirectory() && fileStore.fetchInfo().exists()) {
+							    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+							    try {
+							        IDE.openEditorOnFileStore(page, fileStore);
+							    } catch (PartInitException e) {
+									e.printStackTrace();
+							    }
+							}
+							break;
+						}
+					}
+				});
+				widgets.add(button);
+    			
     			// Get all lines in file
     			List<String> allLines = Files.readAllLines(Paths.get(testFile.getAbsolutePath()));
     			int index = 0;
+				
     			for (String line:allLines) {
+    				// Get function/class name
+    				String testFunctionName = getTestFunctionName(line);
+					String testClassName = getTestClassName(line);
+    				
     				// Handle function comment
-    				if (line.contains("@Test" )) {
-        					// Get test function name
-        					String testFunctionName = getTestFunctionName(allLines.get(index + 1));
-        					if (testFunctionName == null) {
-        						index++;
-        						continue;
-        					}
-        					
-        					// Create function name label
-        		            Label headingLabel = new Label(composite, SWT.WRAP);
-        		            headingLabel.setBackground(composite.getBackground());
-        		            headingLabel.setText(testFunctionName);
-        		            FontData[] fD = headingLabel.getFont().getFontData();
-        		            fD[0].setHeight(14);
-        		            headingLabel.setFont( new Font(null, fD[0]));
-        		        	widgets.add(headingLabel);
+    				if (testFunctionName != null) {
+    					// Create function name label
+    		            Label headingLabel = new Label(composite, SWT.WRAP);
+    		            headingLabel.setBackground(composite.getBackground());
+    		            headingLabel.setText(testFunctionName);
+    		            FontData[] fD = headingLabel.getFont().getFontData();
+    		            fD[0].setHeight(14);
+    		            headingLabel.setFont( new Font(null, fD[0]));
+    		        	widgets.add(headingLabel);
+						
+						// Get test function comment
+						String testFunctionComment = getTestFunctionComment(allLines, index, 10, 10);
+    					if (testFunctionComment != null) {
+    						// Get pass/fail status
+    						if (testFunctionComment.contains("This test has passed.")) {
+    							// Create row
+    						    Composite statusComposite = new Composite(composite, SWT.WRAP);
+    						    statusComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
+    						    statusComposite.setBackground(composite.getBackground());
+    	    		        	widgets.add(statusComposite);
+    						    
+    	    		        	// Create tick image
+    						    Label imageLabel = new Label(statusComposite, SWT.WRAP);
+    						    Bundle bundle = Platform.getBundle("ch.uzh.TestDescriber.TestDescriber");
+    						    URL url = FileLocator.find(bundle, new Path("icons/tick.png"), null);
+            					ImageDescriptor image = ImageDescriptor.createFromURL(url);
+            					imageLabel.setBackground(composite.getBackground());
+            					imageLabel.setImage(image.createImage());
+    	    		        	widgets.add(imageLabel);
+    							
+    							// Create pass label
+            		            Label statusLabel = new Label(statusComposite, SWT.WRAP);
+            		            statusLabel.setBackground(composite.getBackground());
+            		            statusLabel.setForeground(composite.getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
+            		            statusLabel.setText("Passed" + "\n");
+            		        	widgets.add(statusLabel);
+            		        	
+    						} else if (testFunctionComment.contains("This test has failed.")) {
+    							// Create row
+    						    Composite statusComposite = new Composite(composite, SWT.WRAP);
+    						    statusComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
+    						    statusComposite.setBackground(composite.getBackground());
+    	    		        	widgets.add(statusComposite);
+    						    
+    	    		        	// Create tick image
+    						    Label imageLabel = new Label(statusComposite, SWT.WRAP);
+    						    Bundle bundle = Platform.getBundle("ch.uzh.TestDescriber.TestDescriber");
+    						    URL url = FileLocator.find(bundle, new Path("icons/cross.png"), null);
+            					ImageDescriptor image = ImageDescriptor.createFromURL(url);
+            					imageLabel.setBackground(composite.getBackground());
+            					imageLabel.setImage(image.createImage());
+    	    		        	widgets.add(imageLabel);
+    							
+    							// Create pass label
+            		            Label statusLabel = new Label(statusComposite, SWT.WRAP);
+            		            statusLabel.setBackground(composite.getBackground());
+            		            statusLabel.setForeground(composite.getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
+            		            statusLabel.setText("Failed" + "\n");
+            		        	widgets.add(statusLabel);
+    						}
     						
-							// Get test function comment
-							String testFunctionComment = getTestFunctionComment(allLines, index, 10, 10);
-        					if (testFunctionComment != null) {
-        						// Create function comment label
-            		            Label commentLabel = new Label(composite, SWT.WRAP);
-            		            commentLabel.setBackground(composite.getBackground());
-            		            commentLabel.setText(testFunctionComment + "\n");
-            		        	widgets.add(commentLabel);
-        					}
-        					
-    				} else if (line.contains("public class")) {
-    					// Get test class name
-    					String testClassName = getTestClassName(allLines.get(index));
-    					if (testClassName == null) {
-    						index++;
-    						continue;
+    						// Remove pass/fail status from comment
+    						testFunctionComment = testFunctionComment.replace("This test has passed.", "").replace("This test has failed.", "");
+    						
+    						// Create function comment label
+        		            Label commentLabel = new Label(composite, SWT.WRAP);
+        		            commentLabel.setBackground(composite.getBackground());
+        		            commentLabel.setText(testFunctionComment + "\n");
+        		        	widgets.add(commentLabel);
     					}
-    					
+        					
+    				// Handle class comment
+    				} else if (testClassName != null) {
     					// Create class name label
     		            Label headingLabel = new Label(composite, SWT.WRAP);
     		            headingLabel.setBackground(composite.getBackground());
@@ -299,12 +369,6 @@ public class TestsView extends ViewPart {
             	widgets.add(label);
     			e.printStackTrace();
     		}
-        	
-//            Button button = new Button(viewParent, SWT.WRAP);
-//            button.setText("View test file");
-//        	widgets.add(button);
-
-//            button.setLayoutData(new RowData(100, 40));
         } else {
         	Label label = new Label(composite, SWT.WRAP);
         	label.setBackground(composite.getBackground());
@@ -328,9 +392,6 @@ public class TestsView extends ViewPart {
 				TestsView.this.fillContextMenu(manager);
 			}
 		});
-//		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-//		viewer.getControl().setMenu(menu);
-//		getSite().registerContextMenu(menuMgr, viewer);
 	}
 
 	private void contributeToActionBars() {
@@ -368,33 +429,17 @@ public class TestsView extends ViewPart {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
-		doubleClickAction = new Action() {
-			public void run() {
-//				IStructuredSelection selection = viewer.getStructuredSelection();
-//				Object obj = selection.getFirstElement();
-//				showMessage("Double-click detected on "+ obj.toString());
-			}
-		};
-	}
-
-	private void hookDoubleClickAction() {
-//		viewer.addDoubleClickListener(new IDoubleClickListener() {
-//			public void doubleClick(DoubleClickEvent event) {
-//				doubleClickAction.run();
-//			}
-//		});
 	}
 	
 	private void showMessage(String message) {
-//		MessageDialog.openInformation(
-//			viewer.getControl().getShell(),
-//			"TestDescriber Test",
-//			message);
+		MessageDialog.openInformation(
+			viewParent.getShell(),
+			"TestDescriber Test",
+			message);
 	}
 
 	@Override
 	public void setFocus() {
-//		viewer.getControl().setFocus();
+		viewParent.setFocus();
 	}
 }

@@ -93,5 +93,16 @@
 			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
 		</accessrules>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Jacob/.m2/repository/org/eclipse/birt/runtime/org.eclipse.core.resources/3.9.1.v20140825-1431/org.eclipse.core.resources-3.9.1.v20140825-1431.jar" sourcepath="C:/Users/Jacob/.m2/repository/org/eclipse/birt/runtime/org.eclipse.core.resources/3.9.1.v20140825-1431/org.eclipse.core.resources-3.9.1.v20140825-1431-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.eclipse.birt.runtime"/>
+			<attribute name="maven.artifactId" value="org.eclipse.core.resources"/>
+			<attribute name="maven.version" value="3.9.1.v20140825-1431"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Jacob/.p2/pool/plugins/org.eclipse.ui.ide_3.16.0.v20190916-1323.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jacob/.p2/pool/plugins/org.eclipse.core.filesystem_1.7.500.v20190620-1312.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

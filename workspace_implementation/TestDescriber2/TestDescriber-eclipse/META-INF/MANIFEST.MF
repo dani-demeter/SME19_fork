@@ -5,6 +5,9 @@ Bundle-SymbolicName: ch.uzh.TestDescriber.TestDescriber;singleton:=true
 Bundle-Version: 0.0.1.SNAPSHOT
 Bundle-Vendor: ch.uzh
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.13.500",
+ org.eclipse.core.filesystem;bundle-version="1.7.500",
+ org.eclipse.ui.ide;bundle-version="3.16.0"
 Automatic-Module-Name: ch.uzh.TestDescriber.TestDescriber
 Import-Package: javax.inject
