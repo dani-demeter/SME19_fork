@@ -251,4 +251,27 @@ public class PathParameters {
 		
 	 */
 	
+	protected static PathParameters createPathParameters_silvia_task1(){
+		//START CONFIGURATION FOR TASK 1
+		String jarProjectFolder = "D:/Uni/repositories/SME19_TestDescriber/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
+		String sourceFolder = "D:/Uni/repositories/SME19_TestDescriber/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
+		String pBinFolder = "D:/Uni/repositories/SME19_TestDescriber/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
+		String testSrcFolder = sourceFolder;
+		String testBinFolder = pBinFolder;
+		
+		List<String> classesFiles = new ArrayList<String>();
+		classesFiles.add("org/magee/math/Rational.java"); 
+
+		List<String> testsFiles = new ArrayList<String>();
+		//testsFiles.add("org/magee/math/TestRational.java");
+		testsFiles.add("org/magee/math/TestRationalExtended.java");
+
+		//END CONFIGURATION FOR TASK 1		
+		
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
+
+		return pathParameters;
+	}
+	
+	
 }
