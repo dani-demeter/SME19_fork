@@ -75,7 +75,7 @@ public class JaCoCoWrapper {
 		}
 		
 		String[] libraries = classpath.split(join_symbol);
-		System.out.print("libraries"+libraries);//GGG del
+		//System.out.print("libraries"+libraries);//GGG del
 		for (String s : libraries){
 			s = s.replace(join_symbol, "");
 			if (s.length() > 0)
@@ -156,7 +156,7 @@ public class JaCoCoWrapper {
 
 				// copy all classes in the new directory temp_folder
 				List<File> files = (List<File>) FileUtils.listFiles(jar_to_instrument.get(index), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
-				System.out.println("files to copy: "+files);
+//GGG				System.out.println("files to copy: "+files);
 				String CUT = targetClass.substring(targetClass.lastIndexOf("/")+1, targetClass.length())+".class";
 				System.out.println("CUT: "+CUT);
 				File instrumented_CUT=null;

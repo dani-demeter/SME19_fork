@@ -40,12 +40,18 @@ public class SrcMLParser {
 	 * @param t Another Index, gets initialized with 0 and doesn't change value (magic number?)
 	 * @param testsCoverage Lines covered in production code by the corresponding test. (Cobertura output)
 	 * @return textContentExecutedOriginalClass The part of the code that get's executed by the test in the original class
-	 * @throws IOException
-	 * @throws InterruptedException
-	 * @throws ParseException
+	 * @throws Exception 
 	 */
-	public static List<String> parseSrcML(List<MethodBean> testCases,int c,ClassBean classe, String sourceFolder,List<String>  classesFiles,int t,List<String>  testsCoverage) throws IOException, InterruptedException, ParseException{
+	//TODO GGG change type of Exception
+	public static List<String> parseSrcML(List<MethodBean> testCases,int c,ClassBean classe, String sourceFolder,List<String>  classesFiles,int t,List<String>  testsCoverage) throws Exception{
 
+		//GGG
+//		if(testCases.size() != testsCoverage.size()) {
+//			Exception e = new Exception("Different size testCases and testsCoverage: "+testCases.size()+"-"+testsCoverage.size());
+//			throw e; 
+//		}
+		
+		
 		MethodBean testCase = testCases.get(c); 
 		ClassBean classeExecuted = null;
 		boolean areWeInAIfStatement=false;
@@ -107,11 +113,10 @@ public class SrcMLParser {
 		
 		//ant0: Start Test coverage part 
 		// Compare line numbers of given class with line numbers of 'testCoverage'. Keep the lines that are in 'testCoverage'.
-		
 		testCoverageBooleanValues= ","+testsCoverage.get(c)+","; // always contains [line number]-true | [line number]-false | [line number]
 		testCoverage = ","+testsCoverage.get(c)+",";
 		testCoverage=testCoverage.replace("-true", "").replace("-false", ""); // only contains a line number
-
+		
 		for(int o=0;o<vectTextContentOriginalClass.length;o++){
 			counterCurrentLineInOriginalClass=o+1;
 
@@ -516,11 +521,16 @@ public class SrcMLParser {
 			public boolean visit(org.eclipse.jdt.core.dom.FieldDeclaration node) {
 				
 				for(String line : testsCoverage) {
-					String[] linesSeparated = line.split(",");
-					for(String linenumber : linesSeparated) {
-						if(unit.getLineNumber(node.getStartPosition()) == Integer.valueOf(linenumber.replace("-true","").replace("-false","").trim())) {
-							t[0]++;
+					//GGG because we also have null values in coverage
+					if (line != null) {
+						String[] linesSeparated = line.split(",");
+						for(String linenumber : linesSeparated) {
+							if(unit.getLineNumber(node.getStartPosition()) == Integer.valueOf(linenumber.replace("-true","").replace("-false","").trim())) {
+								t[0]++;
+							}
 						}
+					} else {
+						System.out.println("SrcMLParser howManyAttributesCovered: line is null");
 					}
 				}
 				

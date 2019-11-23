@@ -33,7 +33,8 @@ public class Main_TD_2019 extends SrcSummarization {
 	 * @throws ParseException
 	 *
 	 */
-	public static void main(String[] args) throws IOException, InterruptedException, ParseException {
+	//TODO GGG change type of Exception
+	public static void main(String[] args) throws IOException, InterruptedException, ParseException, Exception {
 		
 		PathParameters pathParameters = PathParameters.createPathParameters(); 
 
@@ -45,7 +46,8 @@ public class Main_TD_2019 extends SrcSummarization {
 		ClassBean classeTest = testClass.get(0);
 		ClassBean clazz = productionClass.get(0);
 		
-		//class responsible for the test coverage computation (using the Jacoco API).
+		// class responsible for the test coverage computation (using the Jacoco API).
+		// this will return only methods that have coverage....
 		TestCoverageComputation testCoverageComputation = new TestCoverageComputation(productionClass, testClass, pathParameters);
 
 		List<String> testsCoverage = testCoverageComputation.getTestsCoverage();
@@ -70,8 +72,10 @@ public class Main_TD_2019 extends SrcSummarization {
 		System.out.println("Size of listTestMethods: "+listTestMethods.size());
 		System.out.println(listTestMethods);
 		System.out.println("Size of classeTest.getMethods()"+classeTest.getMethods().size());
-		//GGG here we only select test methods END
+		// GGG here we only select test methods END
 		
+		// GGG we will only include methods in the testCases list that are in the list of test cases (listTestMethods)
+		// GGG and also have coverage, else we have an exception in SrcMLParser.howManyAttributesCovered
 		for(MethodBean m : classeTest.getMethods()) {
 			System.out.println(m.getName());
 			for (String tcName : listTestMethods) {
@@ -80,13 +84,17 @@ public class Main_TD_2019 extends SrcSummarization {
 				}
 			}
 		}
-		
+		//FIXME GGG it should be able to work on methods that don't provide coverage of the CUT!!!! 
 
 		System.out.println("Step 3: Parsing Covered Statements");
 		List<String> textContentExecutedOriginalClass = null;
 		for(int index=0; index<testCases.size(); index++) {
 			System.out.println("\r\n parseSrcML for: "+testCases.get(index).getName());
-			textContentExecutedOriginalClass=SrcMLParser.parseSrcML(testCases, index, clazz, pathParameters.sourceFolder, pathParameters.classesFiles, 0, testsCoverage);
+			if(testsCoverage.get(index) != null) {
+				textContentExecutedOriginalClass=SrcMLParser.parseSrcML(testCases, index, clazz, pathParameters.sourceFolder, pathParameters.classesFiles, 0, testsCoverage);
+			} else {
+				System.out.println("testsCoverage is null for "+index+"(!)");
+			}
 		}
 
 		// Derive the import from the class

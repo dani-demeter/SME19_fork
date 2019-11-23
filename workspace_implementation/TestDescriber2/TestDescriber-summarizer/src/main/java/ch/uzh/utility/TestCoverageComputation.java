@@ -113,7 +113,7 @@ public class TestCoverageComputation {
 
 			String covered = results.getCoverageInfoAsString();
 			//TODO GGG here only if something was covered is added, in the parser it expects a value for each
-			if (covered != null)
+			//if (covered != null)
 				testsCoverage.add(covered);
 		}
 		

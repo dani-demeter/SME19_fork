@@ -12,9 +12,8 @@ public class PathParameters {
 	public String jarProjectFolder = "";
 	public List<String> classesFiles = new ArrayList<String>();
 	public List<String> testsFiles = new ArrayList<String>();
-	public List<String> testBinFiles = new ArrayList<String>();
-	public List<String> prefixTestMethods = new ArrayList<String>();
-	public List<String> nameTestMethods = new ArrayList<String>();
+	public List<String> prefixTestMethods = new ArrayList<String>(); //optional
+	public List<String> nameTestMethods = new ArrayList<String>(); // required when prefixTestMethods is set
 	
 	public List<String> getNameTestMethods() {
 		return nameTestMethods;
@@ -61,9 +60,123 @@ public class PathParameters {
 		//testsFiles.add("org/magee/math/TestRational.java");
 		testsFiles.add("org/magee/math/TestRationalExtended.java");
 
-		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
 		//END CONFIGURATION FOR TASK 1		
 		
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
+
+		return pathParameters;
+	}
+	
+	//createPathParameters_ofbiz
+	protected static PathParameters createPathParameters_ofbiz(){
+		
+		String jarProjectFolder;
+		String sourceFolder;
+		String pBinFolder;
+		String testSrcFolder;
+		String testBinFolder; 
+		// CUT class under test
+		List<String> classesFiles = new ArrayList<String>();
+		// Java file containing the Unit Tests to be applied to the CUT
+		List<String> testsFiles = new ArrayList<String>();
+		List<String> prfxTM = new ArrayList<String>();
+		List<String> nameTM = new ArrayList<String>();
+		
+		// TimeDurationTests START// WORKS with TD!!!!!!!!!!!!!!!!!!!
+		/*
+		jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
+		sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/framework/base/src/main/java/";
+        pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
+		testSrcFolder = sourceFolder;
+		testBinFolder = pBinFolder; 
+		classesFiles.add("org/apache/ofbiz/base/util/TimeDuration.java");
+		testsFiles.add("org/apache/ofbiz/base/util/test/TimeDurationTests.java");
+		prfxTM.add("public void test");
+		nameTM.add("test");
+		*/
+		// TimeDurationTests END// WORKS with TD!!!!!!!!!!!!!!!!!!!
+		
+		// StringUtilTests START // WORKS with TD!!!!!!!!!!!!!!!!!!!
+		/*
+		jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
+		sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/framework/base/src/main/java/";
+        pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
+		testSrcFolder = sourceFolder;
+		testBinFolder = pBinFolder; 
+
+		classesFiles.add("org/apache/ofbiz/base/util/StringUtil.java");
+		
+		testsFiles.add("org/apache/ofbiz/base/util/test/StringUtilTests.java");
+		prfxTM.add("public void test");
+		nameTM.add("test");
+		*/
+		// StringUtilTests END // WORKS with TD!!!!!!!!!!!!!!!!!!!
+		
+		
+		// IndentingWriterTests START // half works
+		jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
+		sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/framework/base/src/main/java/";
+        pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
+		testSrcFolder = sourceFolder;
+		testBinFolder = pBinFolder; 
+
+		classesFiles.add("org/apache/ofbiz/base/util/IndentingWriter.java");
+
+		testsFiles.add("org/apache/ofbiz/base/util/test/IndentingWriterTests.java");
+		// IndentingWriterTests END // half works
+		
+		
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
+		pathParameters.setPrefixTestMethods(prfxTM);
+		pathParameters.setNameTestMethods(nameTM);
+
+		return pathParameters;
+	}
+	
+	
+	protected static PathParameters createPathParameters_task1_Mac(){
+		//START CONFIGURATION FOR TASK 1
+		String jarProjectFolder = null;
+		String sourceFolder = "/Users/panichella/git/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
+		String pBinFolder = "/Users/panichella/git/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
+		String testSrcFolder = sourceFolder;
+		String testBinFolder = pBinFolder;
+		
+		List<String> classesFiles = new ArrayList<String>();
+		classesFiles.add("org/magee/math/Rational.java"); 
+
+		List<String> testsFiles = new ArrayList<String>();
+		testsFiles.add("org/magee/math/TestRational.java");
+
+		//END CONFIGURATION FOR TASK 1		
+		
+		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
+
+		return pathParameters;
+	}
+
+	protected static PathParameters createPathParameters_gson_Mac(){
+		
+		// START CONFIGURATION FOR GSON
+		// START CONFIGURATION FOR GSON CommentsTest
+		// Test Case:  /gson/src/test/java/com/google/gson/CommentsTest.java
+		// Class to test: com.google.gson.reflect.TypeToken
+		String jarProjectFolder = null;
+
+		String testSrcFolder = "/Users/panichella/Downloads/gson-master/gson/src/test/java/com/google/gson/"; 		
+		String testBinFolder = "/Users/panichella/Downloads/gson-master/gson/target/test-classes/com/google/gson/";
+		
+		String sourceFolder = "/Users/panichella/Downloads/gson-master/gson/src/main/java/com/google/gson/reflect/";
+		String pBinFolder = "/Users/panichella/Downloads/gson-master/gson/target/classes/com/google/gson/reflect/";
+				
+		List<String> classesFiles = new ArrayList<String>();
+		classesFiles.add("TypeToken.java");
+		 
+		List<String> testsFiles = new ArrayList<String>();
+		testsFiles.add("ParameterizedTypeTest.java");
+		//testsFiles.add("CommentsTest.java");
+		
+		// END CONFIGURATION FOR GSON CommentsTest
 		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
 
 		return pathParameters;
@@ -100,113 +213,11 @@ public class PathParameters {
 		testsFiles.add("com/google/gson/reflect/TypeTokenTest.java");
 		//testsFiles.add("CommentsTest.java");
 		
-		
-		List<String> testBinFiles = new ArrayList<String>();
-		testBinFiles.add("TypeTokenTest");
-		//testBinFiles.add("CommentsTest");
-
 		// END CONFIGURATION FOR GSON CommentsTest
 		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
 
 		return pathParameters;
 	}
-
-	//createPathParameters_ofbiz
-	protected static PathParameters createPathParameters_ofbiz(){
-		
-		String jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
-		
-		String sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/framework/base/src/main/java/";
-        String pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/apache-ofbiz-16.11.06/build/classes/java/main/";
-
-		//String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/apache-ofbiz-16.11.04/src/framework/base/src/main/java/";
-        //String pBinFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/apache-ofbiz-16.11.04/src/build/classes/main/";
-
-		// CUT class under test
-		List<String> classesFiles = new ArrayList<String>();
-		//classesFiles.add("org/apache/ofbiz/base/util/cache/UtilCache.java");
-		classesFiles.add("org/apache/ofbiz/base/util/TimeDuration.java");
-		 
-		
-		String testSrcFolder = sourceFolder;
-		String testBinFolder = pBinFolder; 
-		// Java file containing the Unit Tests to be applied to the CUT
-		List<String> testsFiles = new ArrayList<String>();
-		//testsFiles.add("org/apache/ofbiz/base/util/cache/test/UtilCacheTests.java");
-		testsFiles.add("org/apache/ofbiz/base/util/test/TimeDurationTests.java");
-		
-		
-		List<String> testBinFiles = new ArrayList<String>();
-		testBinFiles.add("TypeTokenTest");
-		
-		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
-
-		List<String> prfxTM = new ArrayList<String>();
-		prfxTM.add("public void test");
-		pathParameters.setPrefixTestMethods(prfxTM);
-
-		List<String> nameTM = new ArrayList<String>();
-		nameTM.add("test");
-		pathParameters.setNameTestMethods(nameTM);
-
-		return pathParameters;
-	}
-	
-	
-	protected static PathParameters createPathParameters_task1_Mac(){
-		//START CONFIGURATION FOR TASK 1
-		String jarProjectFolder = null;
-		String sourceFolder = "/Users/panichella/git/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
-		String pBinFolder = "/Users/panichella/git/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
-		String testSrcFolder = sourceFolder;
-		String testBinFolder = pBinFolder;
-		
-		List<String> classesFiles = new ArrayList<String>();
-		classesFiles.add("org/magee/math/Rational.java"); 
-
-		List<String> testsFiles = new ArrayList<String>();
-		testsFiles.add("org/magee/math/TestRational.java");
-
-		List<String> testBinFiles = new ArrayList<String>(); //Empty because in same folder
-		//END CONFIGURATION FOR TASK 1		
-		
-		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
-
-		return pathParameters;
-	}
-
-	protected static PathParameters createPathParameters_gson_Mac(){
-		
-		// START CONFIGURATION FOR GSON
-		// START CONFIGURATION FOR GSON CommentsTest
-		// Test Case:  /gson/src/test/java/com/google/gson/CommentsTest.java
-		// Class to test: com.google.gson.reflect.TypeToken
-		String jarProjectFolder = null;
-
-		String testSrcFolder = "/Users/panichella/Downloads/gson-master/gson/src/test/java/com/google/gson/"; 		
-		String testBinFolder = "/Users/panichella/Downloads/gson-master/gson/target/test-classes/com/google/gson/";
-		
-		String sourceFolder = "/Users/panichella/Downloads/gson-master/gson/src/main/java/com/google/gson/reflect/";
-		String pBinFolder = "/Users/panichella/Downloads/gson-master/gson/target/classes/com/google/gson/reflect/";
-				
-		List<String> classesFiles = new ArrayList<String>();
-		classesFiles.add("TypeToken.java");
-		 
-		List<String> testsFiles = new ArrayList<String>();
-		testsFiles.add("ParameterizedTypeTest.java");
-		//testsFiles.add("CommentsTest.java");
-		
-		
-		List<String> testBinFiles = new ArrayList<String>();
-		testBinFiles.add("ParameterizedTypeTest");
-		//testBinFiles.add("CommentsTest");
-
-		// END CONFIGURATION FOR GSON CommentsTest
-		PathParameters pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
-
-		return pathParameters;
-	}
-	
 	
 	
 	/*

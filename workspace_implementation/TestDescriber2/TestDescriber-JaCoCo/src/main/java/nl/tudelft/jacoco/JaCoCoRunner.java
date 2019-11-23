@@ -83,15 +83,15 @@ public class JaCoCoRunner {
 																				// should be included
 			Path currentWorkingDir = Paths.get("").toAbsolutePath();// GGG del
 			System.out.println("currentWorkingDir: " + currentWorkingDir.normalize().toString());// GGG del
-			System.out.println("cp: " + cp);// GGG del
+			// GGG System.out.println("cp: " + cp);// GGG del
 			if (System.getProperty("os.name").startsWith("Windows")) {
 				cp = cp.replaceAll(":C", "&C");
 			} else {
 				cp = cp.replaceAll("::", ":");
 			}
 
-			System.out.println("new cp: " + cp);// GGG del
-			System.out.println("JaCoCoRunner.run wrapper.setClassPath (required_libraries): " + cp);
+			//GGG too much log when including the whole project!!! System.out.println("new cp: " + cp);// GGG del
+			//GGG too much log when including the whole project!!! System.out.println("JaCoCoRunner.run wrapper.setClassPath (required_libraries): " + cp);
 			wrapper.setClassPath(cp);
 			wrapper.setTargetClass(cut);
 

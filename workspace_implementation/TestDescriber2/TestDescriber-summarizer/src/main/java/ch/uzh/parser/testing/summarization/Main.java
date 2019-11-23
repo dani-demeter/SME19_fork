@@ -118,7 +118,12 @@ public class Main {
 		System.out.println("Step 3: Parsing Covered Statements");
 		List<String> textContentExecutedOriginalClass = null;
 		for(int index=0; index<testCases.size(); index++) {
-			textContentExecutedOriginalClass=SrcMLParser.parseSrcML(testCases, index, clazz, sourceFolder, classesFiles, 0, testsCoverage);
+			try {
+				textContentExecutedOriginalClass=SrcMLParser.parseSrcML(testCases, index, clazz, sourceFolder, classesFiles, 0, testsCoverage);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		// Derive the import from the class
