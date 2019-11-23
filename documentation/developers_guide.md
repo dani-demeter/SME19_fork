@@ -11,7 +11,7 @@ https://github.com/GLopezMUZH/SME19_TestDescriberProject.git
 3. Click on the project "TestDescriber-summarizer" -> "Build Path-> Configure Build Path", then to add to the project the jar library "Classifier4J-0.6.jar" (located under "/TestDescriber2/TestDescriber-summarizer/lib/")
 4. Click on the project "TestDescriber-summarizer" -> "Build Path-> Configure Build Path" -> "Projects", then to add the   "TestDescriber-JaCoCo" project
 5. Configure the source Test Case and Target classes (see description in section below)
-6. Main_TD_2019: Run as Java Application 
+6. Main_TD_2019: Run as Java Application (src/main/java ch.uzh.parser.testing.summarization)
 
 
 
