@@ -24,6 +24,7 @@ Generate the ".project" file to allow Eclipse to automatically configure the pro
 - Download and install Gradle
 - Inside the ofbiz folder run "gradle wrapper" from the command line
 - Run "gradlew eclipse" from the command line
+- Run gradlew build
 
 Import the project with "Existing Project into Workspace" 
 https://cwiki.apache.org/confluence/display/OFBIZ/Eclipse+Tips
