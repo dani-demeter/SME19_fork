@@ -22,7 +22,7 @@ Download OfBiz source version apache-ofbiz-16.11.06. (https://www.apache.org/dyn
 
 Generate the ".project" file to allow Eclipse to automatically configure the project for you:
 - Download and install Gradle
-- Inside the SME19_TestDescriberProject run "gradle wrapper" from the command line
+- Inside the ofbiz folder run "gradle wrapper" from the command line
 - Run "gradlew eclipse" from the command line
 
 Import the project with "Existing Project into Workspace" 
