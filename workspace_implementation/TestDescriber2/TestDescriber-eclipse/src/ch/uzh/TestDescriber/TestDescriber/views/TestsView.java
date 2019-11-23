@@ -241,8 +241,7 @@ public class TestsView extends ViewPart {
 				button.setText("Open file in editor");
 				button.addListener(SWT.Selection, new Listener() {
 					@Override
-					public void handleEvent(Event event)  {
-						showMessage(testFile.toURI().toString());
+					public void handleEvent(Event event) {
 						IFile ifile = fileToIFile(testFile);
 					    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 					    try {
