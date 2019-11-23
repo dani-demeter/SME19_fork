@@ -36,28 +36,22 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.ResourcesPlugin;
 
 public class TestsView extends ViewPart {
 
@@ -212,6 +206,13 @@ public class TestsView extends ViewPart {
 		return null;
 	}
 	
+	private IFile fileToIFile (File file) {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IPath location = Path.fromOSString(file.getAbsolutePath());
+		IFile ifile = workspace.getRoot().getFileForLocation(location);
+		return ifile;
+	}
+	
 	private void initialize() {
 		// Delete old widgets
 		for (Widget widget : widgets) {
@@ -240,20 +241,15 @@ public class TestsView extends ViewPart {
 				button.setText("Open file in editor");
 				button.addListener(SWT.Selection, new Listener() {
 					@Override
-					public void handleEvent(Event event) {
-						switch (event.type) {
-						case SWT.Selection:
-							IFileStore fileStore = EFS.getLocalFileSystem().getStore(testFile.toURI());
-							if (!fileStore.fetchInfo().isDirectory() && fileStore.fetchInfo().exists()) {
-							    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-							    try {
-							        IDE.openEditorOnFileStore(page, fileStore);
-							    } catch (PartInitException e) {
-									e.printStackTrace();
-							    }
-							}
-							break;
-						}
+					public void handleEvent(Event event)  {
+						showMessage(testFile.toURI().toString());
+						IFile ifile = fileToIFile(testFile);
+					    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					    try {
+					        IDE.openEditor(page, ifile, true);
+					    } catch (PartInitException e) {
+							e.printStackTrace();
+					    }
 					}
 				});
 				widgets.add(button);
