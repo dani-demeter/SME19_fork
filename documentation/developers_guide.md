@@ -18,8 +18,10 @@ https://github.com/GLopezMUZH/SME19_TestDescriberProject.git
 ## Real life OSS projects
 
 ### OfBiz
-Download OfBiz source.
+Download OfBiz source version apache-ofbiz-16.11.06.
+
 Generate the ".project" file to allow Eclipse to automatically configure the project for you. For that simply run "gradlew eclipse" on the command line.
+
 Import the project with "Existing Project into Workspace" 
 https://cwiki.apache.org/confluence/display/OFBIZ/Eclipse+Tips
 
