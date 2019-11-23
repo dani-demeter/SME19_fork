@@ -85,7 +85,7 @@ public class JaCoCoRunner {
 			System.out.println("currentWorkingDir: " + currentWorkingDir.normalize().toString());// GGG del
 			// GGG System.out.println("cp: " + cp);// GGG del
 			if (System.getProperty("os.name").startsWith("Windows")) {
-				cp = cp.replaceAll(":C", "&C");
+				cp = cp.replaceAll(":C", "&C"); //TODO GGG detect root name in windowss
 			} else {
 				cp = cp.replaceAll("::", ":");
 			}
