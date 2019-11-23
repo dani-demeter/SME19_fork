@@ -38,7 +38,7 @@ public class ListViewPart extends ViewPart {
 	private Action action2;
 	private Action action3;
 	private Action doubleClickAction;
-	private String testsFolderPath = "C:\\Users\\Jacob\\Workspace\\SME19_TestDescriberProject\\workspace_implementation\\Task1\\src\\org\\magee\\math";
+	private String testsFolderPath = "C:\\Users\\Jacob\\Workspace\\SME19_TestDescriberProject\\workspace_implementation\\TestDescriber2\\TestDescriber-JaCoCo\\resources\\Task1\\src\\org\\magee\\math";
 	 
 	class TreeObject implements IAdaptable {
 		private String name;

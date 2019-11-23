@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.*;
+import org.osgi.framework.Bundle;
 
 import ch.uzh.TestDescriber.TestDescriber.views.ListViewPart.TreeParent;
 import ch.uzh.TestDescriber.TestDescriber.views.ListViewPart.ViewContentProvider;
@@ -17,6 +18,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -27,8 +31,10 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -228,24 +234,74 @@ public class TestsView extends ViewPart {
     				
     				// Handle function comment
     				if (testFunctionName != null) {
-        					// Create function name label
-        		            Label headingLabel = new Label(composite, SWT.WRAP);
-        		            headingLabel.setBackground(composite.getBackground());
-        		            headingLabel.setText(testFunctionName);
-        		            FontData[] fD = headingLabel.getFont().getFontData();
-        		            fD[0].setHeight(14);
-        		            headingLabel.setFont( new Font(null, fD[0]));
-        		        	widgets.add(headingLabel);
+    					// Create function name label
+    		            Label headingLabel = new Label(composite, SWT.WRAP);
+    		            headingLabel.setBackground(composite.getBackground());
+    		            headingLabel.setText(testFunctionName);
+    		            FontData[] fD = headingLabel.getFont().getFontData();
+    		            fD[0].setHeight(14);
+    		            headingLabel.setFont( new Font(null, fD[0]));
+    		        	widgets.add(headingLabel);
+						
+						// Get test function comment
+						String testFunctionComment = getTestFunctionComment(allLines, index, 10, 10);
+    					if (testFunctionComment != null) {
+    						// Get pass/fail status
+    						if (testFunctionComment.contains("This test has passed.")) {
+    							// Create row
+    						    Composite statusComposite = new Composite(composite, SWT.WRAP);
+    						    statusComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
+    						    statusComposite.setBackground(composite.getBackground());
+    	    		        	widgets.add(statusComposite);
+    						    
+    	    		        	// Create tick image
+    						    Label imageLabel = new Label(statusComposite, SWT.WRAP);
+    						    Bundle bundle = Platform.getBundle("ch.uzh.TestDescriber.TestDescriber");
+    						    URL url = FileLocator.find(bundle, new Path("icons/tick.png"), null);
+            					ImageDescriptor image = ImageDescriptor.createFromURL(url);
+            					imageLabel.setBackground(composite.getBackground());
+            					imageLabel.setImage(image.createImage());
+    	    		        	widgets.add(imageLabel);
+    							
+    							// Create pass label
+            		            Label statusLabel = new Label(statusComposite, SWT.WRAP);
+            		            statusLabel.setBackground(composite.getBackground());
+            		            statusLabel.setForeground(composite.getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
+            		            statusLabel.setText("Passed" + "\n");
+            		        	widgets.add(statusLabel);
+    						} else if (testFunctionComment.contains("This test has failed.")) {
+    							// Create row
+    						    Composite statusComposite = new Composite(composite, SWT.WRAP);
+    						    statusComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
+    						    statusComposite.setBackground(composite.getBackground());
+    	    		        	widgets.add(statusComposite);
+    						    
+    	    		        	// Create tick image
+    						    Label imageLabel = new Label(statusComposite, SWT.WRAP);
+    						    Bundle bundle = Platform.getBundle("ch.uzh.TestDescriber.TestDescriber");
+    						    URL url = FileLocator.find(bundle, new Path("icons/cross.png"), null);
+            					ImageDescriptor image = ImageDescriptor.createFromURL(url);
+            					imageLabel.setBackground(composite.getBackground());
+            					imageLabel.setImage(image.createImage());
+    	    		        	widgets.add(imageLabel);
+    							
+    							// Create pass label
+            		            Label statusLabel = new Label(statusComposite, SWT.WRAP);
+            		            statusLabel.setBackground(composite.getBackground());
+            		            statusLabel.setForeground(composite.getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
+            		            statusLabel.setText("Failed" + "\n");
+            		        	widgets.add(statusLabel);
+    						}
     						
-							// Get test function comment
-							String testFunctionComment = getTestFunctionComment(allLines, index, 10, 10);
-        					if (testFunctionComment != null) {
-        						// Create function comment label
-            		            Label commentLabel = new Label(composite, SWT.WRAP);
-            		            commentLabel.setBackground(composite.getBackground());
-            		            commentLabel.setText(testFunctionComment + "\n");
-            		        	widgets.add(commentLabel);
-        					}
+    						// Remove pass/fail status from comment
+    						testFunctionComment = testFunctionComment.replace("This test has passed.", "").replace("This test has failed.", "");
+    						
+    						// Create function comment label
+        		            Label commentLabel = new Label(composite, SWT.WRAP);
+        		            commentLabel.setBackground(composite.getBackground());
+        		            commentLabel.setText(testFunctionComment + "\n");
+        		        	widgets.add(commentLabel);
+    					}
         					
     				} else if (testClassName != null) {
     					// Create class name label
