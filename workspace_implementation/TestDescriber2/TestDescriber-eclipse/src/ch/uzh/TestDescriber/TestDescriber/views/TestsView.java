@@ -158,6 +158,8 @@ public class TestsView extends ViewPart {
 			if (line.contains("//")) {
 				comment += line.replace("\t", "").replace("//", "").replace("  ", "") + "\n";
 				foundComment = true;
+			} else if (!line.contains("}")) {
+				continue;
 			} else if (foundComment == true) {
 				break;
 			}
@@ -274,7 +276,7 @@ public class TestsView extends ViewPart {
     		        	widgets.add(headingLabel);
 						
 						// Get test function comment
-						String testFunctionComment = getTestFunctionComment(allLines, index, 10, 10);
+						String testFunctionComment = getTestFunctionComment(allLines, index, 10, 12);
     					if (testFunctionComment != null) {
     						// Get pass/fail status
     						if (testFunctionComment.contains("This test has passed.")) {
