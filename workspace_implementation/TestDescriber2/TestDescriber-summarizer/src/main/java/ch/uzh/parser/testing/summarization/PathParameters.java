@@ -47,9 +47,9 @@ public class PathParameters {
 		//String jarProjectFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
 		//String sourceFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
 		//String pBinFolder = "C:/Data/workspaces/local_SME19_TestDescriberProject/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
-		String jarProjectFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
-		String sourceFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
-		String pBinFolder = "C:/Data/workspaces/loca_SME19_TDOfB/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
+		String jarProjectFolder = "/Users/Dani/eclipse-workspace/SME19_TestDescriberProject/workspace_implementation/Task1/bin/"; //TODO GGG handle null?
+		String sourceFolder = "/Users/Dani/eclipse-workspace/SME19_TestDescriberProject/workspace_implementation/Task1/src/";
+		String pBinFolder = "/Users/Dani/eclipse-workspace/SME19_TestDescriberProject/workspace_implementation/Task1/bin/";
 		String testSrcFolder = sourceFolder;
 		String testBinFolder = pBinFolder;
 		
@@ -220,9 +220,9 @@ public class PathParameters {
 	}
 	
 	
-	/*
-	 * 		String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/Task1/src/";
-        String pBinFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/Task1/bin/";
+	
+//	  	String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/Task1/src/";
+//        String pBinFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/Task1/bin/";
         
         //String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/commons-cli-1.4-src/src/";
         //String pBinFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/commons-cli-1.4-src/src/main/java/target/";
@@ -230,24 +230,22 @@ public class PathParameters {
 		//String sourceFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/apache-ofbiz-16.11.04/src/framework/base/src/main/java/";
         //String pBinFolder = "/Users/setup/Desktop/Publication/VENERA/TD-Extention/Eclipse/workspace2-modified-implementation-extention1/apache-ofbiz-16.11.04/src/build/classes/main/";
         
-		//List<String> classesFiles = new ArrayList<String>();
-		//classesFiles.add("/main/java/org/apache/commons/cli/Option.java");
+//		List<String> classesFiles = new ArrayList<String>();
+//		classesFiles.add("/main/java/org/apache/commons/cli/Option.java");
 
 		//List<String> testsFiles = new ArrayList<String>();
 		//testsFiles.add("test/java/org/apache/commons/cli/OptionTest.java");
 
-		List<String> classesFiles = new ArrayList<String>();
-		//classesFiles.add("org/magee/math/Rational.java");
-		classesFiles.add("org/magee/math/Rational.java");
+//		List<String> classesFiles = new ArrayList<String>();
+//		classesFiles.add("org/magee/math/Rational.java");
 		//classesFiles.add("org/apache/ofbiz/base/util/cache/UtilCache.java");
 		//classesFiles.add("org/apache/ofbiz/base/util/TimeDuration.java");
 
 		
-		List<String> testsFiles = new ArrayList<String>();
+//		List<String> testsFiles = new ArrayList<String>();
 		//testsFiles.add("org/magee/math/Rational_ESTest.java");
-		testsFiles.add("org/magee/math/TestRational.java");
+//		testsFiles.add("org/magee/math/TestRational.java");
 		//testsFiles.add("org/apache/ofbiz/base/util/cache/test/UtilCacheTests.java");
 		//testsFiles.add("org/apache/ofbiz/base/util/test/TimeDurationTests.java");
 		
-	 */
 }

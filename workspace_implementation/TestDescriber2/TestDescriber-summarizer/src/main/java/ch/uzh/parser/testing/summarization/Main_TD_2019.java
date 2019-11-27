@@ -21,7 +21,7 @@ import ch.uzh.utility.TestCoverageComputation;
 
 /**
  * Main parser for Test case Summarization..
- * @author Sebastiano Panichella and Annibale Panichella and Gabriela Lopez Magaña
+ * @author Sebastiano Panichella and Annibale Panichella and Gabriela Lopez Magaï¿½a
  *
  */
 public class Main_TD_2019 extends SrcSummarization {
@@ -36,7 +36,7 @@ public class Main_TD_2019 extends SrcSummarization {
 	//TODO GGG change type of Exception
 	public static void main(String[] args) throws IOException, InterruptedException, ParseException, Exception {
 		
-		PathParameters pathParameters = PathParameters.createPathParameters(); 
+		PathParameters pathParameters = PathParameters.createPathParameters_task1(); 
 		//PathParameters pathParameters = PathParametersSilvia.createPathParameters_task1();
 		//PathParameters pathParameters = PathParametersSilvia.createPathParametersSilvia_ofbiz();
 		
