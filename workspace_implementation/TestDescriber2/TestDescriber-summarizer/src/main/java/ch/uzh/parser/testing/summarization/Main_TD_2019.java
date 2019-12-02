@@ -35,8 +35,47 @@ public class Main_TD_2019 extends SrcSummarization {
 	 */
 	//TODO GGG change type of Exception
 	public static void main(String[] args) throws IOException, InterruptedException, ParseException, Exception {
+		PathParameters pathParameters = null;
+		if(args.length!=0) {
+			BufferedReader reader;
+			String sourceFolder = "";
+			String pBinFolder = "";
+			String testSrcFolder = "";
+			String testBinFolder = "";
+			List<String> classesFiles = new ArrayList<String>();
+			List<String> testsFiles = new ArrayList<String>();
+			int index = 0;
+			try {
+				reader = new BufferedReader(new FileReader(args[0]));
+				String line = reader.readLine();
+				while (line != null) {
+					System.out.println(line);
+					if(index==0) {
+						sourceFolder = line;
+					}else if(index==1) {
+						pBinFolder = line;
+					}else if(index>1 && index%2==0) {
+						classesFiles.add(line);
+					}else if(index>1 && index%2==1) {
+						testsFiles.add(line);
+					}
+					index++;
+					line = reader.readLine();
+				}
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String jarProjectFolder = pBinFolder;
+			String testSrcFolder = sourceFolder;
+			String testBinFolder = pBinFolder;
+			pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
+		}else {
+			pathParameters = PathParameters.createPathParameters_task1();
+		}
 		
-		PathParameters pathParameters = PathParameters.createPathParameters_task1(); 
+		
+		
 		//PathParameters pathParameters = PathParametersSilvia.createPathParameters_task1();
 		//PathParameters pathParameters = PathParametersSilvia.createPathParametersSilvia_ofbiz();
 		
