@@ -67,8 +67,8 @@ public class Main_TD_2019 extends SrcSummarization {
 				e.printStackTrace();
 			}
 			String jarProjectFolder = pBinFolder;
-			String testSrcFolder = sourceFolder;
-			String testBinFolder = pBinFolder;
+			testSrcFolder = sourceFolder;
+			testBinFolder = pBinFolder;
 			pathParameters = new PathParameters(sourceFolder, pBinFolder, testSrcFolder, testBinFolder, classesFiles, testsFiles, jarProjectFolder);
 		}else {
 			pathParameters = PathParameters.createPathParameters_task1();

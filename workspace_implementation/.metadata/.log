@@ -2732,3 +2732,16 @@ java.lang.OutOfMemoryError: Java heap space
 	at org.eclipse.jdt.internal.core.search.indexing.IndexManager.notifyIdle(IndexManager.java:711)
 	at org.eclipse.jdt.internal.core.search.processing.JobManager.run(JobManager.java:384)
 	at java.base/java.lang.Thread.run(Thread.java:844)
+!SESSION 2019-12-02 12:02:42.442 -----------------------------------------------
+eclipse.buildId=4.13.0.I20190916-1045
+java.version=10.0.1
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/Dani/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -data /Users/Dani/eclipse-workspace/SME19_TestDescriberProject/workspace_implementation -product org.eclipse.epp.package.java.product -keyring /Users/Dani/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2019-12-02 12:02:50.731
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.oomph.setup.ui 1 0 2019-12-02 12:03:13.181
+!MESSAGE Setup tasks were performed during startup updating 5 preferences. See '/Users/Dani/eclipse/java-2019-09/Eclipse.app/Contents/Eclipse/configuration/org.eclipse.oomph.setup/setup.log' for details
