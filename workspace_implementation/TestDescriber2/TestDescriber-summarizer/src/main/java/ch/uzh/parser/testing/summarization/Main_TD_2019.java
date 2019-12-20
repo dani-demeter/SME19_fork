@@ -36,6 +36,13 @@ public class Main_TD_2019 extends SrcSummarization {
 	//TODO GGG change type of Exception
 	public static void main(String[] args) throws IOException, InterruptedException, ParseException, Exception {
 		PathParameters pathParameters = null;
+		boolean verbose = false;
+		PrintStream originalStream = System.out;
+		PrintStream dummyStream = new PrintStream(new OutputStream(){
+		    public void write(int b) {
+		    }
+		});
+		
 		if(args.length!=0) {
 			BufferedReader reader;
 			String sourceFolder = "";
@@ -79,11 +86,15 @@ public class Main_TD_2019 extends SrcSummarization {
 		//PathParameters pathParameters = PathParametersSilvia.createPathParameters_task1();
 		//PathParameters pathParameters = PathParametersSilvia.createPathParametersSilvia_ofbiz();
 		
+		System.setOut(originalStream);
 		System.out.println("Step 1: Parsing JAVA CLASSES/JAVA TESTS");
+		setMyOut(verbose, originalStream, dummyStream);
 		Vector<ClassBean> productionClass = JavaFileParser.parseJavaClasses(pathParameters.classesFiles, pathParameters.sourceFolder);
 		Vector<ClassBean> testClass = JavaFileParser.parseJavaClasses(pathParameters.testsFiles, pathParameters.testSrcFolder);
 
+		System.setOut(originalStream);
 		System.out.println("Step 2: Running JaCoCo ");
+		setMyOut(verbose, originalStream, dummyStream);
 		ClassBean classeTest = testClass.get(0);
 		ClassBean clazz = productionClass.get(0);
 		
@@ -127,7 +138,9 @@ public class Main_TD_2019 extends SrcSummarization {
 		}
 		//FIXME GGG it should be able to work on methods that don't provide coverage of the CUT!!!! 
 
+		System.setOut(originalStream);
 		System.out.println("Step 3: Parsing Covered Statements");
+		setMyOut(verbose, originalStream, dummyStream);
 		List<String> textContentExecutedOriginalClass = null;
 		for(int index=0; index<testCases.size(); index++) {
 			System.out.println("\r\n parseSrcML for: "+testCases.get(index).getName());
@@ -141,11 +154,20 @@ public class Main_TD_2019 extends SrcSummarization {
 		// Derive the import from the class
 		clazz.setImports(clazz.extractImports(textContentExecutedOriginalClass));
 
+		System.setOut(originalStream);
 		System.out.println("Step 4: Generating Summaries as code comments");
+		setMyOut(verbose, originalStream, dummyStream);
 
 		generateTestMethodsSummary(classeTest, testCases, textContentExecutedOriginalClass);
 
 		generateClassUnderTestSummary(pathParameters, classeTest, clazz);
+		System.setOut(originalStream);
+	}
+	
+	protected static void setMyOut(boolean verbose, PrintStream original, PrintStream dummy) {
+		if(!verbose) {
+			System.setOut(dummy);
+		}
 	}
 
 	
