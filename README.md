@@ -31,12 +31,6 @@ UZH Software Maintenance and Evolution. Test Code summarizing tool Test Describe
     
     b) First, it needs to clone this repository, or update its instance, if it already has.
     
-    c) Then, it needs to run TD-Test.jar from the cloned repository with a text file as an input.
+    c) Then, it needs to run TD-Test.jar from the cloned repository with an xml file as an input.
     
-    d) This text file should include a path per line
-    
-      i) The first line needs to be the absolute path to the src folder
-      
-      ii) The second line needs to be the absolute path to the bin folder
-      
-      iii) Every pair of lines thereafter needs to be the additional paths to the class being tested, and the test class.
+    d) This text file should include all paths needed, as well as a verbose flag for output.
