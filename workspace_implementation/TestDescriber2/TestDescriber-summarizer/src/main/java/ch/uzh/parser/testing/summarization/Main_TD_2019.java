@@ -19,6 +19,17 @@ import ch.uzh.parser.bean.ClassBean;
 import ch.uzh.parser.bean.MethodBean;
 import ch.uzh.utility.TestCoverageComputation;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+
 /**
  * Main parser for Test case Summarization..
  * @author Sebastiano Panichella and Annibale Panichella and Gabriela Lopez Maga�a
@@ -44,35 +55,41 @@ public class Main_TD_2019 extends SrcSummarization {
 		});
 		
 		if(args.length!=0) {
-			BufferedReader reader;
 			String sourceFolder = "";
 			String pBinFolder = "";
 			String testSrcFolder = "";
 			String testBinFolder = "";
 			List<String> classesFiles = new ArrayList<String>();
 			List<String> testsFiles = new ArrayList<String>();
-			int index = 0;
-			try {
-				reader = new BufferedReader(new FileReader(args[0]));
-				String line = reader.readLine();
-				while (line != null) {
-					System.out.println(line);
-					if(index==0) {
-						sourceFolder = line;
-					}else if(index==1) {
-						pBinFolder = line;
-					}else if(index>1 && index%2==0) {
-						classesFiles.add(line);
-					}else if(index>1 && index%2==1) {
-						testsFiles.add(line);
-					}
-					index++;
-					line = reader.readLine();
+				/*reader = new BufferedReader(new FileReader(args[0]));
+				String line = reader.readLine();*/
+				//set-up
+				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
+				DocumentBuilder db = dbf.newDocumentBuilder();  
+				Document doc = db.parse(new File(args[0]));  
+				doc.getDocumentElement().normalize(); 
+				//end set-up
+				
+				//read two nodes
+				NodeList nList = doc.getElementsByTagName("path");
+				NodeList verboseList = doc.getElementsByTagName("verbose");
+				//end read
+				Node nNode = nList.item(0); //sub tree	
+				Element eElement = (Element) nNode;
+
+	
+				sourceFolder = eElement.getElementsByTagName("src").item(0).getTextContent();
+				pBinFolder = eElement.getElementsByTagName("bin").item(0).getTextContent();	
+				classesFiles.add(eElement.getElementsByTagName("class").item(0).getTextContent());
+				testsFiles.add(eElement.getElementsByTagName("testClass").item(0).getTextContent());
+
+				if(verboseList.item(0).getTextContent().equals("TRUE")){
+					verbose=true;
 				}
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+				
+				
+			
+		
 			String jarProjectFolder = pBinFolder;
 			testSrcFolder = sourceFolder;
 			testBinFolder = pBinFolder;
